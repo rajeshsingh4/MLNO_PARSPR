@@ -103,7 +103,7 @@ function BureauComparision() {
 					</Grid>
 					<Grid item xs={12} sm={6} md={3}>
 						<Card>
-							<CardHeader title="Most Visited" size="small" />
+							<CardHeader title="Consolidated Matrix" size="small" />
 							{selectedBureau.length > 0 && (
 								<ChartPie
 									files={getSelectedBureauFiles()}
@@ -114,10 +114,23 @@ function BureauComparision() {
 					</Grid>
 					<Grid item xs={12} sm={6} md={3}>
 						<Card>
-							<CardHeader title="Most Visited" size="small" />
+							<CardHeader title="Overall Matrix" size="small" />
 							<ChartPie files={fileList} bureau={{ BureauName: 'Overall Matrix' }} />
 						</Card>
 					</Grid>
+				</Grid>
+				<Grid container spacing={2} mt={2}>
+					{bureauList.map(
+						(bureau) =>
+							selectedBureau.includes(bureau.BureauName) && (
+								<Grid item xs={12} sm={3} key={bureau.id} className="selected-bureau-matrix">
+									<Card component="section" type="section">
+										<CardHeader title={bureau.BureauName} size="small" />
+										<ChartPie files={getBureauFilesNCards(bureau.BureauName)} bureau={bureau} />
+									</Card>
+								</Grid>
+							),
+					)}
 				</Grid>
 			</Container>
 		</>
