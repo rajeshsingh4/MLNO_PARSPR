@@ -45,6 +45,14 @@ const WIPPage = withLazyLoadably(lazy(() => import('@/pages/wip')));
 
 const FileWiseReportPage = withLazyLoadably(lazy(() => import('@/pages/bank/bureau/fileWiseReport')));
 const BureauComparisionPage = withLazyLoadably(lazy(() => import('@/pages/bank/bureau/bureauComparision')));
+const BankViewPullRequestDetails = withLazyLoadably(
+	lazy(() => import('@/pages/bank/bureau/BankViewPullRequestDetails')),
+);
+
+const BureauPullRequestList = withLazyLoadably(lazy(() => import('@/pages/bureau/bank/BureauPullRequestList')));
+const BureauViewPullRequestDetails = withLazyLoadably(
+	lazy(() => import('@/pages/bureau/bank/BureauViewPullRequestDetails')),
+);
 
 function Router() {
 	const [menuRole, setMenuRoles] = useState(null);
@@ -115,6 +123,13 @@ function Router() {
 							<Route path="bureau">
 								<Route path="filewisereport" element={<FileWiseReportPage />} />
 								<Route path="comparision" element={<BureauComparisionPage />} />
+								<Route path="view/:id" element={<BankViewPullRequestDetails />} />
+							</Route>
+						</Route>
+						<Route path="bureau">
+							<Route path="bank">
+								<Route path="pull" element={<BureauPullRequestList />} />
+								<Route path="view/:id" element={<BureauViewPullRequestDetails />} />
 							</Route>
 						</Route>
 						<Route path="pages/">

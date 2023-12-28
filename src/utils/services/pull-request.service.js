@@ -11,11 +11,11 @@ const createPullRequest = (data) => axios.post(PULL_REQUEST_URL, data, { headers
 
 const updatePullRequest = (id, data) => axios.put(PULL_REQUEST_URL + id, data, { headers: authHeader() });
 
-const FlieMasterListService = {
+const PullRequestService = {
 	getPullRequest,
 	getPullRequestById,
 	createPullRequest,
 	updatePullRequest,
 };
 
-export default FlieMasterListService;
+export default PullRequestService;
