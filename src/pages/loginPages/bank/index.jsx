@@ -19,7 +19,7 @@ import Alert from '@mui/material/Alert';
 function LoginBank() {
 	return (
 		<Container>
-			<Card elevation={20} type="none" variant="elevation" sx={{ my: 6 }} hover={false}>
+			<Card elevation={20} type="none" variant="elevation" sx={{ my: 6 }} hover="false">
 				<Grid
 					container
 					spacing={0}
