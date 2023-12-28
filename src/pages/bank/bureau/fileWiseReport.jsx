@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { DataGrid, gridClasses } from '@mui/x-data-grid';
+import { DataGrid } from '@mui/x-data-grid';
 import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
 import { useNavigate } from 'react-router-dom';

@@ -1,9 +1,6 @@
 import axios from 'axios';
 import authHeader from './auth-header';
-
-const FILE_URL = `${import.meta.env.VITE_REACT_APP_URL}/api/fileList/`;
-const BUREAU_URL = `${import.meta.env.VITE_REACT_APP_URL}/api/bureauTAT/`;
-const BUREAUDETAIL_URL = `${import.meta.env.VITE_REACT_APP_URL}/api/bureauData/`;
+import { FILE_URL, BUREAUDETAIL_URL, BUREAU_URL } from '@/utils/url';
 
 const getFileMasterList = () => axios.get(`${FILE_URL}all`, { headers: authHeader() });
 

@@ -1,34 +1,34 @@
-import constants from '@/utils/constants';
+// import constants from '@/utils/constants';
 // MUI
-import IconButton from '@mui/material/IconButton';
+// import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
-import Grid from '@mui/material/Grid';
-import Divider from '@mui/material/Divider';
+// import Grid from '@mui/material/Grid';
+// import Divider from '@mui/material/Divider';
 import Link from '@mui/material/Link';
 import Container from '@mui/material/Container';
-import TextField from '@mui/material/TextField';
-import InputAdornment from '@mui/material/InputAdornment';
-import Button from '@mui/material/Button';
+// import TextField from '@mui/material/TextField';
+// import InputAdornment from '@mui/material/InputAdornment';
+// import Button from '@mui/material/Button';
 
 // Icons
-import FacebookIcon from '@mui/icons-material/Facebook';
-import GitHubIcon from '@mui/icons-material/GitHub';
-import TwitterIcon from '@mui/icons-material/Twitter';
-import GoogleIcon from '@mui/icons-material/Google';
+// import FacebookIcon from '@mui/icons-material/Facebook';
+// import GitHubIcon from '@mui/icons-material/GitHub';
+// import TwitterIcon from '@mui/icons-material/Twitter';
+// import GoogleIcon from '@mui/icons-material/Google';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
-import LocalPhoneOutlinedIcon from '@mui/icons-material/LocalPhoneOutlined';
-import EmailOutlinedIcon from '@mui/icons-material/EmailOutlined';
-import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined';
+// import LocalPhoneOutlinedIcon from '@mui/icons-material/LocalPhoneOutlined';
+// import EmailOutlinedIcon from '@mui/icons-material/EmailOutlined';
+// import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined';
 // assets
-import logo from '@/assets/images/logo/png/Color_logo_nobg.png';
+// import logo from '@/assets/images/logo/png/Color_logo_nobg.png';
 
 function Footer() {
 	return (
 		<Box bgcolor={(theme) => theme.palette.background.paper} py={3} borderTop={1} borderColor="cuaternary.300">
 			<Container maxWidth="lg" component={Stack} direction="column" spacing={5}>
-				<Grid container spacing={3} alignContent="center" justifyContent="center" alignItems="center">
+				{/* <Grid container spacing={3} alignContent="center" justifyContent="center" alignItems="center">
 					<Grid item xs={12} sm={6} md={6}>
 						<Stack spacing={1}>
 							<Typography variant="h6" my={1}>
@@ -64,10 +64,10 @@ function Footer() {
 					sx={{
 						bgcolor: (theme) => theme.palette.secondary.main,
 					}}
-				/>
+				/> */}
 				<Stack direction="row" justifyContent="space-between" alignItems="center">
 					<Typography variant="body1" textAlign="center">
-						Copyright 2023 © All Rights Reserved. MLNO
+						Copyright 2022 - {new Date().getFullYear()} © All Rights Reserved. MLNO
 					</Typography>
 				</Stack>
 			</Container>

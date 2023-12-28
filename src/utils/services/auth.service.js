@@ -1,9 +1,6 @@
 import axios from 'axios';
 import authHeader from './auth-header';
-
-const AUTH_URL = `${import.meta.env.VITE_REACT_APP_URL}/api/auth/`;
-const USER_DETAILS_URL = `${import.meta.env.VITE_REACT_APP_URL}/api/userdetails`;
-const CHANGE_PASSWORD_URL = `${import.meta.env.VITE_REACT_APP_URL}/api/changepassword`;
+import { AUTH_URL, USER_DETAILS_URL, CHANGE_PASSWORD_URL } from '@/utils/url';
 
 const register = (username, email, password) =>
 	axios.post(`${AUTH_URL}signup`, {

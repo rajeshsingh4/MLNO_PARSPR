@@ -1,31 +1,34 @@
-import { lazy } from 'react';
+import { useEffect, lazy, useState } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 import ScrollToTopOnRouteChange from '@hocs/withScrollTopOnRouteChange';
 import withLazyLoadably from '@hocs/withLazyLoadably';
+import Loader from '@/components/loader';
 
 import MinimalLayout from '@/components/layouts/minimalLayout';
 import MainLayout from '@/components/layouts/mainLayout';
 
 import Page404 from '@/pages/errorPages/404';
 
+import UserService from '@/utils/services/user.service';
+
 const Dashboard1Page = withLazyLoadably(lazy(() => import('@/pages/dashboardsPages/bankDashboard')));
-const FormsComponentPage = withLazyLoadably(lazy(() => import('@/pages/componentsPages/forms')));
-const LoadersComponentPage = withLazyLoadably(lazy(() => import('@/pages/componentsPages/loaders')));
-const TablesComponentPage = withLazyLoadably(lazy(() => import('@/pages/componentsPages/tables')));
-const ModalComponentPage = withLazyLoadably(lazy(() => import('@/pages/componentsPages/modal')));
-const SnackbarComponentPage = withLazyLoadably(lazy(() => import('@/pages/componentsPages/snackbar')));
-const CarouselComponentPage = withLazyLoadably(lazy(() => import('@/pages/componentsPages/carousel')));
-const NavigationComponentPage = withLazyLoadably(lazy(() => import('@/pages/componentsPages/navigation')));
-const CardComponentPage = withLazyLoadably(lazy(() => import('@/pages/uiComponentsPages/card')));
-const CardHeaderComponentPage = withLazyLoadably(lazy(() => import('@/pages/uiComponentsPages/cardHeader')));
-const PageHeaderComponentPage = withLazyLoadably(lazy(() => import('@/pages/uiComponentsPages/pageHeader')));
+// const FormsComponentPage = withLazyLoadably(lazy(() => import('@/pages/componentsPages/forms')));
+// const LoadersComponentPage = withLazyLoadably(lazy(() => import('@/pages/componentsPages/loaders')));
+// const TablesComponentPage = withLazyLoadably(lazy(() => import('@/pages/componentsPages/tables')));
+// const ModalComponentPage = withLazyLoadably(lazy(() => import('@/pages/componentsPages/modal')));
+// const SnackbarComponentPage = withLazyLoadably(lazy(() => import('@/pages/componentsPages/snackbar')));
+// const CarouselComponentPage = withLazyLoadably(lazy(() => import('@/pages/componentsPages/carousel')));
+// const NavigationComponentPage = withLazyLoadably(lazy(() => import('@/pages/componentsPages/navigation')));
+// const CardComponentPage = withLazyLoadably(lazy(() => import('@/pages/uiComponentsPages/card')));
+// const CardHeaderComponentPage = withLazyLoadably(lazy(() => import('@/pages/uiComponentsPages/cardHeader')));
+// const PageHeaderComponentPage = withLazyLoadably(lazy(() => import('@/pages/uiComponentsPages/pageHeader')));
 const LoginCourierPage = withLazyLoadably(lazy(() => import('@/pages/loginPages/courier')));
 const LoginBankPage = withLazyLoadably(lazy(() => import('@/pages/loginPages/bank')));
 const LoginBureauPage = withLazyLoadably(lazy(() => import('@/pages/loginPages/bureau')));
-const SignupSplitPage = withLazyLoadably(lazy(() => import('@/pages/signupPages/signupSplit')));
-const SignupSimplePage = withLazyLoadably(lazy(() => import('@/pages/signupPages/signupSimple')));
-const SignupPage = withLazyLoadably(lazy(() => import('@/pages/signupPages/signup')));
+// const SignupSplitPage = withLazyLoadably(lazy(() => import('@/pages/signupPages/signupSplit')));
+// const SignupSimplePage = withLazyLoadably(lazy(() => import('@/pages/signupPages/signupSimple')));
+// const SignupPage = withLazyLoadably(lazy(() => import('@/pages/signupPages/signup')));
 const Page403 = withLazyLoadably(lazy(() => import('@/pages/errorPages/403')));
 const Page500 = withLazyLoadably(lazy(() => import('@/pages/errorPages/500')));
 const Page503 = withLazyLoadably(lazy(() => import('@/pages/errorPages/503')));
@@ -35,15 +38,43 @@ const Pricing2Page = withLazyLoadably(lazy(() => import('@/pages/pricingPages/pr
 const EditProfilePage = withLazyLoadably(lazy(() => import('@/pages/editProfile')));
 const NotificationsPage = withLazyLoadably(lazy(() => import('@/pages/notificationsPage')));
 const WIPPage = withLazyLoadably(lazy(() => import('@/pages/wip')));
-const SamplePage = withLazyLoadably(lazy(() => import('@/pages/sample')));
-const ThemeTypographyPage = withLazyLoadably(lazy(() => import('@/pages/themePages/themeTypography')));
-const ThemeColorsPage = withLazyLoadably(lazy(() => import('@/pages/themePages/themeColors')));
-const ThemeShadowPage = withLazyLoadably(lazy(() => import('@/pages/themePages/themeShadow')));
+// const SamplePage = withLazyLoadably(lazy(() => import('@/pages/sample')));
+// const ThemeTypographyPage = withLazyLoadably(lazy(() => import('@/pages/themePages/themeTypography')));
+// const ThemeColorsPage = withLazyLoadably(lazy(() => import('@/pages/themePages/themeColors')));
+// const ThemeShadowPage = withLazyLoadably(lazy(() => import('@/pages/themePages/themeShadow')));
 
 const FileWiseReportPage = withLazyLoadably(lazy(() => import('@/pages/bank/bureau/fileWiseReport')));
 const BureauComparisionPage = withLazyLoadably(lazy(() => import('@/pages/bank/bureau/bureauComparision')));
 
 function Router() {
+	const [menuRole, setMenuRoles] = useState(null);
+	const { location } = window;
+
+	const getMenuRoles = async () => {
+		try {
+			const menu = await UserService.getMenu();
+			setMenuRoles(menu);
+		} catch (error) {
+			console.error('Error fetching roles for user', error.message);
+		}
+	};
+
+	useEffect(() => {
+		if (!(location.pathname.includes('/login') || location.pathname.includes('/register'))) {
+			getMenuRoles();
+		}
+	}, []);
+
+	if (!menuRole) {
+		return (
+			<Loader
+				addSx={{
+					mt: 5,
+				}}
+			/>
+		);
+	}
+
 	return (
 		<BrowserRouter>
 			<ScrollToTopOnRouteChange>
@@ -61,7 +92,7 @@ function Router() {
 							<Route path="dashboard1" element={<Dashboard1Page />} />
 						</Route>
 
-						<Route path="components/">
+						{/* <Route path="components/">
 							<Route path="forms" element={<FormsComponentPage />} />
 							<Route path="loaders" element={<LoadersComponentPage />} />
 							<Route path="tables" element={<TablesComponentPage />} />
@@ -78,7 +109,7 @@ function Router() {
 							<Route path="typography" element={<ThemeTypographyPage />} />
 							<Route path="colors" element={<ThemeColorsPage />} />
 							<Route path="boxShadow" element={<ThemeShadowPage />} />
-						</Route>
+						</Route> */}
 
 						<Route path="bank">
 							<Route path="bureau">
