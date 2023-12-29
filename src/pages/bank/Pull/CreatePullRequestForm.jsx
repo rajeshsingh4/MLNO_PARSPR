@@ -81,7 +81,7 @@ function CreatePullRequestForm(props) {
 	return (
 		<Dialog
 			open
-			fullScreen
+			fullScreen={false}
 			onClose={handleClose}
 			id="create-pull-request-item"
 			aria-labelledby="pull-request-item"

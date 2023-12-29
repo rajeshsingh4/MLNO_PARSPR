@@ -97,7 +97,7 @@ function Router() {
 		);
 	}
 
-	if (!menuRole) {
+	/* if (!menuRole) {
 		return (
 			<Loader
 				addSx={{
@@ -105,7 +105,7 @@ function Router() {
 				}}
 			/>
 		);
-	}
+	} */
 
 	return (
 		<BrowserRouter>
