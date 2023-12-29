@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { alpha } from '@mui/material/styles';
 // MUI
 import Typography from '@mui/material/Typography';
@@ -31,6 +31,7 @@ import avatar2 from '@/assets/images/avatars/avatar_13.jpg';
 
 // Components
 import NotificationsButton from './notificationButton';
+import AuthService from '@/utils/services/auth.service';
 
 function LoggedUser() {
 	const [anchorEl, setAnchorEl] = useState(null);
@@ -126,6 +127,22 @@ function LoggedUser() {
 }
 
 function UserMenu({ handleClose }) {
+	const navigate = useNavigate();
+	const [loading, setLoading] = useState(false);
+	const [message, setMessage] = useState('');
+
+	const handleLogout = () => {
+		AuthService.logout().then(
+			() => {
+				navigate('/');
+				window.location.reload();
+			},
+			(error) => {
+				setLoading(false);
+				setMessage(error);
+			},
+		);
+	};
 	return (
 		<MenuList
 			sx={{
@@ -199,7 +216,7 @@ function UserMenu({ handleClose }) {
 					my: 1,
 				}}
 			/>
-			<MenuItem onClick={handleClose} component={RouterLink} to="/">
+			<MenuItem onClick={handleLogout} component={RouterLink} to="/">
 				<ListItemIcon>
 					<ExitToAppIcon fontSize="small" />
 				</ListItemIcon>
