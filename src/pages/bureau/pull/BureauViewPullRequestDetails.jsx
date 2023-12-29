@@ -21,7 +21,7 @@ import Chip from '@mui/material/Chip';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Loader from '@/components/loader';
 import PullRequestService from '@/utils/services/pull-request.service';
-// import PullRequestActivityTimeline from './PullRequestActivityTimeline';
+import PullRequestActivityTimeline from '@/pages/bank/Pull/PullRequestActivityTimeline';
 import { pullRequestStatusColorMap, pullRequestStatusMap } from '@/utils/bureaumappings';
 import Breadcrumbs from '@mui/material/Breadcrumbs';
 import Link from '@mui/material/Link';
@@ -224,6 +224,22 @@ function BureauViewPullRequestDetails(props) {
 						// checkboxSelection
 					/>
 				</TableContainer>
+				<Accordion sx={{ mt: 2 }}>
+					<AccordionSummary
+						expandIcon={<ExpandMoreIcon />}
+						aria-controls="panel1a-content"
+						id="panel1a-header"
+					>
+						<Typography>Pull Request Activity Timeline</Typography>
+					</AccordionSummary>
+					<AccordionDetails>
+						<Card elevation={0}>
+							<CardContent>
+								<PullRequestActivityTimeline {...pullRequestDetails} />
+							</CardContent>
+						</Card>
+					</AccordionDetails>
+				</Accordion>
 			</Card>
 		</Container>
 	);
