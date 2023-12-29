@@ -16,7 +16,7 @@ import PullRequestService from '@/utils/services/pull-request.service';
 
 const initialFormData = () => ({
 	action: '',
-	changeCommunicatedTo: 1,
+	changeCommunicatedTo: '',
 	field: '',
 	originalValue: '',
 	newValue: '',

@@ -78,7 +78,10 @@ export default function PullRequestActivityTimeline(props) {
 			{pullRequestActivityLogs &&
 				pullRequestActivityLogs.length > 0 &&
 				pullRequestActivityLogs.map((logs, i) => {
-					const diffValues = getJSONDiffValue(JSON.parse(logs.previous), JSON.parse(logs.current));
+					const diffValues = getJSONDiffValue(
+						JSON.parse(JSON.parse(logs.previous)),
+						JSON.parse(JSON.parse(logs.current)),
+					);
 					const keys = Object.keys(diffValues);
 					return (
 						<TimelineItem key={i}>
@@ -90,16 +93,25 @@ export default function PullRequestActivityTimeline(props) {
 								<TimelineConnector />
 							</TimelineSeparator>
 							<TimelineContent>
-								<>
-									{keys.map((key) => (
-										<Stack direction="row" spacing={1} key={key} mt={1} mb={1}>
-											<Typography variant="body2" component="h2">
-												{key}:
-											</Typography>
-											<Chip label={diffValues[key]} color="success" size="small" />
-										</Stack>
-									))}
-								</>
+								{i === 0 ? (
+									<Stack direction="row" spacing={1} key="start" mt={1} mb={1}>
+										<Typography variant="body2" component="h2">
+											Status:
+										</Typography>
+										<Chip label="Created" color="success" size="small" />
+									</Stack>
+								) : (
+									<>
+										{keys.map((key) => (
+											<Stack direction="row" spacing={1} key={key} mt={1} mb={1}>
+												<Typography variant="body2" component="h2">
+													{key}:
+												</Typography>
+												<Chip label={diffValues[key]} color="success" size="small" />
+											</Stack>
+										))}
+									</>
+								)}
 							</TimelineContent>
 						</TimelineItem>
 					);

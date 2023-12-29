@@ -28,8 +28,6 @@ export default function BankPullRequestConfirmationDialog(props) {
 		status: '',
 	});
 
-	const [handleSnackBarOpen] = useOutletContext();
-
 	const handleFormChange = (e) => {
 		const { name, value } = e.target;
 		setFormData({
@@ -45,15 +43,15 @@ export default function BankPullRequestConfirmationDialog(props) {
 			const updatePullResponse = await PullRequestService.updatePullRequest(pullId, data);
 			if (updatePullResponse.status === 200) {
 				// success message
-				handleSnackBarOpen('success', 'Pull request updated successfully');
+				// handleSnackBarOpen('success', 'Pull request updated successfully');
 			} else {
 				// error message
-				handleSnackBarOpen('error', 'Error updating pull request');
+				// handleSnackBarOpen('error', 'Error updating pull request');
 			}
 		} catch (error) {
 			console.error('Error updating pull request: ', pullId);
 			// error message
-			handleSnackBarOpen('error', 'Error creating pull request');
+			// handleSnackBarOpen('error', 'Error creating pull request');
 		} finally {
 			handleClose();
 			setTimeout(() => {
