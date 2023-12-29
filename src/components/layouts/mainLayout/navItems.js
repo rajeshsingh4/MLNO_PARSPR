@@ -48,20 +48,20 @@ const NAV_LINKS_CONFIG = [
 	{
 		id: uuid(),
 		type: 'group',
-		title: 'Pull Request',
+		title: 'Bank Pull Request',
 		Icon: InventoryOutlinedIcon,
 		menuChildren: [
 			{
 				title: 'Dashboard',
-				href: '/pull dashboard',
+				href: '/bank/pull/dashboard',
 			},
 			{
 				title: 'Create',
-				href: '/pull create',
+				href: '/bank/pull/create',
 			},
 			{
 				title: 'Manage',
-				href: '/bureau/pull/list',
+				href: '/bank/pull/list',
 			},
 		],
 	},
@@ -78,6 +78,26 @@ const NAV_LINKS_CONFIG = [
 			{
 				title: 'File TAT Report',
 				href: '/file tat',
+			},
+		],
+	},
+	{
+		id: uuid(),
+		type: 'group',
+		title: 'Bureau Pull Request',
+		Icon: AutoStoriesOutlinedIcon,
+		menuChildren: [
+			{
+				title: 'Dashboard',
+				href: '/bureau/pull/dashboard',
+			},
+			{
+				title: 'Create',
+				href: '/bureau/pull/create',
+			},
+			{
+				title: 'Manage',
+				href: '/bureau/pull/list',
 			},
 		],
 	},

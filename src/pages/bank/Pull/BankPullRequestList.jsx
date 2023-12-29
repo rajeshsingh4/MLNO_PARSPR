@@ -5,19 +5,19 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import Chip from '@mui/material/Chip';
-import Container from '@mui/material/Container';
-import Card from '@mui/material/Card';
+import Loader from '@/components/loader';
 import Breadcrumbs from '@mui/material/Breadcrumbs';
 import Link from '@mui/material/Link';
 import Typography from '@mui/material/Typography';
 import PageHeader from '@/components/pageHeader';
+import Container from '@mui/material/Container';
+import Card from '@mui/material/Card';
 import { useNavigate } from 'react-router-dom';
-import Loader from '@/components/loader';
 import PullRequestService from '@/utils/services/pull-request.service';
 import { actionListMap, modeLsitMap, pullRequestStatusColorMap, pullRequestStatusMap } from '@/utils/bureaumappings';
-import BureauPullRequestConfirmationDialog from './BureauPullRequestConfirmationDialog';
+import BankPullRequestConfirmationDialog from './BankPullRequestConfirmation';
 
-function BureauPullRequestList(props) {
+function BankPullRequestList(props) {
 	const [pullRequestLoader, setPullRequestLoader] = React.useState(false);
 	const [pullRequestListError, setPullRequestListError] = React.useState(false);
 	const [pullRequestList, setPullRequestList] = React.useState([]);
@@ -29,7 +29,7 @@ function BureauPullRequestList(props) {
 	const getPullRequestList = async () => {
 		setPullRequestLoader(true);
 		try {
-			const pullRequestResp = await PullRequestService.getPullRequest('bureau=BureauName_c');
+			const pullRequestResp = await PullRequestService.getPullRequest();
 			setPullRequestList(pullRequestResp.data);
 		} catch (err) {
 			console.error('Error fetching list of pull requests', err);
@@ -58,7 +58,15 @@ function BureauPullRequestList(props) {
 	}
 
 	const viewRequestDetails = (pullId, cardData) => {
-		navigate(`/bureau/pull/view/${pullId}`, { state: cardData });
+		navigate(`/bank/pull/view/${pullId}`, { state: cardData });
+	};
+
+	const handleBureauAction = (pullId, cardData) => {
+		setConfirmDialogOpen({
+			pullId,
+			cardData,
+		});
+		handleMenuClose();
 	};
 
 	const handleCloseConfirmDialog = () => {
@@ -73,30 +81,12 @@ function BureauPullRequestList(props) {
 		setAnchorEl(null);
 	};
 
-	const handleBureauAction = (pullId, cardData) => {
-		setConfirmDialogOpen({
-			pullId,
-			cardData,
-		});
-		handleMenuClose();
-	};
-
 	const getColumnMapping = (row) => {
 		if (!row || (row && row.length === 0)) {
 			return [];
 		}
 		const columns = [];
-		const hiddenColumns = [
-			'changeCommunicatedTo',
-			'updatedAt',
-			'fileMasterId',
-			'createdBy',
-			'modifiedBy',
-			'cardId',
-			'ipaddress',
-			'serviceRequest',
-			'fileMaster',
-		];
+		const hiddenColumns = ['updatedAt', 'fileMasterId', 'createdBy', 'modifiedBy', 'cardId'];
 		const rowFieldKeys = Object.keys(row);
 		rowFieldKeys.forEach((key) => {
 			const basicColumnFields = {
@@ -113,9 +103,13 @@ function BureauPullRequestList(props) {
 				basicColumnFields.width = 80;
 			}
 			if (key === 'action') {
-				basicColumnFields.headerName = 'Type';
-				basicColumnFields.description = 'Type';
+				basicColumnFields.headerName = 'Action Type';
+				basicColumnFields.description = 'Action Type';
 				basicColumnFields.valueGetter = (params) => actionListMap[params.row.action] || params.row.action;
+			}
+			if (key === 'changeCommunicatedTo') {
+				basicColumnFields.headerName = 'Change Communicated To';
+				basicColumnFields.description = 'Change Communicated To';
 			}
 			if (key === 'field') {
 				basicColumnFields.headerName = 'Field';
@@ -137,6 +131,14 @@ function BureauPullRequestList(props) {
 				basicColumnFields.description = 'Mode';
 				basicColumnFields.valueGetter = (params) => modeLsitMap[params.row.mode] || params.row.mode;
 			}
+			if (key === 'ipaddress') {
+				basicColumnFields.headerName = 'IP Address';
+				basicColumnFields.description = 'IP Address';
+			}
+			if (key === 'serviceRequest') {
+				basicColumnFields.headerName = 'Service Request';
+				basicColumnFields.description = 'Service Request';
+			}
 			if (key === 'createdAt') {
 				basicColumnFields.headerName = 'Date & Time';
 				basicColumnFields.description = 'Date & Time';
@@ -154,8 +156,8 @@ function BureauPullRequestList(props) {
 				);
 			}
 			if (key === 'userId') {
-				basicColumnFields.headerName = 'Actions';
-				basicColumnFields.description = 'Actions';
+				basicColumnFields.headerName = 'Action';
+				basicColumnFields.description = 'Action';
 				basicColumnFields.sortable = false;
 				basicColumnFields.renderCell = (params) => (
 					<>
@@ -178,7 +180,7 @@ function BureauPullRequestList(props) {
 								'aria-labelledby': `${params.row.id}-icon`,
 							}}
 						>
-							<MenuItem onClick={() => viewRequestDetails(`${params.row.id}`, params.row)}>
+							<MenuItem onClick={() => viewRequestDetails(params.row.id, params.row)}>
 								View Details
 							</MenuItem>
 							<MenuItem onClick={() => handleBureauAction(params.row.id, params.row)}>Action</MenuItem>
@@ -195,7 +197,7 @@ function BureauPullRequestList(props) {
 
 	return (
 		<>
-			<PageHeader title="Bureau Pull Requests">
+			<PageHeader title="Bank Pull Requests">
 				<Breadcrumbs
 					aria-label="breadcrumb"
 					sx={{
@@ -205,7 +207,7 @@ function BureauPullRequestList(props) {
 					<Link underline="hover" href="/dashboards/dashboard1">
 						Dashboard
 					</Link>
-					<Typography color="text.tertiary">Bureau</Typography>
+					<Typography color="text.tertiary">Bank</Typography>
 					<Typography color="text.tertiary">Pull Requests</Typography>
 				</Breadcrumbs>
 			</PageHeader>
@@ -225,16 +227,16 @@ function BureauPullRequestList(props) {
 						// checkboxSelection
 					/>
 				</Card>
-				{confirmDialogOpen && (
-					<BureauPullRequestConfirmationDialog
-						{...confirmDialogOpen}
-						getPullRequestList={getPullRequestList}
-						handleClose={handleCloseConfirmDialog}
-					/>
-				)}
 			</Container>
+			{confirmDialogOpen && (
+				<BankPullRequestConfirmationDialog
+					{...confirmDialogOpen}
+					getPullRequestList={getPullRequestList}
+					handleClose={handleCloseConfirmDialog}
+				/>
+			)}
 		</>
 	);
 }
 
-export default BureauPullRequestList;
+export default BankPullRequestList;

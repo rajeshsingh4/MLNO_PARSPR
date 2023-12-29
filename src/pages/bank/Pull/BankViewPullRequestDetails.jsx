@@ -17,8 +17,11 @@ import Typography from '@mui/material/Typography';
 import Chip from '@mui/material/Chip';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Loader from '@/components/loader';
+import Breadcrumbs from '@mui/material/Breadcrumbs';
+import Link from '@mui/material/Link';
+import PageHeader from '@/components/pageHeader';
 import PullRequestService from '@/utils/services/pull-request.service';
-// import PullRequestActivityTimeline from './PullRequestActivityTimeline';
+import PullRequestActivityTimeline from './PullRequestActivityTimeline';
 import { pullRequestStatusColorMap, pullRequestStatusMap } from '@/utils/bureaumappings';
 
 function ViewPullRequestDetails(props) {
@@ -104,88 +107,103 @@ function ViewPullRequestDetails(props) {
 	};
 
 	return (
-		<Container>
-			<Card component="section" type="section">
-				<TableContainer>
-					<Table>
-						<TableBody>
-							<TableRow>
-								<TableCell>Pull Request ID</TableCell>
-								<TableCell>{pullRequestDetails.id}</TableCell>
-							</TableRow>
-							<TableRow>
-								<TableCell>Date</TableCell>
-								<TableCell>{new Date(pullRequestDetails.createdAt).toLocaleDateString()}</TableCell>
-							</TableRow>
-							<TableRow>
-								<TableCell>Time</TableCell>
-								<TableCell>{getHoursMinutesSeconds(pullRequestDetails.createdAt)}</TableCell>
-							</TableRow>
-							<TableRow>
-								<TableCell>Change Originator</TableCell>
-								<TableCell>{pullRequestDetails.userId}</TableCell>
-							</TableRow>
-							<TableRow>
-								<TableCell>Change Communicated To</TableCell>
-								<TableCell>{pullRequestDetails.changeCommunicatedTo}</TableCell>
-							</TableRow>
-							<TableRow>
-								<TableCell>Action</TableCell>
-								<TableCell>{pullRequestDetails.action}</TableCell>
-							</TableRow>
-							<TableRow>
-								<TableCell>Field</TableCell>
-								<TableCell>{pullRequestDetails.field}</TableCell>
-							</TableRow>
-							<TableRow>
-								<TableCell>Original Value</TableCell>
-								<TableCell>{pullRequestDetails.originalValue}</TableCell>
-							</TableRow>
-							<TableRow>
-								<TableCell>New Value</TableCell>
-								<TableCell>{pullRequestDetails.newValue}</TableCell>
-							</TableRow>
-							<TableRow>
-								<TableCell>Mode of Communication</TableCell>
-								<TableCell>{pullRequestDetails.mode}</TableCell>
-							</TableRow>
-							<TableRow>
-								<TableCell>Status</TableCell>
-								<TableCell>
-									<Chip
-										size="small"
-										label={pullRequestStatusMap[pullRequestDetails.status]}
-										color={pullRequestStatusColorMap[pullRequestDetails.status]}
-									/>
-								</TableCell>
-							</TableRow>
-							<TableRow>
-								<TableCell>IP Address</TableCell>
-								<TableCell>{pullRequestDetails.ipaddress}</TableCell>
-							</TableRow>
-							<TableRow>
-								<TableCell>Service Request ID</TableCell>
-								<TableCell>{pullRequestDetails.serviceRequest}</TableCell>
-							</TableRow>
-						</TableBody>
-					</Table>
-				</TableContainer>
-				<TableContainer component={Paper} sx={{ mt: 3 }}>
-					<DataGrid
-						className="mui-data-grid file-master"
-						loading={pullRequestDetailsLoader}
-						rows={[pullRequestDetails.card]}
-						columns={getColumnMapping(pullRequestDetails.card)}
-						initialState={{
-							pagination: {
-								paginationModel: { page: 0, pageSize: 10 },
-							},
-						}}
-						pageSizeOptions={[10, 20, 50, 100]}
-						// checkboxSelection
-					/>
-				</TableContainer>
-				{/* <Accordion sx={{ mt: 2 }}>
+		<>
+			<PageHeader title="Bank View Pull Requests">
+				<Breadcrumbs
+					aria-label="breadcrumb"
+					sx={{
+						textTransform: 'uppercase',
+					}}
+				>
+					<Link underline="hover" href="/dashboards/dashboard1">
+						Dashboard
+					</Link>
+					<Typography color="text.tertiary">Bank</Typography>
+					<Typography color="text.tertiary">{id}</Typography>
+				</Breadcrumbs>
+			</PageHeader>
+			<Container>
+				<Card component="section" type="section">
+					<TableContainer>
+						<Table>
+							<TableBody>
+								<TableRow>
+									<TableCell>Pull Request ID</TableCell>
+									<TableCell>{pullRequestDetails.id}</TableCell>
+								</TableRow>
+								<TableRow>
+									<TableCell>Date</TableCell>
+									<TableCell>{new Date(pullRequestDetails.createdAt).toLocaleDateString()}</TableCell>
+								</TableRow>
+								<TableRow>
+									<TableCell>Time</TableCell>
+									<TableCell>{getHoursMinutesSeconds(pullRequestDetails.createdAt)}</TableCell>
+								</TableRow>
+								<TableRow>
+									<TableCell>Change Originator</TableCell>
+									<TableCell>{pullRequestDetails.userId}</TableCell>
+								</TableRow>
+								<TableRow>
+									<TableCell>Change Communicated To</TableCell>
+									<TableCell>{pullRequestDetails.changeCommunicatedTo}</TableCell>
+								</TableRow>
+								<TableRow>
+									<TableCell>Action</TableCell>
+									<TableCell>{pullRequestDetails.action}</TableCell>
+								</TableRow>
+								<TableRow>
+									<TableCell>Field</TableCell>
+									<TableCell>{pullRequestDetails.field}</TableCell>
+								</TableRow>
+								<TableRow>
+									<TableCell>Original Value</TableCell>
+									<TableCell>{pullRequestDetails.originalValue}</TableCell>
+								</TableRow>
+								<TableRow>
+									<TableCell>New Value</TableCell>
+									<TableCell>{pullRequestDetails.newValue}</TableCell>
+								</TableRow>
+								<TableRow>
+									<TableCell>Mode of Communication</TableCell>
+									<TableCell>{pullRequestDetails.mode}</TableCell>
+								</TableRow>
+								<TableRow>
+									<TableCell>Status</TableCell>
+									<TableCell>
+										<Chip
+											size="small"
+											label={pullRequestStatusMap[pullRequestDetails.status]}
+											color={pullRequestStatusColorMap[pullRequestDetails.status]}
+										/>
+									</TableCell>
+								</TableRow>
+								<TableRow>
+									<TableCell>IP Address</TableCell>
+									<TableCell>{pullRequestDetails.ipaddress}</TableCell>
+								</TableRow>
+								<TableRow>
+									<TableCell>Service Request ID</TableCell>
+									<TableCell>{pullRequestDetails.serviceRequest}</TableCell>
+								</TableRow>
+							</TableBody>
+						</Table>
+					</TableContainer>
+					<TableContainer component={Paper} sx={{ mt: 3 }}>
+						<DataGrid
+							className="mui-data-grid file-master"
+							loading={pullRequestDetailsLoader}
+							rows={[pullRequestDetails.card]}
+							columns={getColumnMapping(pullRequestDetails.card)}
+							initialState={{
+								pagination: {
+									paginationModel: { page: 0, pageSize: 10 },
+								},
+							}}
+							pageSizeOptions={[10, 20, 50, 100]}
+							// checkboxSelection
+						/>
+					</TableContainer>
+					<Accordion sx={{ mt: 2 }}>
 						<AccordionSummary
 							expandIcon={<ExpandMoreIcon />}
 							aria-controls="panel1a-content"
@@ -200,9 +218,10 @@ function ViewPullRequestDetails(props) {
 								</CardContent>
 							</Card>
 						</AccordionDetails>
-					</Accordion> */}
-			</Card>
-		</Container>
+					</Accordion>
+				</Card>
+			</Container>
+		</>
 	);
 }
 
