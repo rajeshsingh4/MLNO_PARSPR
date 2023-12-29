@@ -11,6 +11,7 @@ import TimelineContent from '@mui/lab/TimelineContent';
 import TimelineDot from '@mui/lab/TimelineDot';
 import TimelineOppositeContent, { timelineOppositeContentClasses } from '@mui/lab/TimelineOppositeContent';
 import Typography from '@mui/material/Typography';
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import PullRequestLogService from '@/utils/services/pull-request-log.service';
 import getJSONDiffValue from '@/utils/helpers/getJSONDiff';
 
@@ -107,7 +108,9 @@ export default function PullRequestActivityTimeline(props) {
 												<Typography variant="body2" component="h2">
 													{key}:
 												</Typography>
-												<Chip label={diffValues[key]} color="success" size="small" />
+												<Chip label={diffValues[key].previous} color="error" size="small" />
+												<ArrowForwardIosIcon fontSize="small" />
+												<Chip label={diffValues[key].current} color="success" size="small" />
 											</Stack>
 										))}
 									</>

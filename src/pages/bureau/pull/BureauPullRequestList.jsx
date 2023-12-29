@@ -11,6 +11,8 @@ import Breadcrumbs from '@mui/material/Breadcrumbs';
 import Link from '@mui/material/Link';
 import Typography from '@mui/material/Typography';
 import PageHeader from '@/components/pageHeader';
+import ModeEditIcon from '@mui/icons-material/ModeEdit';
+import VisibilityIcon from '@mui/icons-material/Visibility';
 import { useNavigate } from 'react-router-dom';
 import Loader from '@/components/loader';
 import PullRequestService from '@/utils/services/pull-request.service';
@@ -21,7 +23,6 @@ function BureauPullRequestList(props) {
 	const [pullRequestLoader, setPullRequestLoader] = React.useState(false);
 	const [pullRequestListError, setPullRequestListError] = React.useState(false);
 	const [pullRequestList, setPullRequestList] = React.useState([]);
-	const [anchorEl, setAnchorEl] = React.useState(null);
 	const [confirmDialogOpen, setConfirmDialogOpen] = React.useState(false);
 
 	const navigate = useNavigate();
@@ -65,20 +66,11 @@ function BureauPullRequestList(props) {
 		setConfirmDialogOpen(null);
 	};
 
-	const handleMenuOpen = (event) => {
-		setAnchorEl(event.currentTarget);
-	};
-
-	const handleMenuClose = () => {
-		setAnchorEl(null);
-	};
-
 	const handleBureauAction = (pullId, cardData) => {
 		setConfirmDialogOpen({
 			pullId,
 			cardData,
 		});
-		handleMenuClose();
 	};
 
 	const getColumnMapping = (row) => {
@@ -160,29 +152,25 @@ function BureauPullRequestList(props) {
 				basicColumnFields.renderCell = (params) => (
 					<>
 						<IconButton
-							aria-label="more"
-							id={`${params.row.id}-icon`}
-							aria-controls={anchorEl ? `${params.row.id}-icon` : undefined}
-							aria-expanded={anchorEl ? 'true' : undefined}
+							aria-label="view"
+							id={`${params.row.id}-view`}
+							aria-controls={`${params.row.id}-view`}
+							aria-expanded="true"
 							aria-haspopup="true"
-							onClick={handleMenuOpen}
+							onClick={() => viewRequestDetails(params.row.id, params.row)}
 						>
-							<MoreVertIcon />
+							<VisibilityIcon />
 						</IconButton>
-						<Menu
-							id={`${params.row.id}-menu`}
-							anchorEl={anchorEl}
-							open={Boolean(anchorEl)}
-							onClose={handleMenuClose}
-							MenuListProps={{
-								'aria-labelledby': `${params.row.id}-icon`,
-							}}
+						<IconButton
+							aria-label="action"
+							id={`${params.row.id}-action`}
+							aria-controls={`${params.row.id}-action`}
+							aria-expanded="true"
+							aria-haspopup="true"
+							onClick={() => handleBureauAction(params.row.id, params.row)}
 						>
-							<MenuItem onClick={() => viewRequestDetails(`${params.row.id}`, params.row)}>
-								View Details
-							</MenuItem>
-							<MenuItem onClick={() => handleBureauAction(params.row.id, params.row)}>Action</MenuItem>
-						</Menu>
+							<ModeEditIcon />
+						</IconButton>
 					</>
 				);
 			}

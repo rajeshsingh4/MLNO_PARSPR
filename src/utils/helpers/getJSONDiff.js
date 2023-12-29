@@ -23,7 +23,10 @@ const getJSONDiffValue = (oldJson, updatedJson) => {
 
 	for (const p in oldJson) {
 		if (!compareValue(oldJson[p] && oldJson[p], updatedJson[p] && updatedJson[p])) {
-			diffParams[p] = updatedJson[p];
+			diffParams[p] = {
+				previous: oldJson[p],
+				current: updatedJson[p],
+			};
 		}
 	}
 	return diffParams;

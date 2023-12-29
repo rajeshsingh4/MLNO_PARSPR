@@ -12,6 +12,8 @@ import Typography from '@mui/material/Typography';
 import PageHeader from '@/components/pageHeader';
 import Container from '@mui/material/Container';
 import Card from '@mui/material/Card';
+import ModeEditIcon from '@mui/icons-material/ModeEdit';
+import VisibilityIcon from '@mui/icons-material/Visibility';
 import { useNavigate } from 'react-router-dom';
 import PullRequestService from '@/utils/services/pull-request.service';
 import { actionListMap, modeLsitMap, pullRequestStatusColorMap, pullRequestStatusMap } from '@/utils/bureaumappings';
@@ -21,7 +23,6 @@ function BankPullRequestList(props) {
 	const [pullRequestLoader, setPullRequestLoader] = React.useState(false);
 	const [pullRequestListError, setPullRequestListError] = React.useState(false);
 	const [pullRequestList, setPullRequestList] = React.useState([]);
-	const [anchorEl, setAnchorEl] = React.useState(null);
 	const [confirmDialogOpen, setConfirmDialogOpen] = React.useState(false);
 
 	const navigate = useNavigate();
@@ -61,24 +62,15 @@ function BankPullRequestList(props) {
 		navigate(`/bank/pull/view/${pullId}`, { state: cardData });
 	};
 
-	const handleBureauAction = (pullId, cardData) => {
+	const handleBankAction = (pullId, cardData) => {
 		setConfirmDialogOpen({
 			pullId,
 			cardData,
 		});
-		handleMenuClose();
 	};
 
 	const handleCloseConfirmDialog = () => {
 		setConfirmDialogOpen(null);
-	};
-
-	const handleMenuOpen = (event) => {
-		setAnchorEl(event.currentTarget);
-	};
-
-	const handleMenuClose = () => {
-		setAnchorEl(null);
 	};
 
 	const getColumnMapping = (row) => {
@@ -162,29 +154,25 @@ function BankPullRequestList(props) {
 				basicColumnFields.renderCell = (params) => (
 					<>
 						<IconButton
-							aria-label="more"
-							id={`${params.row.id}-icon`}
-							aria-controls={anchorEl ? `${params.row.id}-icon` : undefined}
-							aria-expanded={anchorEl ? 'true' : undefined}
-							aria-haspopup="true"
-							onClick={handleMenuOpen}
+							aria-label="view"
+							id={`${params.row.id}-view`}
+							aria-controls={`${params.row.id}-view`}
+							aria-expanded="false"
+							aria-haspopup="false"
+							onClick={() => viewRequestDetails(params.row.id, params.row)}
 						>
-							<MoreVertIcon />
+							<VisibilityIcon />
 						</IconButton>
-						<Menu
-							id={`${params.row.id}-menu`}
-							anchorEl={anchorEl}
-							open={Boolean(anchorEl)}
-							onClose={handleMenuClose}
-							MenuListProps={{
-								'aria-labelledby': `${params.row.id}-icon`,
-							}}
+						<IconButton
+							aria-label="action"
+							id={`${params.row.id}-action`}
+							aria-controls={`${params.row.id}-action`}
+							aria-expanded="false"
+							aria-haspopup="false"
+							onClick={() => handleBankAction(params.row.id, params.row)}
 						>
-							<MenuItem onClick={() => viewRequestDetails(params.row.id, params.row)}>
-								View Details
-							</MenuItem>
-							<MenuItem onClick={() => handleBureauAction(params.row.id, params.row)}>Action</MenuItem>
-						</Menu>
+							<ModeEditIcon />
+						</IconButton>
 					</>
 				);
 			}
