@@ -7,7 +7,7 @@ import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import LinearProgress from '@mui/material/LinearProgress';
 
-import logo from '@/assets/images/logo/png/Color_logotext_nobg.png';
+import logo from '@/assets/images/logo/jpg/Logo.jpg';
 
 export function LogoLoader({ addSx, ...rest }) {
 	return (
@@ -38,7 +38,7 @@ export function LogoLoader({ addSx, ...rest }) {
 				/>
 				<LinearProgress />
 				<Typography my={1} textAlign="center" variant="caption">
-					Cargando Contenido, favor de esperar.
+					Manage Like No Other.
 				</Typography>
 			</Stack>
 		</Card>

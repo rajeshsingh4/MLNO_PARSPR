@@ -9,6 +9,9 @@ import TableRow from '@mui/material/TableRow';
 import { useParams } from 'react-router-dom';
 import Card from '@mui/material/Card';
 import Container from '@mui/material/Container';
+import CardHeader from '@/components/cardHeader';
+import Grid from '@mui/material/Grid';
+import Stack from '@mui/material/Stack';
 import CardContent from '@mui/material/CardContent';
 import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
@@ -20,6 +23,9 @@ import Loader from '@/components/loader';
 import PullRequestService from '@/utils/services/pull-request.service';
 // import PullRequestActivityTimeline from './PullRequestActivityTimeline';
 import { pullRequestStatusColorMap, pullRequestStatusMap } from '@/utils/bureaumappings';
+import Breadcrumbs from '@mui/material/Breadcrumbs';
+import Link from '@mui/material/Link';
+import PageHeader from '@/components/pageHeader';
 
 function BureauViewPullRequestDetails(props) {
 	const [pullRequestDetailsLoader, setPullRequestDetailsLoader] = React.useState(true);
@@ -105,6 +111,39 @@ function BureauViewPullRequestDetails(props) {
 
 	return (
 		<Container>
+			<PageHeader title="Pull Request Detail">
+				<Breadcrumbs
+					aria-label="breadcrumb"
+					sx={{
+						textTransform: 'uppercase',
+					}}
+				>
+					<Link underline="hover" href="/dashboards/dashboard1">
+						Dashboard
+					</Link>
+					<Typography color="text.tertiary">Pull Request</Typography>
+					<Typography color="text.tertiary">{pullRequestDetails.id}</Typography>
+				</Breadcrumbs>
+			</PageHeader>
+			<Container>
+				<Grid container spacing={1}>
+					<Grid item xs={12} sm={6} md={6}>
+						<Card>
+							<CardHeader title="Pull Detail" size="small" />
+						</Card>
+					</Grid>
+					<Grid item xs={12} sm={6} md={6}>
+						<Stack spacing={3} direction="column">
+							<Card>
+								<CardHeader title="Action" size="small" />
+							</Card>
+							<Card>
+								<CardHeader title="Pull Created By" size="small" />
+							</Card>
+						</Stack>
+					</Grid>
+				</Grid>
+			</Container>
 			<Card component="section" type="section">
 				<TableContainer>
 					<Table>
@@ -185,22 +224,6 @@ function BureauViewPullRequestDetails(props) {
 						// checkboxSelection
 					/>
 				</TableContainer>
-				{/* <Accordion sx={{ mt: 2 }}>
-						<AccordionSummary
-							expandIcon={<ExpandMoreIcon />}
-							aria-controls="panel1a-content"
-							id="panel1a-header"
-						>
-							<Typography>Pull Request Activity Timeline</Typography>
-						</AccordionSummary>
-						<AccordionDetails>
-							<Card elevation={0}>
-								<CardContent>
-									<PullRequestActivityTimeline {...pullRequestDetails} />
-								</CardContent>
-							</Card>
-						</AccordionDetails>
-					</Accordion> */}
 			</Card>
 		</Container>
 	);

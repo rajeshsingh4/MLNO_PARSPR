@@ -49,9 +49,9 @@ const BankViewPullRequestDetails = withLazyLoadably(
 	lazy(() => import('@/pages/bank/bureau/BankViewPullRequestDetails')),
 );
 
-const BureauPullRequestList = withLazyLoadably(lazy(() => import('@/pages/bureau/bank/BureauPullRequestList')));
+const BureauPullRequestList = withLazyLoadably(lazy(() => import('@/pages/bureau/pull/BureauPullRequestList')));
 const BureauViewPullRequestDetails = withLazyLoadably(
-	lazy(() => import('@/pages/bureau/bank/BureauViewPullRequestDetails')),
+	lazy(() => import('@/pages/bureau/pull/BureauViewPullRequestDetails')),
 );
 
 function Router() {
@@ -73,7 +73,7 @@ function Router() {
 		}
 	}, []);
 
-	if (!menuRole) {
+	/* if (!menuRole) {
 		return (
 			<Loader
 				addSx={{
@@ -81,17 +81,17 @@ function Router() {
 				}}
 			/>
 		);
-	}
+	} */
 
 	return (
 		<BrowserRouter>
 			<ScrollToTopOnRouteChange>
 				<Routes>
 					<Route path="/" element={<MinimalLayout />}>
-						<Route path="pages/">
-							<Route path="login/bank" element={<LoginBankPage />} />
-							<Route path="login/bureau" element={<LoginBureauPage />} />
-							<Route path="login/courier" element={<LoginCourierPage />} />
+						<Route path="login/">
+							<Route path="bank" element={<LoginBankPage />} />
+							<Route path="bureau" element={<LoginBureauPage />} />
+							<Route path="courier" element={<LoginCourierPage />} />
 						</Route>
 					</Route>
 					<Route path="/" element={<MainLayout />}>
@@ -99,25 +99,6 @@ function Router() {
 						<Route path="dashboards/">
 							<Route path="dashboard1" element={<Dashboard1Page />} />
 						</Route>
-
-						{/* <Route path="components/">
-							<Route path="forms" element={<FormsComponentPage />} />
-							<Route path="loaders" element={<LoadersComponentPage />} />
-							<Route path="tables" element={<TablesComponentPage />} />
-							<Route path="modal" element={<ModalComponentPage />} />
-							<Route path="snackbar" element={<SnackbarComponentPage />} />
-							<Route path="carousel" element={<CarouselComponentPage />} />
-							<Route path="navigation" element={<NavigationComponentPage />} />
-							<Route path="card" element={<CardComponentPage />} />
-							<Route path="cardHeader" element={<CardHeaderComponentPage />} />
-							<Route path="pageHeader" element={<PageHeaderComponentPage />} />
-						</Route>
-
-						<Route path="theme/">
-							<Route path="typography" element={<ThemeTypographyPage />} />
-							<Route path="colors" element={<ThemeColorsPage />} />
-							<Route path="boxShadow" element={<ThemeShadowPage />} />
-						</Route> */}
 
 						<Route path="bank">
 							<Route path="bureau">
@@ -127,8 +108,8 @@ function Router() {
 							</Route>
 						</Route>
 						<Route path="bureau">
-							<Route path="bank">
-								<Route path="pull" element={<BureauPullRequestList />} />
+							<Route path="pull">
+								<Route path="list" element={<BureauPullRequestList />} />
 								<Route path="view/:id" element={<BureauViewPullRequestDetails />} />
 							</Route>
 						</Route>

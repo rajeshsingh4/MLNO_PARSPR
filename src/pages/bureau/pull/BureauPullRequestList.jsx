@@ -58,7 +58,7 @@ function BureauPullRequestList(props) {
 	}
 
 	const viewRequestDetails = (pullId, cardData) => {
-		navigate(`/bureau/bank/view/${pullId}`, { state: cardData });
+		navigate(`/bureau/pull/view/${pullId}`, { state: cardData });
 	};
 
 	const handleCloseConfirmDialog = () => {
@@ -178,7 +178,7 @@ function BureauPullRequestList(props) {
 								'aria-labelledby': `${params.row.id}-icon`,
 							}}
 						>
-							<MenuItem onClick={() => viewRequestDetails(params.row.id, params.row)}>
+							<MenuItem onClick={() => viewRequestDetails(`${params.row.id}`, params.row)}>
 								View Details
 							</MenuItem>
 							<MenuItem onClick={() => handleBureauAction(params.row.id, params.row)}>Action</MenuItem>

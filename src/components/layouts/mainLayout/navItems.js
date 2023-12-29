@@ -61,7 +61,7 @@ const NAV_LINKS_CONFIG = [
 			},
 			{
 				title: 'Manage',
-				href: '/pull manage',
+				href: '/bureau/pull/list',
 			},
 		],
 	},
