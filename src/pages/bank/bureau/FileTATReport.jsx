@@ -4,26 +4,18 @@ import Button from '@mui/material/Button';
 import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
+import Container from '@mui/material/Container';
+import Breadcrumbs from '@mui/material/Breadcrumbs';
+import Link from '@mui/material/Link';
+import Card from '@mui/material/Card';
+import PageHeader from '@/components/pageHeader';
 import ClearIcon from '@mui/icons-material/Clear';
 import IconButton from '@mui/material/IconButton';
 import Loader from '@/components/loader';
 import FileMasterListService from '@/utils/services/files.services';
 import { FileTATReportCardDetails } from './FileTATReportCardDetails';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
 
-const { palette } = createTheme();
-const { augmentColor } = palette;
-const createColor = (mainColor) => augmentColor({ color: { main: mainColor } });
-const theme = createTheme({
-	palette: {
-		anger: createColor('#F40B27'),
-		apple: createColor('#5DBA40'),
-		steelBlue: createColor('#5C76B7'),
-		violet: createColor('#BC00A3'),
-	},
-});
-
-export function FileTATReport() {
+export default function FileTATReport() {
 	const [fileTatLoader, setFileListLoader] = React.useState(false);
 	const [fileTatError, setFileListError] = React.useState(false);
 	const [fileTatReport, setFileList] = React.useState([]);
@@ -83,7 +75,15 @@ export function FileTATReport() {
 			'cards',
 			'createdAt',
 			'updatedAt',
+			'userId',
 			'FileAttribute',
+			'bureauoutsidetat_list',
+			'bureauoutsidetat_listData',
+			'bureauoutwip_list',
+			'bureauwithintat_listData',
+			'courieroutsidetat_list',
+			'courieroutsidetat_listData',
+			'courierwithintat_listData'
 		];
 		const rowFieldKeys = Object.keys(row);
 		rowFieldKeys.forEach((key) => {
@@ -114,7 +114,7 @@ export function FileTATReport() {
 				basicColumnFields.renderCell = (params) => (
 					<Button
 						variant="contained"
-						color="apple"
+						color="warning"
 						onClick={() =>
 							showTATDetailsReport('bureauwithintat', params.row.id, params.row.bureauwithintat_listData)
 						}
@@ -132,7 +132,7 @@ export function FileTATReport() {
 				basicColumnFields.renderCell = (params) => (
 					<Button
 						variant="contained"
-						color="apple"
+						color="success"
 						onClick={() =>
 							showTATDetailsReport('bureauWIP', params.row.id, params.row.bureauwithintat_listData)
 						}
@@ -236,67 +236,77 @@ export function FileTATReport() {
 	};
 
 	return (
-		<div style={{ width: '96vw' }}>
-			<ThemeProvider theme={theme}>
-				<DataGrid
-					className="mui-data-grid file-master"
-					loading={fileTatLoader}
-					rows={fileTatReport}
-					columns={getColumnMapping(fileTatReport[0])}
-					initialState={{
-						pagination: {
-							paginationModel: { page: 0, pageSize: 10 },
-						},
+		<>
+			<PageHeader title="File tat report">
+				<Breadcrumbs
+					aria-label="breadcrumb"
+					sx={{
+						textTransform: 'uppercase',
 					}}
-					pageSizeOptions={[10, 20, 50, 100]}
-					// checkboxSelection
-				/>
-				<Modal
-					id="edit-track-card-item"
-					aria-labelledby="track-card-item"
-					aria-describedby="track-card-item-description"
-					open={tatCardDetails !== null}
-					onClose={hideTATDetailsReport}
 				>
-					<Box
-						sx={{
-							position: 'absolute',
-							top: '50%',
-							left: '50%',
-							transform: 'translate(-50%, -50%)',
-							width: 'calc(80vw)',
-							height: '80vh',
-							backgroundColor: '#FFFFFF',
-							overflowX: 'hidden',
-							overflowY: 'auto',
-							fontWeight: 500,
-							textAlign: 'start',
-							padding: '24px',
+					<Link underline="hover" href="/dashboards/dashboard1">
+						Dashboard
+					</Link>
+					<Typography color="text.tertiary">bureau</Typography>
+					<Typography color="text.tertiary">File tat report</Typography>
+				</Breadcrumbs>
+			</PageHeader>
+			<Container>
+				<Card component="section" type="section">
+					<DataGrid
+						className="mui-data-grid file-tat-report"
+						loading={fileTatLoader}
+						rows={fileTatReport}
+						columns={getColumnMapping(fileTatReport[0])}
+						initialState={{
+							pagination: {
+								paginationModel: { page: 0, pageSize: 10 },
+							},
 						}}
+						pageSizeOptions={[10, 20, 50, 100]}
+						// checkboxSelection
+					/>
+				</Card>
+			</Container>
+			<Modal
+				id="edit-track-card-item"
+				aria-labelledby="track-card-item"
+				aria-describedby="track-card-item-description"
+				open={tatCardDetails !== null}
+				onClose={hideTATDetailsReport}
+			>
+				<Box
+					sx={{
+						position: 'absolute',
+						top: '50%',
+						left: '50%',
+						transform: 'translate(-50%, -50%)',
+						width: 'calc(80vw)',
+						height: '80vh',
+						backgroundColor: '#FFFFFF',
+						overflowX: 'hidden',
+						overflowY: 'auto',
+						fontWeight: 500,
+						textAlign: 'start',
+						padding: '24px',
+					}}
+				>
+					<Typography
+						id="modal-modal-title"
+						variant="h6"
+						component="h2"
+						sx={{ display: 'flex', justifyContent: 'space-between' }}
 					>
-						<Typography
-							id="modal-modal-title"
-							variant="h6"
-							component="h2"
-							sx={{ display: 'flex', justifyContent: 'space-between' }}
-						>
-							{getModalName()} Details
-							<IconButton id="close-edit-item" onClick={hideTATDetailsReport}>
-								<ClearIcon />
-							</IconButton>
-						</Typography>
-						<Box
-							component="form"
-							id="card-form-container"
-							noValidate
-							autoComplete="off"
-							sx={{ mt: 2, mb: 1 }}
-						>
-							<FileTATReportCardDetails details={tatCardDetails} />
-						</Box>
+						{getModalName()} Details
+						<IconButton id="close-edit-item" onClick={hideTATDetailsReport}>
+							<ClearIcon />
+						</IconButton>
+					</Typography>
+					<Box component="form" id="card-form-container" noValidate autoComplete="off" sx={{ mt: 2, mb: 1 }}>
+						<FileTATReportCardDetails details={tatCardDetails} />
 					</Box>
-				</Modal>
-			</ThemeProvider>
-		</div>
+				</Box>
+			</Modal>
+		</>
 	);
 }

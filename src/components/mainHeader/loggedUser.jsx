@@ -134,7 +134,7 @@ function UserMenu({ handleClose }) {
 	const handleLogout = () => {
 		AuthService.logout().then(
 			() => {
-				navigate('/');
+				navigate('/login/bank');
 				window.location.reload();
 			},
 			(error) => {

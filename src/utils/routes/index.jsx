@@ -44,6 +44,7 @@ const WIPPage = withLazyLoadably(lazy(() => import('@/pages/wip')));
 // const ThemeShadowPage = withLazyLoadably(lazy(() => import('@/pages/themePages/themeShadow')));
 
 const FileWiseReportPage = withLazyLoadably(lazy(() => import('@/pages/bank/bureau/fileWiseReport')));
+const FileTATReportPage = withLazyLoadably(lazy(() => import('@/pages/bank/bureau/FileTATReport')));
 const BureauComparisionPage = withLazyLoadably(lazy(() => import('@/pages/bank/bureau/bureauComparision')));
 
 const BureauPullRequestList = withLazyLoadably(lazy(() => import('@/pages/bureau/pull/BureauPullRequestList')));
@@ -120,6 +121,7 @@ function Router() {
 						<Route path="bank">
 							<Route path="bureau">
 								<Route path="filewisereport" element={<FileWiseReportPage />} />
+								<Route path="filetatreport" element={<FileTATReportPage />} />
 								<Route path="comparision" element={<BureauComparisionPage />} />
 							</Route>
 							<Route path="pull">
