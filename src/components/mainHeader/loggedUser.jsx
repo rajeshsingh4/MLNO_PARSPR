@@ -197,7 +197,7 @@ function UserMenu({ handleClose }) {
 					my: 1,
 				}}
 			/>
-			<MenuItem onClick={handleClose} to="/profile" component={RouterLink}>
+			<MenuItem onClick={handleClose} to="/user/profile" component={RouterLink}>
 				<ListItemIcon>
 					<Person2OutlinedIcon fontSize="small" />
 				</ListItemIcon>

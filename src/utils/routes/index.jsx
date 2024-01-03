@@ -117,6 +117,9 @@ function Router() {
 						<Route path="dashboards/">
 							<Route path="dashboard1" element={<Dashboard1Page />} />
 						</Route>
+						<Route path="user/">
+							<Route path="profile" element={<EditProfilePage />} />
+						</Route>
 
 						<Route path="bank">
 							<Route path="bureau">
@@ -142,10 +145,10 @@ function Router() {
 						<Route path="pages/">
 							<Route path="settings" element={<EditProfilePage />} />
 							<Route path="notifications" element={<NotificationsPage />} />
-							<Route path="pricing/">
+							{/* <Route path="pricing/">
 								<Route path="pricing1" element={<Pricing1Page />} />
 								<Route path="pricing2" element={<Pricing2Page />} />
-							</Route>
+							</Route> */}
 							<Route path="error/">
 								<Route path="404" element={<Page404 />} />
 								<Route path="403" element={<Page403 />} />

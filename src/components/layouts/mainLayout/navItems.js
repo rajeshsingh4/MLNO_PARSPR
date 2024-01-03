@@ -102,7 +102,7 @@ const NAV_LINKS_CONFIG = [
 		type: 'item',
 		title: 'Profile',
 		Icon: AccountCircleOutlinedIcon,
-		href: '/profile',
+		href: '/user/profile',
 	},
 ];
 
