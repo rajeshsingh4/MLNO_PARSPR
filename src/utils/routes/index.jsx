@@ -13,6 +13,7 @@ import Page404 from '@/pages/errorPages/404';
 import UserService from '@/utils/services/user.service';
 
 const Dashboard1Page = withLazyLoadably(lazy(() => import('@/pages/dashboardsPages/bankDashboard')));
+
 // const FormsComponentPage = withLazyLoadably(lazy(() => import('@/pages/componentsPages/forms')));
 // const LoadersComponentPage = withLazyLoadably(lazy(() => import('@/pages/componentsPages/loaders')));
 // const TablesComponentPage = withLazyLoadably(lazy(() => import('@/pages/componentsPages/tables')));
@@ -26,6 +27,7 @@ const Dashboard1Page = withLazyLoadably(lazy(() => import('@/pages/dashboardsPag
 const LoginCourierPage = withLazyLoadably(lazy(() => import('@/pages/loginPages/courier')));
 const LoginBankPage = withLazyLoadably(lazy(() => import('@/pages/loginPages/bank')));
 const LoginBureauPage = withLazyLoadably(lazy(() => import('@/pages/loginPages/bureau')));
+const LandingPage = withLazyLoadably(lazy(() => import('@/pages/loginPages/landing')));
 // const SignupSplitPage = withLazyLoadably(lazy(() => import('@/pages/signupPages/signupSplit')));
 // const SignupSimplePage = withLazyLoadably(lazy(() => import('@/pages/signupPages/signupSimple')));
 // const SignupPage = withLazyLoadably(lazy(() => import('@/pages/signupPages/signup')));
@@ -89,6 +91,7 @@ function Router() {
 								<Route path="bank" element={<LoginBankPage />} />
 								<Route path="bureau" element={<LoginBureauPage />} />
 								<Route path="courier" element={<LoginCourierPage />} />
+								<Route path="landing" element={<LandingPage />} />
 							</Route>
 						</Route>
 					</Routes>

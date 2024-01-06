@@ -130,6 +130,62 @@ function BureauViewPullRequestDetails(props) {
 					<Grid item xs={12} sm={6} md={6}>
 						<Card>
 							<CardHeader title="Pull Detail" size="small" />
+							<TableContainer>
+								<Table>
+									<TableBody>
+										<TableRow>
+											<TableCell>Pull Request ID</TableCell>
+											<TableCell>{pullRequestDetails.id}</TableCell>
+										</TableRow>
+										<TableRow>
+											<TableCell>Date</TableCell>
+											<TableCell>
+												{new Date(pullRequestDetails.createdAt).toLocaleDateString()}
+											</TableCell>
+										</TableRow>
+										<TableRow>
+											<TableCell>Time</TableCell>
+											<TableCell>
+												{getHoursMinutesSeconds(pullRequestDetails.createdAt)}
+											</TableCell>
+										</TableRow>
+										<TableRow>
+											<TableCell>Field</TableCell>
+											<TableCell>{pullRequestDetails.field}</TableCell>
+										</TableRow>
+										<TableRow>
+											<TableCell>Original Value</TableCell>
+											<TableCell>{pullRequestDetails.originalValue}</TableCell>
+										</TableRow>
+
+										<TableRow>
+											<TableCell>New Value</TableCell>
+											<TableCell>{pullRequestDetails.newValue}</TableCell>
+										</TableRow>
+
+										<TableRow>
+											<TableCell>Action</TableCell>
+											<TableCell>{pullRequestDetails.action}</TableCell>
+										</TableRow>
+
+										<TableRow>
+											<TableCell>Status</TableCell>
+											<TableCell>
+												<Chip
+													size="small"
+													label={pullRequestStatusMap[pullRequestDetails.status]}
+													color={pullRequestStatusColorMap[pullRequestDetails.status]}
+												/>
+											</TableCell>
+										</TableRow>
+										<TableRow />
+										<TableRow>
+											<TableCell>Service ID</TableCell>
+											<TableCell>{pullRequestDetails.serviceRequest}</TableCell>
+										</TableRow>
+									</TableBody>
+								</Table>
+							</TableContainer>
 						</Card>
 					</Grid>
 					<Grid item xs={12} sm={6} md={6}>
@@ -138,109 +194,75 @@ function BureauViewPullRequestDetails(props) {
 								<CardHeader title="Action" size="small" />
 							</Card>
 							<Card>
-								<CardHeader title="Pull Created By" size="small" />
+								<CardHeader title="Action Timeline" size="small" />
+
+								<CardContent>
+									<PullRequestActivityTimeline {...pullRequestDetails} />
+								</CardContent>
+							</Card>
+							<Card>
+								<CardHeader title="Pull  Created By" size="small" />
+								<TableContainer>
+									<Table>
+										<TableBody>
+											<TableRow>
+												<TableCell>Change Originator</TableCell>
+												<TableCell>{pullRequestDetails.userId}</TableCell>
+											</TableRow>
+											<TableRow>
+												<TableCell>IP Address</TableCell>
+												<TableCell>{pullRequestDetails.ipaddress}</TableCell>
+											</TableRow>
+											<TableRow>
+												<TableCell>Requested By</TableCell>
+												<TableCell>{pullRequestDetails.changeCommunicatedTo}</TableCell>
+											</TableRow>
+
+											<TableRow>
+												<TableCell>Communicated Via</TableCell>
+												<TableCell>{pullRequestDetails.mode}</TableCell>
+											</TableRow>
+										</TableBody>
+									</Table>
+								</TableContainer>
 							</Card>
 						</Stack>
 					</Grid>
 				</Grid>
 			</Container>
-			<Card component="section" type="section">
-				<TableContainer>
-					<Table>
-						<TableBody>
-							<TableRow>
-								<TableCell>Pull Request ID</TableCell>
-								<TableCell>{pullRequestDetails.id}</TableCell>
-							</TableRow>
-							<TableRow>
-								<TableCell>Date</TableCell>
-								<TableCell>{new Date(pullRequestDetails.createdAt).toLocaleDateString()}</TableCell>
-							</TableRow>
-							<TableRow>
-								<TableCell>Time</TableCell>
-								<TableCell>{getHoursMinutesSeconds(pullRequestDetails.createdAt)}</TableCell>
-							</TableRow>
-							<TableRow>
-								<TableCell>Change Originator</TableCell>
-								<TableCell>{pullRequestDetails.userId}</TableCell>
-							</TableRow>
-							<TableRow>
-								<TableCell>Change Communicated To</TableCell>
-								<TableCell>{pullRequestDetails.changeCommunicatedTo}</TableCell>
-							</TableRow>
-							<TableRow>
-								<TableCell>Action</TableCell>
-								<TableCell>{pullRequestDetails.action}</TableCell>
-							</TableRow>
-							<TableRow>
-								<TableCell>Field</TableCell>
-								<TableCell>{pullRequestDetails.field}</TableCell>
-							</TableRow>
-							<TableRow>
-								<TableCell>Original Value</TableCell>
-								<TableCell>{pullRequestDetails.originalValue}</TableCell>
-							</TableRow>
-							<TableRow>
-								<TableCell>New Value</TableCell>
-								<TableCell>{pullRequestDetails.newValue}</TableCell>
-							</TableRow>
-							<TableRow>
-								<TableCell>Mode of Communication</TableCell>
-								<TableCell>{pullRequestDetails.mode}</TableCell>
-							</TableRow>
-							<TableRow>
-								<TableCell>Status</TableCell>
-								<TableCell>
-									<Chip
-										size="small"
-										label={pullRequestStatusMap[pullRequestDetails.status]}
-										color={pullRequestStatusColorMap[pullRequestDetails.status]}
-									/>
-								</TableCell>
-							</TableRow>
-							<TableRow>
-								<TableCell>IP Address</TableCell>
-								<TableCell>{pullRequestDetails.ipaddress}</TableCell>
-							</TableRow>
-							<TableRow>
-								<TableCell>Service Request ID</TableCell>
-								<TableCell>{pullRequestDetails.serviceRequest}</TableCell>
-							</TableRow>
-						</TableBody>
-					</Table>
-				</TableContainer>
-				<TableContainer component={Paper} sx={{ mt: 3 }}>
-					<DataGrid
-						className="mui-data-grid file-master"
-						loading={pullRequestDetailsLoader}
-						rows={[pullRequestDetails.card]}
-						columns={getColumnMapping(pullRequestDetails.card)}
-						initialState={{
-							pagination: {
-								paginationModel: { page: 0, pageSize: 10 },
-							},
-						}}
-						pageSizeOptions={[10, 20, 50, 100]}
-						// checkboxSelection
-					/>
-				</TableContainer>
+			
 				<Accordion sx={{ mt: 2 }}>
 					<AccordionSummary
 						expandIcon={<ExpandMoreIcon />}
 						aria-controls="panel1a-content"
 						id="panel1a-header"
 					>
-						<Typography>Pull Request Activity Timeline</Typography>
+						<Typography>Card Details</Typography>
 					</AccordionSummary>
 					<AccordionDetails>
 						<Card elevation={0}>
 							<CardContent>
-								<PullRequestActivityTimeline {...pullRequestDetails} />
+								<Container>
+								<Grid container spacing={2} mt={2}>
+									{
+										Object.entries(pullRequestDetails.card).map(([key, value]) => (
+											<Grid item spacing={2} mt={2}>
+												<span>{key}</span><span>{value}</span>
+												</Grid>
+										))
+									}
+									</Grid>
+									<Grid container spacing={2} mt={2}>
+										<div><pre>{JSON.stringify(pullRequestDetails.card)}</pre></div>
+									
+									
+									</Grid>
+								</Container>
 							</CardContent>
 						</Card>
 					</AccordionDetails>
 				</Accordion>
-			</Card>
+			
 		</Container>
 	);
 }

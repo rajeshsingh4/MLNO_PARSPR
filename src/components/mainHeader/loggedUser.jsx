@@ -132,16 +132,9 @@ function UserMenu({ handleClose }) {
 	const [message, setMessage] = useState('');
 
 	const handleLogout = () => {
-		AuthService.logout().then(
-			() => {
-				navigate('/');
-				window.location.reload();
-			},
-			(error) => {
-				setLoading(false);
-				setMessage(error);
-			},
-		);
+		AuthService.logout();
+		navigate('/login/landing');
+		window.location.reload();
 	};
 	return (
 		<MenuList
@@ -220,7 +213,7 @@ function UserMenu({ handleClose }) {
 				<ListItemIcon>
 					<ExitToAppIcon fontSize="small" />
 				</ListItemIcon>
-				Logout
+				Logout 1
 			</MenuItem>
 		</MenuList>
 	);
