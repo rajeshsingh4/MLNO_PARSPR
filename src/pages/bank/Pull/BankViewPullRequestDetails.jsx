@@ -19,15 +19,24 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Loader from '@/components/loader';
 import Breadcrumbs from '@mui/material/Breadcrumbs';
 import Link from '@mui/material/Link';
+import Button from '@mui/material/Button';
+import UpgradeIcon from '@mui/icons-material/Upgrade';
 import PageHeader from '@/components/pageHeader';
 import PullRequestService from '@/utils/services/pull-request.service';
 import PullRequestActivityTimeline from './PullRequestActivityTimeline';
 import { pullRequestStatusColorMap, pullRequestStatusMap } from '@/utils/bureaumappings';
+import CreatePullRequestForm from '@/pages/bank/Pull/CreatePullRequestForm';
 
 function ViewPullRequestDetails(props) {
 	const [pullRequestDetailsLoader, setPullRequestDetailsLoader] = React.useState(true);
 	const [pullRequestDetailsError, setPullRequestDetailsError] = React.useState(false);
 	const [pullRequestDetails, setPullRequestDetails] = React.useState({});
+	const [pullRequestModal, setPullRequestModal] = React.useState({
+		open: false,
+		rowData: null,
+		tableMeta: null,
+		isEdit: false,
+	});
 	const { id } = useParams();
 
 	const getPullRequestListDetails = async () => {
@@ -60,6 +69,20 @@ function ViewPullRequestDetails(props) {
 	if (pullRequestDetailsError) {
 		return <>Error Loading Pull Requests Details, Please try again!!</>;
 	}
+
+	const editPullRequestHandler = () => {
+		const modalData = {
+			open: true,
+			rowData: Object.values(pullRequestDetails.card),
+			tableMeta: { rowIndex: 0, tableData: [pullRequestDetails.card], pullRequestDetails },
+			isEdit: true,
+		};
+		setPullRequestModal(modalData);
+	};
+
+	const handleClosePullModal = () => {
+		setPullRequestModal({ open: false, rowData: null, tableMeta: null, isEdit: false });
+	};
 
 	const getHoursMinutesSeconds = (date) => {
 		const tempDate = new Date(date);
@@ -130,6 +153,15 @@ function ViewPullRequestDetails(props) {
 								<TableRow>
 									<TableCell>Pull Request ID</TableCell>
 									<TableCell>{pullRequestDetails.id}</TableCell>
+									<TableCell>
+										<Button
+											variant="contained"
+											startIcon={<UpgradeIcon />}
+											onClick={editPullRequestHandler}
+										>
+											Edit
+										</Button>
+									</TableCell>
 								</TableRow>
 								<TableRow>
 									<TableCell>Date</TableCell>
@@ -220,6 +252,13 @@ function ViewPullRequestDetails(props) {
 						</AccordionDetails>
 					</Accordion>
 				</Card>
+				{pullRequestModal.open && pullRequestModal.rowData && (
+					<CreatePullRequestForm
+						handleClose={handleClosePullModal}
+						pullRequestModal={pullRequestModal}
+						goBackTo="/bank/pull/list"
+					/>
+				)}
 			</Container>
 		</>
 	);

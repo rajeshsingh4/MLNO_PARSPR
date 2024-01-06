@@ -6,7 +6,6 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import Paper from '@mui/material/Paper';
 import TableRow from '@mui/material/TableRow';
-import { useParams } from 'react-router-dom';
 import Card from '@mui/material/Card';
 import Container from '@mui/material/Container';
 import CardHeader from '@/components/cardHeader';
@@ -18,19 +17,29 @@ import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import Typography from '@mui/material/Typography';
 import Chip from '@mui/material/Chip';
+import Button from '@mui/material/Button';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import UpgradeIcon from '@mui/icons-material/Upgrade';
 import Loader from '@/components/loader';
+import { useParams } from 'react-router-dom';
 import PullRequestService from '@/utils/services/pull-request.service';
 import PullRequestActivityTimeline from '@/pages/bank/Pull/PullRequestActivityTimeline';
 import { pullRequestStatusColorMap, pullRequestStatusMap } from '@/utils/bureaumappings';
 import Breadcrumbs from '@mui/material/Breadcrumbs';
 import Link from '@mui/material/Link';
 import PageHeader from '@/components/pageHeader';
+import CreatePullRequestForm from '@/pages/bank/Pull/CreatePullRequestForm';
 
 function BureauViewPullRequestDetails(props) {
 	const [pullRequestDetailsLoader, setPullRequestDetailsLoader] = React.useState(true);
 	const [pullRequestDetailsError, setPullRequestDetailsError] = React.useState(false);
 	const [pullRequestDetails, setPullRequestDetails] = React.useState({});
+	const [pullRequestModal, setPullRequestModal] = React.useState({
+		open: false,
+		rowData: null,
+		tableMeta: null,
+		isEdit: false,
+	});
 	const { id } = useParams();
 
 	const getPullRequestListDetails = async () => {
@@ -67,6 +76,20 @@ function BureauViewPullRequestDetails(props) {
 	const getHoursMinutesSeconds = (date) => {
 		const tempDate = new Date(date);
 		return `${tempDate.getHours()}:${tempDate.getMinutes()}:${tempDate.getSeconds()}`;
+	};
+
+	const editPullRequestHandler = () => {
+		const modalData = {
+			open: true,
+			rowData: Object.values(pullRequestDetails.card),
+			tableMeta: { rowIndex: 0, tableData: [pullRequestDetails.card], pullRequestDetails },
+			isEdit: true,
+		};
+		setPullRequestModal(modalData);
+	};
+
+	const handleClosePullModal = () => {
+		setPullRequestModal({ open: false, rowData: null, tableMeta: null, isEdit: false });
 	};
 
 	const getColumnMapping = (row) => {
@@ -151,6 +174,15 @@ function BureauViewPullRequestDetails(props) {
 							<TableRow>
 								<TableCell>Pull Request ID</TableCell>
 								<TableCell>{pullRequestDetails.id}</TableCell>
+								<TableCell>
+									<Button
+										variant="contained"
+										startIcon={<UpgradeIcon />}
+										onClick={editPullRequestHandler}
+									>
+										Edit
+									</Button>
+								</TableCell>
 							</TableRow>
 							<TableRow>
 								<TableCell>Date</TableCell>
@@ -241,6 +273,13 @@ function BureauViewPullRequestDetails(props) {
 					</AccordionDetails>
 				</Accordion>
 			</Card>
+			{pullRequestModal.open && pullRequestModal.rowData && (
+				<CreatePullRequestForm
+					handleClose={handleClosePullModal}
+					pullRequestModal={pullRequestModal}
+					goBackTo="/bureau/pull/list"
+				/>
+			)}
 		</Container>
 	);
 }

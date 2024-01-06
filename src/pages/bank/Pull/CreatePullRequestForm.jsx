@@ -28,16 +28,41 @@ const initialFormData = () => ({
 });
 
 function CreatePullRequestForm(props) {
-	const { handleClose, pullRequestModal } = props;
+	const { handleClose, pullRequestModal, goBackTo = '/bank/pull/list' } = props;
 	const {
 		tableMeta: { rowIndex, tableData },
+		isEdit,
 	} = pullRequestModal;
 
-	const [formData, setFormData] = useState({
-		...initialFormData(),
-		cardId: tableData[rowIndex].id,
-		fileMasterId: tableData[rowIndex].fileMasterId,
-	});
+	const createInitialData = () => {
+		let initData = initialFormData();
+		if (isEdit) {
+			// here comes pre loaded data
+			const {
+				tableMeta: { pullRequestDetails },
+			} = pullRequestModal;
+			initData = {
+				...initData,
+				id: pullRequestDetails.id,
+				action: pullRequestDetails.action,
+				changeCommunicatedTo: pullRequestDetails.changeCommunicatedTo,
+				field: pullRequestDetails.field,
+				originalValue: pullRequestDetails.originalValue,
+				newValue: pullRequestDetails.newValue,
+				mode: pullRequestDetails.mode,
+				ipaddress: pullRequestDetails.ipaddress,
+				comment: pullRequestDetails.comment,
+				cardId: pullRequestDetails.cardId,
+				fileMasterId: pullRequestDetails.fileMasterId,
+			};
+		} else {
+			initData.cardId = tableData[rowIndex].id;
+			initData.fileMasterId = tableData[rowIndex].fileMasterId;
+		}
+		return initData;
+	};
+
+	const [formData, setFormData] = useState(createInitialData());
 
 	const navigate = useNavigate();
 
@@ -45,11 +70,11 @@ function CreatePullRequestForm(props) {
 		const { name, value } = e.target;
 		const updatedData = {
 			...formData,
-			[name]: value,
+			[name]: value || '',
 		};
 		switch (name) {
 			case 'field':
-				updatedData.originalValue = tableData[rowIndex][value];
+				updatedData.originalValue = tableData[rowIndex][value] || '';
 				break;
 			default:
 				break;
@@ -57,11 +82,13 @@ function CreatePullRequestForm(props) {
 		setFormData(updatedData);
 	};
 
-	const handleUpdate = async (e) => {
+	const handleCreateUpdate = async (e) => {
 		e.preventDefault();
 		console.log('submit pull request Data', formData);
 		try {
-			const data = await PullRequestService.createPullRequest(formData);
+			const data = isEdit
+				? await PullRequestService.updatePullRequest(formData.id, formData)
+				: await PullRequestService.createPullRequest(formData);
 			console.log(data);
 			if (data.status !== 200 || data.data.status) {
 				// handleSnackBarOpen('error', 'Error creating pull request');
@@ -70,7 +97,7 @@ function CreatePullRequestForm(props) {
 				// handleSnackBarOpen('success', 'Pull request created successfully');
 				handleClose();
 				setTimeout(() => {
-					navigate('/bank/pull/list');
+					navigate(goBackTo);
 				}, 500);
 			}
 		} catch (error) {
@@ -168,6 +195,7 @@ function CreatePullRequestForm(props) {
 										value={formData.originalValue}
 										required
 										fullWidth
+										disabled
 										onChange={(e) => handleFormChange(e)}
 									/>
 								</Grid>
@@ -235,10 +263,10 @@ function CreatePullRequestForm(props) {
 				<Button
 					type="submit"
 					id="pull-request-form-submit-button"
-					onClick={(e) => handleUpdate(e)}
+					onClick={(e) => handleCreateUpdate(e)}
 					variant="contained"
 				>
-					Create
+					{isEdit ? 'Edit' : 'Create'}
 				</Button>
 			</DialogActions>
 		</Dialog>

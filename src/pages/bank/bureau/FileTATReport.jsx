@@ -83,7 +83,7 @@ export default function FileTATReport() {
 			'bureauwithintat_listData',
 			'courieroutsidetat_list',
 			'courieroutsidetat_listData',
-			'courierwithintat_listData'
+			'courierwithintat_listData',
 		];
 		const rowFieldKeys = Object.keys(row);
 		rowFieldKeys.forEach((key) => {
