@@ -8,27 +8,25 @@ import Divider from '@mui/material/Divider';
 import Button from '@mui/material/Button';
 import Avatar from '@mui/material/Avatar';
 import Switch from '@mui/material/Switch';
-
 import EditIcon from '@mui/icons-material/Edit';
 import AccountBoxOutlinedIcon from '@mui/icons-material/AccountBoxOutlined';
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
-
 import CardHeader from '@/components/cardHeader';
-
 import avatar from '@/assets/images/avatars/avatar_13.jpg';
 
-function Account() {
+function Account(props) {
 	return (
 		<Stack spacing={6}>
-			<GeneralSettingsSection />
-			<ProfileSettingsSection />
-			<AdvancedSettingsSection />
-			<DeleteAccountSection />
+			<GeneralSettingsSection {...props} />
+			<ProfileSettingsSection {...props} />
+			<AdvancedSettingsSection {...props} />
+			<DeleteAccountSection {...props} />
 		</Stack>
 	);
 }
 
-function GeneralSettingsSection() {
+function GeneralSettingsSection(props) {
+	const { currentUser } = props;
 	return (
 		<Card type="section">
 			<CardHeader title="General Settings" />
@@ -61,45 +59,23 @@ function GeneralSettingsSection() {
 				<form onSubmit={() => {}}>
 					<Grid container rowSpacing={2} columnSpacing={4}>
 						<Grid item xs={12} sm={6} md={6}>
-							<TextField label="Username" variant="outlined" defaultValue="elizabeth_123" fullWidth />
+							<strong>UserName: </strong>
+							<Typography>{currentUser.user.username}</Typography>
 						</Grid>
 						<Grid item xs={12} sm={6} md={6}>
-							<TextField
-								type="email"
-								label="Account Email"
-								variant="outlined"
-								defaultValue="demo@sample.com"
-								fullWidth
-							/>
+							<strong>Email: </strong>
+							<Typography>{currentUser.user.email}</Typography>
 						</Grid>
 						<Grid item xs={12} sm={6} md={6}>
-							<TextField select fullWidth label="Language" variant="outlined" defaultValue="1">
-								<MenuItem value="1">Spanish </MenuItem>
-								<MenuItem value="2">English </MenuItem>
-								<MenuItem value="3">French</MenuItem>
-								<MenuItem value="4">Chinese</MenuItem>
-							</TextField>
+							<strong>Phone: </strong>
+							<Typography>{currentUser.phone}</Typography>
 						</Grid>
 						<Grid item xs={12} sm={6} md={6}>
-							<TextField select fullWidth label="Signing Using" variant="outlined" defaultValue="1">
-								<MenuItem value="1">1 </MenuItem>
-								<MenuItem value="2">2 </MenuItem>
-								<MenuItem value="3">3</MenuItem>
-								<MenuItem value="4">4</MenuItem>
-							</TextField>
-						</Grid>
-
-						<Grid item xs={12} sm={12} md={12}>
-							<Button
-								disableElevation
-								variant="contained"
-								endIcon={<EditIcon />}
-								sx={{
-									float: 'right',
-								}}
-							>
-								Update Account
-							</Button>
+							<strong>Roles: </strong>
+							<ul>
+								{currentUser.roles &&
+									currentUser.roles.map((role, index) => <li key={index}>{role}</li>)}
+							</ul>
 						</Grid>
 					</Grid>
 				</form>
@@ -179,8 +155,8 @@ function DeleteAccountSection() {
 		>
 			<CardHeader title="Delete Account" />
 			<Typography mb={2}>
-				To desactivate your account, first delete its resources. If you are the only owner of any teams, either
-				assign another owner or desactivate the team.
+				To de-activate your account, first delete its resources. If you are the only owner of any teams, either
+				assign another owner or de-activate the team.
 			</Typography>
 			<Button variant="outlined" color="error">
 				Desactivate Account

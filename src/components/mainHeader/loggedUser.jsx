@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link as RouterLink, useNavigate } from 'react-router-dom';
+import { Link as RouterLink } from 'react-router-dom';
 import { alpha } from '@mui/material/styles';
 // MUI
 import Typography from '@mui/material/Typography';
@@ -35,6 +35,7 @@ import AuthService from '@/utils/services/auth.service';
 
 function LoggedUser() {
 	const [anchorEl, setAnchorEl] = useState(null);
+	const loggedInUser = JSON.parse(localStorage.getItem('user'));
 	const handleClick = (event) => {
 		setAnchorEl(event.currentTarget);
 	};
@@ -63,7 +64,7 @@ function LoggedUser() {
 				open={Boolean(anchorEl)}
 				onClose={handleClose}
 			>
-				<UserMenu handleClose={handleClose} />
+				<UserMenu handleClose={handleClose} loggedInUser={loggedInUser} />
 			</Menu>
 			<Stack height="100%" direction="row" flex={1} justifyContent="flex-end" alignItems="center" spacing={0}>
 				<NotificationsButton />
@@ -108,9 +109,10 @@ function LoggedUser() {
 							display={{
 								xs: 'none',
 								sm: 'inline-block',
+								textTransform: 'capitalize',
 							}}
 						>
-							Elizabeth
+							{loggedInUser.username}
 						</Typography>
 						<ExpandMoreIcon
 							fontSize="small"
@@ -134,7 +136,7 @@ function UserMenu({ handleClose }) {
 	const handleLogout = () => {
 		AuthService.logout().then(
 			() => {
-				navigate('/');
+				navigate('/login/bank');
 				window.location.reload();
 			},
 			(error) => {
@@ -154,10 +156,10 @@ function UserMenu({ handleClose }) {
 		>
 			<Stack px={3}>
 				<Typography variant="subtitle1" textAlign="center">
-					User Name
+					User Name : {loggedInUser.username}
 				</Typography>
 				<Typography variant="subtitle2" textAlign="center">
-					Role
+					Role : {loggedInUser.roles.join(', ')}
 				</Typography>
 			</Stack>
 			<Divider

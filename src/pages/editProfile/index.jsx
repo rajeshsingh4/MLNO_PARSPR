@@ -1,8 +1,7 @@
+import React from 'react';
 import { Link as RouterLink, useSearchParams } from 'react-router-dom';
 import { v4 as uuid } from 'uuid';
 import calcHeaderHeight from '@helpers/layoutHeight';
-
-// MUI
 import Typography from '@mui/material/Typography';
 import Breadcrumbs from '@mui/material/Breadcrumbs';
 import Link from '@mui/material/Link';
@@ -12,54 +11,96 @@ import MenuItem from '@mui/material/MenuItem';
 import MenuList from '@mui/material/MenuList';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import Divider from '@mui/material/Divider';
-
 import Person2OutlinedIcon from '@mui/icons-material/Person2Outlined';
 import AccountBoxOutlinedIcon from '@mui/icons-material/AccountBoxOutlined';
 import VpnKeyOutlinedIcon from '@mui/icons-material/VpnKeyOutlined';
 import HandshakeOutlinedIcon from '@mui/icons-material/HandshakeOutlined';
 import CreditCardIcon from '@mui/icons-material/CreditCard';
-
 import PageHeader from '@/components/pageHeader';
+import Loader from '@/components/loader';
+import AuthService from '@/utils/services/auth.service';
 
 import Account from './account';
 import Profile from './profile';
 import Security from './security';
 import Billing from './billing';
 
-const menuOptions = [
+const getMenuOptions = (props) => [
 	{
 		id: uuid(),
 		name: 'account',
 		Icon: Person2OutlinedIcon,
 		text: 'Account',
-		renderSection: <Account />,
+		renderSection: <Account {...props} />,
 	},
 	{
 		id: uuid(),
 		name: 'profile',
 		Icon: AccountBoxOutlinedIcon,
 		text: 'Profile',
-		renderSection: <Profile />,
+		renderSection: <Profile {...props} />,
 	},
-	{
-		id: uuid(),
-		name: 'billing',
-		Icon: CreditCardIcon,
-		text: 'Billing',
-		renderSection: <Billing />,
-	},
+	// {
+	// 	id: uuid(),
+	// 	name: 'billing',
+	// 	Icon: CreditCardIcon,
+	// 	text: 'Billing',
+	// 	renderSection: <Billing {...props} />,
+	// },
 	{
 		id: uuid(),
 		name: 'security',
 		Icon: VpnKeyOutlinedIcon,
 		text: 'Security',
-		renderSection: <Security />,
+		renderSection: <Security {...props} />,
 	},
 ];
 
 function EditProfile() {
 	const [searchParams, setSearchParams] = useSearchParams();
 	const activeSection = searchParams.get('section') || menuOptions[0].name;
+	const [currentUser, setCurrentUser] = React.useState(null);
+	const [currentUserLoader, setCurrentUserLoader] = React.useState(true);
+	const [currentUserError, setCurrentUserError] = React.useState(false);
+
+	const getUserDetails = async () => {
+		try {
+			setCurrentUserLoader(true);
+			const userDetails = await AuthService.getCurrentUserDetails();
+			if (userDetails.status === 200) {
+				setCurrentUser(userDetails.data);
+			} else {
+				setCurrentUserError(true);
+			}
+		} catch (err) {
+			console.error('error getting user details', err.message);
+			setCurrentUserError(true);
+		} finally {
+			setCurrentUserLoader(false);
+		}
+	};
+
+	React.useEffect(() => {
+		getUserDetails();
+	}, []);
+
+	if (currentUserLoader) {
+		return (
+			<Loader
+				addSx={{
+					mt: 5,
+				}}
+			/>
+		);
+	}
+
+	if (currentUserError) {
+		return <>There was an error fetching user details....</>;
+	}
+
+	if (!currentUser) {
+		return <>User details not found!!</>;
+	}
 
 	const changeSectionHandler = (sectionName) => {
 		window.scrollTo({
@@ -69,6 +110,8 @@ function EditProfile() {
 		});
 		setSearchParams({ section: sectionName });
 	};
+
+	const menuOptions = getMenuOptions({ currentUser });
 
 	return (
 		<>
@@ -94,7 +137,9 @@ function EditProfile() {
 						}}
 						component="aside"
 					>
-						<Typography variant="subtitle1">Elizabeth Lumaad Olsen</Typography>
+						<Typography variant="subtitle1">
+							{currentUser.firstname} {currentUser.lastname}
+						</Typography>
 						<Divider sx={{ borderColor: 'primary.light', my: 1 }} />
 						<MenuList
 							sx={{

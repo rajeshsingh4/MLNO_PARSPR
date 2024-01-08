@@ -121,8 +121,7 @@ function LoginForm() {
 
 		AuthService.login(username, password).then(
 			() => {
-				navigate('/');
-				window.location.reload();
+				window.location.replace('/');
 			},
 			(error) => {
 				const resMessage =

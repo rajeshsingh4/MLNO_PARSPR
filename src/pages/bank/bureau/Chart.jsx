@@ -4,7 +4,17 @@ import Chart from 'react-apexcharts';
 import getDefaultChartsColors from '@helpers/getDefaultChartsColors';
 import Box from '@mui/material/Box';
 
-const getCustomerGraphConfig = (config) => ({
+const createTATData = (files) => {
+	let outsideTAT = 0;
+	let withinTAT = 0;
+	files.forEach((file) => {
+		outsideTAT += file.bureauoutsidetat;
+		withinTAT += file.bureauwithintat;
+	});
+	return [outsideTAT, withinTAT];
+};
+
+const getCustomerGraphConfig = (config, files) => ({
 	options: {
 		colors: getDefaultChartsColors(4),
 		chart: {
@@ -61,17 +71,25 @@ const getCustomerGraphConfig = (config) => ({
 			},
 		},
 	},
-	series: [9212, 8768],
+	datasets: [
+		{
+			data: createTATData(files),
+			backgroundColor: ['rgb(255, 99, 132)', 'rgb(54, 162, 235)'],
+			hoverOffset: 4,
+		},
+	],
+	series: createTATData(files),
 });
-function ChartPie() {
+function ChartPie(props) {
+	const { files } = props;
 	const theme = useTheme();
 
 	return (
 		<Box
 			color="text.primary"
 			component={Chart}
-			options={getCustomerGraphConfig({ mode: theme.palette.mode })?.options}
-			series={getCustomerGraphConfig()?.series}
+			options={getCustomerGraphConfig({ mode: theme.palette.mode }, files)?.options}
+			series={getCustomerGraphConfig({ mode: theme.palette.mode }, files)?.series}
 			type="donut"
 			width="80%"
 			height="80%"
