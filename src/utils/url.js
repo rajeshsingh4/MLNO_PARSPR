@@ -1,5 +1,3 @@
-const { VITE_REACT_APP_URL } = import.meta.env;
-
 export const AUTH_URL = '/auth/';
 export const USER_DETAILS_URL = '/userdetails';
 export const CHANGE_PASSWORD_URL = '/changepassword';

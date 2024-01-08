@@ -8,4 +8,17 @@ const AxiosInstance = axios.create({
 	headers: authHeader(),
 });
 
+AxiosInstance.interceptors.response.use(
+	(response) => response,
+	(error) => {
+		if (error.response.status === 403) {
+			console.log(error.message);
+			const navigateTo = window.localStorage.getItem('navigateTo');
+			window.localStorage.removeItem('user');
+			window.localStorage.removeItem('navigateTo');
+			window.location.replace(navigateTo);
+		}
+	},
+);
+
 export default AxiosInstance;
