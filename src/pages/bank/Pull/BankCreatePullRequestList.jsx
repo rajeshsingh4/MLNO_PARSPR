@@ -16,7 +16,12 @@ function BankCreatePullRequestList(props) {
 	const [cardList, setCardList] = React.useState([]);
 	const [cardListLoader, setCardListLoader] = React.useState(false);
 	const [cardListError, setCardListError] = React.useState(false);
-	const [pullRequestModal, setPullRequestModal] = React.useState({ open: false, rowData: null, tableMeta: null });
+	const [pullRequestModal, setPullRequestModal] = React.useState({
+		open: false,
+		rowData: null,
+		tableMeta: null,
+		isEdit: false,
+	});
 
 	const getCardListForPullRequest = async () => {
 		setCardListLoader(true);
@@ -36,11 +41,11 @@ function BankCreatePullRequestList(props) {
 	}, []);
 
 	const createPullRequest = (tableMeta) => {
-		setPullRequestModal({ open: true, rowData: tableMeta.rowData, tableMeta });
+		setPullRequestModal({ open: true, rowData: tableMeta.rowData, tableMeta, isEdit: false });
 	};
 
 	const handleClose = () => {
-		setPullRequestModal({ open: false, rowData: null, tableMeta: null });
+		setPullRequestModal({ open: false, rowData: null, tableMeta: null, isEdit: false });
 	};
 
 	const getColumnMapping = (row) => {
@@ -158,7 +163,11 @@ function BankCreatePullRequestList(props) {
 				</Card>
 			</Container>
 			{pullRequestModal.open && pullRequestModal.rowData && (
-				<CreatePullRequestForm handleClose={handleClose} pullRequestModal={pullRequestModal} />
+				<CreatePullRequestForm
+					handleClose={handleClose}
+					pullRequestModal={pullRequestModal}
+					goBackTo="/bank/pull/list"
+				/>
 			)}
 		</>
 	);

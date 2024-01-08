@@ -72,12 +72,8 @@ const NAV_LINKS_CONFIG = [
 		Icon: InventoryOutlinedIcon,
 		menuChildren: [
 			{
-				title: 'Filewise Tracking',
-				href: '/Filewise Tracking',
-			},
-			{
 				title: 'File TAT Report',
-				href: '/file tat',
+				href: '/bank/bureau/filetatreport',
 			},
 		],
 	},
@@ -106,7 +102,7 @@ const NAV_LINKS_CONFIG = [
 		type: 'item',
 		title: 'Profile',
 		Icon: AccountCircleOutlinedIcon,
-		href: '/profile',
+		href: '/user/profile',
 	},
 ];
 
