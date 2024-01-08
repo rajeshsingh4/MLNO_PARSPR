@@ -5,13 +5,14 @@ import getDefaultChartsColors from '@helpers/getDefaultChartsColors';
 import Box from '@mui/material/Box';
 
 const createTATData = (files) => {
-    let outsideTAT = 0, withinTAT = 0;
-    files.forEach(file => {
-      outsideTAT += file.bureauoutsidetat;
-      withinTAT += file.bureauwithintat;
-    })
-    return [outsideTAT, withinTAT];
-}
+	let outsideTAT = 0;
+	let withinTAT = 0;
+	files.forEach((file) => {
+		outsideTAT += file.bureauoutsidetat;
+		withinTAT += file.bureauwithintat;
+	});
+	return [outsideTAT, withinTAT];
+};
 
 const getCustomerGraphConfig = (config, files) => ({
 	options: {
@@ -70,14 +71,13 @@ const getCustomerGraphConfig = (config, files) => ({
 			},
 		},
 	},
-	datasets: [{
-		data: createTATData(files),
-		backgroundColor: [
-		  'rgb(255, 99, 132)',
-		  'rgb(54, 162, 235)'
-		],
-		hoverOffset: 4
-	}],
+	datasets: [
+		{
+			data: createTATData(files),
+			backgroundColor: ['rgb(255, 99, 132)', 'rgb(54, 162, 235)'],
+			hoverOffset: 4,
+		},
+	],
 	series: createTATData(files),
 });
 function ChartPie(props) {

@@ -18,12 +18,17 @@ const login = (username, password) =>
 		.then((response) => {
 			if (response.data.accessToken) {
 				localStorage.setItem('user', JSON.stringify(response.data));
+				const navigateLocation = location.pathname;
+				localStorage.setItem('navigateTo', navigateLocation);
 			}
 			return response.data;
 		});
 
 const logout = () => {
 	localStorage.removeItem('user');
+	const navigateTo = localStorage.getItem('navigateTo') || '/login/bank';
+	localStorage.removeItem('navigateTo');
+	location.replace(navigateTo);
 };
 
 const getCurrentUser = () => JSON.parse(localStorage.getItem('user'));
