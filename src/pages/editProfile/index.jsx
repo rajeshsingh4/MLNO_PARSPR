@@ -57,6 +57,7 @@ const getMenuOptions = (props) => [
 ];
 
 function EditProfile() {
+	const menuOptions = getMenuOptions({ currentUser });
 	const [searchParams, setSearchParams] = useSearchParams();
 	const activeSection = searchParams.get('section') || menuOptions[0].name;
 	const [currentUser, setCurrentUser] = React.useState(null);
@@ -110,8 +111,6 @@ function EditProfile() {
 		});
 		setSearchParams({ section: sectionName });
 	};
-
-	const menuOptions = getMenuOptions({ currentUser });
 
 	return (
 		<>

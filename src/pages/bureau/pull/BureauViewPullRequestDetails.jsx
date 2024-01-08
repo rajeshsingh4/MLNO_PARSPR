@@ -160,15 +160,15 @@ function BureauViewPullRequestDetails(props) {
 											<TableCell>Pull Request ID</TableCell>
 											<TableCell>{pullRequestDetails.id}</TableCell>
 											<TableCell>
-									<Button
-										variant="contained"
-										startIcon={<UpgradeIcon />}
-										onClick={editPullRequestHandler}
-									>
-										Edit
-									</Button>
-								</TableCell>
-							</TableRow>
+												<Button
+													variant="contained"
+													startIcon={<UpgradeIcon />}
+													onClick={editPullRequestHandler}
+												>
+													Edit
+												</Button>
+											</TableCell>
+										</TableRow>
 										<TableRow>
 											<TableCell>Date</TableCell>
 											<TableCell>
@@ -262,39 +262,34 @@ function BureauViewPullRequestDetails(props) {
 					</Grid>
 				</Grid>
 			</Container>
-			
-				<Accordion sx={{ mt: 2 }}>
-					<AccordionSummary
-						expandIcon={<ExpandMoreIcon />}
-						aria-controls="panel1a-content"
-						id="panel1a-header"
-					>
-						<Typography>Card Details</Typography>
-					</AccordionSummary>
-					<AccordionDetails>
-						<Card elevation={0}>
-							<CardContent>
-								<Container>
+
+			<Accordion sx={{ mt: 2 }}>
+				<AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="panel1a-content" id="panel1a-header">
+					<Typography>Card Details</Typography>
+				</AccordionSummary>
+				<AccordionDetails>
+					<Card elevation={0}>
+						<CardContent>
+							<Container>
 								<Grid container spacing={2} mt={2}>
-									{
-										Object.entries(pullRequestDetails.card).map(([key, value]) => (
-											<Grid item spacing={2} mt={2}>
-												<span>{key}</span><span>{value}</span>
-												</Grid>
-										))
-									}
-									</Grid>
-									<Grid container spacing={2} mt={2}>
-										<div><pre>{JSON.stringify(pullRequestDetails.card)}</pre></div>
-									
-									
-									</Grid>
-								</Container>
-							</CardContent>
-						</Card>
-					</AccordionDetails>
-				</Accordion>
-			
+									{Object.entries(pullRequestDetails.card).map(([key, value]) => (
+										<Grid item spacing={2} mt={2}>
+											<span>{key}</span>
+											<span>{value}</span>
+										</Grid>
+									))}
+								</Grid>
+								<Grid container spacing={2} mt={2}>
+									<div>
+										<pre>{JSON.stringify(pullRequestDetails.card)}</pre>
+									</div>
+								</Grid>
+							</Container>
+						</CardContent>
+					</Card>
+				</AccordionDetails>
+			</Accordion>
+
 			{pullRequestModal.open && pullRequestModal.rowData && (
 				<CreatePullRequestForm
 					handleClose={handleClosePullModal}

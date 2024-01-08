@@ -1,14 +1,14 @@
-import axios from 'axios';
+import AxiosInstance from '@/utils/axiosconfig/axiosconfig';
 import authHeader from './auth-header';
 import { FILE_URL, BUREAUDETAIL_URL, BUREAU_URL } from '@/utils/url';
 
-const getFileMasterList = () => axios.get(`${FILE_URL}all`, { headers: authHeader() });
+const getFileMasterList = () => AxiosInstance.get(`${FILE_URL}all`, { headers: authHeader() });
 
-const getFileMasterListByFileId = (fileId) => axios.get(FILE_URL + fileId, { headers: authHeader() });
+const getFileMasterListByFileId = (fileId) => AxiosInstance.get(FILE_URL + fileId, { headers: authHeader() });
 
-const getBureauTAT = () => axios.get(`${BUREAU_URL}all`, { headers: authHeader() });
+const getBureauTAT = () => AxiosInstance.get(`${BUREAU_URL}all`, { headers: authHeader() });
 
-const getBureauReport = (bureauName) => axios.get(BUREAUDETAIL_URL + bureauName, { headers: authHeader() });
+const getBureauReport = (bureauName) => AxiosInstance.get(BUREAUDETAIL_URL + bureauName, { headers: authHeader() });
 
 const FlieMasterListService = {
 	getFileMasterList,

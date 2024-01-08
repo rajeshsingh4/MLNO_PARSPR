@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { alpha } from '@mui/material/styles';
 // MUI
 import Typography from '@mui/material/Typography';
@@ -128,7 +128,7 @@ function LoggedUser() {
 	);
 }
 
-function UserMenu({ handleClose }) {
+function UserMenu({ handleClose, loggedInUser }) {
 	const navigate = useNavigate();
 	const [loading, setLoading] = useState(false);
 	const [message, setMessage] = useState('');
@@ -159,7 +159,7 @@ function UserMenu({ handleClose }) {
 					User Name : {loggedInUser.username}
 				</Typography>
 				<Typography variant="subtitle2" textAlign="center">
-					Role : {loggedInUser.roles.join(', ')}
+					Role : {loggedInUser.roles.join(', ').replaceAll('ROLE_', '')}
 				</Typography>
 			</Stack>
 			<Divider
