@@ -225,13 +225,7 @@ function BureauViewPullRequestDetails(props) {
 							<Card>
 								<CardHeader title="Action" size="small" />
 							</Card>
-							<Card>
-								<CardHeader title="Action Timeline" size="small" />
 
-								<CardContent>
-									<PullRequestActivityTimeline {...pullRequestDetails} />
-								</CardContent>
-							</Card>
 							<Card>
 								<CardHeader title="Pull  Created By" size="small" />
 								<TableContainer>
@@ -262,6 +256,17 @@ function BureauViewPullRequestDetails(props) {
 					</Grid>
 				</Grid>
 			</Container>
+
+			<Accordion sx={{ mt: 2 }}>
+				<AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="panel1a-content" id="panel1a-header">
+					<Typography>Action Timeline</Typography>
+				</AccordionSummary>
+				<AccordionDetails>
+					<Card>
+						<PullRequestActivityTimeline {...pullRequestDetails} />
+					</Card>
+				</AccordionDetails>
+			</Accordion>
 
 			<Accordion sx={{ mt: 2 }}>
 				<AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="panel1a-content" id="panel1a-header">
