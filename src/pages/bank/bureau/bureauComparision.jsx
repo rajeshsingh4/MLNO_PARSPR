@@ -1,8 +1,8 @@
-import * as React from 'react';
-import { DataGrid, gridClasses } from '@mui/x-data-grid';
-import Button from '@mui/material/Button';
+import { useState, useEffect } from 'react';
+// import { DataGrid, gridClasses } from '@mui/x-data-grid';
+// import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
-import { useNavigate } from 'react-router-dom';
+// import { useNavigate } from 'react-router-dom';
 import FileMasterListService from '@/utils/services/files.services';
 import Container from '@mui/material/Container';
 import Breadcrumbs from '@mui/material/Breadcrumbs';
@@ -17,11 +17,11 @@ import ChartPie from './Chart';
 import CardHeader from '@/components/cardHeader';
 
 function BureauComparision() {
-	const [bureauList, setBureauList] = React.useState([]);
-	const [fileList, setFileList] = React.useState([]);
-	const [selectedBureau, setSelectedBureau] = React.useState([]);
-	const [fileListLoader, setFileListLoader] = React.useState(false);
-	const [fileListError, setFileListError] = React.useState(false);
+	const [bureauList, setBureauList] = useState([]);
+	const [fileList, setFileList] = useState([]);
+	const [selectedBureau, setSelectedBureau] = useState([]);
+	const [fileListLoader, setFileListLoader] = useState(false);
+	const [fileListError, setFileListError] = useState(false);
 
 	const setBureauGroupfun = (bureauDetails) => {
 		const uniqueBureauData = [...new Map(bureauDetails.map((item) => [item.BureauName, item])).values()];
@@ -41,7 +41,7 @@ function BureauComparision() {
 		}
 	};
 
-	React.useEffect(() => {
+	useEffect(() => {
 		getBureauComparisonList();
 	}, []);
 

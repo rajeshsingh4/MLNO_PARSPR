@@ -1,9 +1,9 @@
 import React from 'react';
 import { DataGrid } from '@mui/x-data-grid';
 import IconButton from '@mui/material/IconButton';
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
+// import Menu from '@mui/material/Menu';
+// import MenuItem from '@mui/material/MenuItem';
+// import MoreVertIcon from '@mui/icons-material/MoreVert';
 import Chip from '@mui/material/Chip';
 import Loader from '@/components/loader';
 import Breadcrumbs from '@mui/material/Breadcrumbs';
@@ -19,7 +19,7 @@ import PullRequestService from '@/utils/services/pull-request.service';
 import { actionListMap, modeLsitMap, pullRequestStatusColorMap, pullRequestStatusMap } from '@/utils/bureaumappings';
 import BankPullRequestConfirmationDialog from './BankPullRequestConfirmation';
 
-function BankPullRequestList(props) {
+function BankPullRequestList() {
 	const [pullRequestLoader, setPullRequestLoader] = React.useState(false);
 	const [pullRequestListError, setPullRequestListError] = React.useState(false);
 	const [pullRequestList, setPullRequestList] = React.useState([]);

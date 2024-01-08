@@ -1,8 +1,9 @@
-import * as React from 'react';
+import { useState } from 'react';
 import { DataGrid } from '@mui/x-data-grid';
 
 export function FileTATReportCardDetails(props) {
-	const [fileList] = React.useState(props.details.cardData);
+	const { details } = props;
+	const [fileList] = useState(details.cardData);
 
 	if (!fileList || fileList.length === 0) {
 		return <>There are no cards present</>;
@@ -27,7 +28,7 @@ export function FileTATReportCardDetails(props) {
 			'Courier_TAT_Extra_Days_Passed',
 		];
 
-		listKey.forEach((key, i) => {
+		listKey.forEach((key) => {
 			const baseFieldObj = {
 				field: key,
 				headerName: key.split('_').join(' '),

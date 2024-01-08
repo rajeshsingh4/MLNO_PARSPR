@@ -12,7 +12,7 @@ import Card from '@mui/material/Card';
 import CardTrackingService from '@/utils/services/card.service';
 import CreatePullRequestForm from './CreatePullRequestForm';
 
-function BankCreatePullRequestList(props) {
+function BankCreatePullRequestList() {
 	const [cardList, setCardList] = React.useState([]);
 	const [cardListLoader, setCardListLoader] = React.useState(false);
 	const [cardListError, setCardListError] = React.useState(false);

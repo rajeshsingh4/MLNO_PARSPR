@@ -1,4 +1,4 @@
-import Typography from '@mui/material/Typography';
+// import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Container from '@mui/material/Container';
@@ -7,7 +7,7 @@ import Container from '@mui/material/Container';
 import logo from '@/assets/images/logo/png/mlnologo.png';
 
 import LoggedUser from './loggedUser';
-import SearchBar from './searchBar';
+// import SearchBar from './searchBar';
 
 function MainHeader() {
 	return (

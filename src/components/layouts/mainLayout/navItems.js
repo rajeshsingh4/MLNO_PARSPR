@@ -3,11 +3,11 @@ import { v4 as uuid } from 'uuid';
 import GridViewOutlinedIcon from '@mui/icons-material/GridViewOutlined';
 import BarChartOutlinedIcon from '@mui/icons-material/BarChartOutlined';
 import InventoryOutlinedIcon from '@mui/icons-material/InventoryOutlined';
-import PaletteOutlinedIcon from '@mui/icons-material/PaletteOutlined';
+// import PaletteOutlinedIcon from '@mui/icons-material/PaletteOutlined';
 import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
 import AutoStoriesOutlinedIcon from '@mui/icons-material/AutoStoriesOutlined';
-import WidgetsOutlinedIcon from '@mui/icons-material/WidgetsOutlined';
-import WebOutlinedIcon from '@mui/icons-material/WebOutlined';
+// import WidgetsOutlinedIcon from '@mui/icons-material/WidgetsOutlined';
+// import WebOutlinedIcon from '@mui/icons-material/WebOutlined';
 
 /**
  * @example

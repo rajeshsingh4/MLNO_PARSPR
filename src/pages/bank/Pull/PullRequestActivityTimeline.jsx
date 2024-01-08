@@ -16,6 +16,7 @@ import PullRequestLogService from '@/utils/services/pull-request-log.service';
 import getJSONDiffValue from '@/utils/helpers/getJSONDiff';
 
 export default function PullRequestActivityTimeline(props) {
+	const { id } = props;
 	const [pullRequestActivityLoader, setCardActivityLoader] = React.useState(false);
 	const [pullRequestActivityError, setPullRequestActivityError] = React.useState(false);
 	const [pullRequestActivityLogs, setPullRequestActivityLogs] = React.useState(null);
@@ -24,7 +25,7 @@ export default function PullRequestActivityTimeline(props) {
 		setCardActivityLoader(true);
 		try {
 			const pullrequestTimelineLogs = await PullRequestLogService.getPullRequestLogsListByQueryParams(
-				`pullRequestId=${props.id}`,
+				`pullRequestId=${id}`,
 			);
 			setPullRequestActivityLogs(pullrequestTimelineLogs.data);
 		} catch (err) {

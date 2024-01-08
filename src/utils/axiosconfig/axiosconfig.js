@@ -1,5 +1,6 @@
 import axios from 'axios';
 import authHeader from '@/utils/services/auth-header';
+import AuthService from '@/utils/services/auth.service';
 
 const { VITE_REACT_APP_URL } = import.meta.env;
 
@@ -13,10 +14,7 @@ AxiosInstance.interceptors.response.use(
 	(error) => {
 		if (error.response.status === 403) {
 			console.log(error.message);
-			const navigateTo = window.localStorage.getItem('navigateTo');
-			window.localStorage.removeItem('user');
-			window.localStorage.removeItem('navigateTo');
-			window.location.replace(navigateTo);
+			AuthService.logout();
 		}
 	},
 );

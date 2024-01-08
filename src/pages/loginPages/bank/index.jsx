@@ -1,5 +1,5 @@
-import { useState, useRef } from 'react';
-import { Link as RouterLink, useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+import { Link as RouterLink } from 'react-router-dom';
 
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
@@ -91,15 +91,11 @@ function LoginBank() {
 }
 
 function LoginForm() {
-	const navigate = useNavigate();
 	const [isLoading, setIsLoading] = useState(false);
 	const [username, setUsername] = useState('');
 	const [password, setPassword] = useState('');
 	const [loading, setLoading] = useState(false);
 	const [message, setMessage] = useState('');
-
-	const form = useRef();
-	const checkBtn = useRef();
 
 	const onChangeUsername = (e) => {
 		const username = e.target.value;
@@ -117,8 +113,6 @@ function LoginForm() {
 		setMessage('');
 		setLoading(true);
 
-		// form.current.validateAll();
-
 		AuthService.login(username, password).then(
 			() => {
 				window.location.replace('/');
@@ -135,15 +129,6 @@ function LoginForm() {
 		);
 	};
 
-	const handleSubmit = async (e) => {
-		e.preventDefault();
-		console.log('submit');
-		setIsLoading(true);
-		setTimeout(() => {
-			setIsLoading(false);
-			navigate('/');
-		}, 1000);
-	};
 	return (
 		<form onSubmit={handleLogin}>
 			{message && (

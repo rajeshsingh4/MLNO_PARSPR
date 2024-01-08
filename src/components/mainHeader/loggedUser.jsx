@@ -18,10 +18,10 @@ import Badge from '@mui/material/Badge';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Person2OutlinedIcon from '@mui/icons-material/Person2Outlined';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
-import LockPersonOutlinedIcon from '@mui/icons-material/LockPersonOutlined';
+// import LockPersonOutlinedIcon from '@mui/icons-material/LockPersonOutlined';
 import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
-import PaymentOutlinedIcon from '@mui/icons-material/PaymentOutlined';
-import SummarizeOutlinedIcon from '@mui/icons-material/SummarizeOutlined';
+// import PaymentOutlinedIcon from '@mui/icons-material/PaymentOutlined';
+// import SummarizeOutlinedIcon from '@mui/icons-material/SummarizeOutlined';
 import NotificationsNoneOutlinedIcon from '@mui/icons-material/NotificationsNoneOutlined';
 import DraftsOutlinedIcon from '@mui/icons-material/DraftsOutlined';
 import TaskOutlinedIcon from '@mui/icons-material/TaskOutlined';
@@ -112,7 +112,7 @@ function LoggedUser() {
 								textTransform: 'capitalize',
 							}}
 						>
-							{loggedInUser.username}
+							{loggedInUser?.username}
 						</Typography>
 						<ExpandMoreIcon
 							fontSize="small"
@@ -129,22 +129,8 @@ function LoggedUser() {
 }
 
 function UserMenu({ handleClose, loggedInUser }) {
-	const navigate = useNavigate();
-	const [loading, setLoading] = useState(false);
-	const [message, setMessage] = useState('');
+	const handleLogout = () => AuthService.logout();
 
-	const handleLogout = () => {
-		AuthService.logout().then(
-			() => {
-				navigate('/login/bank');
-				window.location.reload();
-			},
-			(error) => {
-				setLoading(false);
-				setMessage(error);
-			},
-		);
-	};
 	return (
 		<MenuList
 			sx={{
@@ -156,10 +142,10 @@ function UserMenu({ handleClose, loggedInUser }) {
 		>
 			<Stack px={3}>
 				<Typography variant="subtitle1" textAlign="center">
-					User Name : {loggedInUser.username}
+					User Name : {loggedInUser?.username}
 				</Typography>
 				<Typography variant="subtitle2" textAlign="center">
-					Role : {loggedInUser.roles.join(', ').replaceAll('ROLE_', '')}
+					Role : {loggedInUser?.roles.join(', ').replaceAll('ROLE_', '')}
 				</Typography>
 			</Stack>
 			<Divider
