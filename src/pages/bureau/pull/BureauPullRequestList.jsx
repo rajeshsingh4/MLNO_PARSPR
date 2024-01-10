@@ -92,6 +92,7 @@ function BureauPullRequestList(props) {
 				field: key,
 				headerName: key,
 				description: key, // shows as tooltip
+				hideable: true, // user can show hide the column
 				sortable: true,
 				width: 200,
 				editable: false,
@@ -100,6 +101,7 @@ function BureauPullRequestList(props) {
 				basicColumnFields.headerName = 'S. No.';
 				basicColumnFields.description = 'S. No.';
 				basicColumnFields.width = 80;
+				basicColumnFields.hideable = false;
 			}
 			if (key === 'action') {
 				basicColumnFields.headerName = 'Type';
@@ -146,6 +148,7 @@ function BureauPullRequestList(props) {
 				basicColumnFields.headerName = 'Actions';
 				basicColumnFields.description = 'Actions';
 				basicColumnFields.sortable = false;
+				basicColumnFields.hideable = false;
 				basicColumnFields.renderCell = (params) => (
 					<>
 						<IconButton

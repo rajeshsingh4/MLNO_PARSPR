@@ -104,6 +104,28 @@ export const breadcrumbNameMap = {
 	'/bureau-pull-request/view/:id': 'View Pull Request',
 };
 
+export const bureauStatusMap = {
+	0: 'Receive',
+	1: 'Complete',
+	2: 'In-Progress',
+	3: 'Sent to Courier',
+	4: 'Archive',
+	5: 'Abort',
+	6: 'Delete',
+};
+
+export const courierStatusMap = {
+	0: 'Received',
+	1: 'Completed',
+	2: 'In-Transit',
+	3: 'Delivered',
+	4: 'Archived',
+	5: 'Dispatched',
+	6: 'Lost',
+	7: 'Returned to bank',
+	8: 'Re-attempt delivery',
+};
+
 export const pullRequestStatusMap = {
 	0: 'Create',
 	1: 'Complete',

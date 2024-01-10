@@ -31,21 +31,22 @@ const LandingPage = withLazyLoadably(lazy(() => import('@/pages/loginPages/landi
 // const SignupSplitPage = withLazyLoadably(lazy(() => import('@/pages/signupPages/signupSplit')));
 // const SignupSimplePage = withLazyLoadably(lazy(() => import('@/pages/signupPages/signupSimple')));
 // const SignupPage = withLazyLoadably(lazy(() => import('@/pages/signupPages/signup')));
-const Page403 = withLazyLoadably(lazy(() => import('@/pages/errorPages/403')));
-const Page500 = withLazyLoadably(lazy(() => import('@/pages/errorPages/500')));
-const Page503 = withLazyLoadably(lazy(() => import('@/pages/errorPages/503')));
-const Page505 = withLazyLoadably(lazy(() => import('@/pages/errorPages/505')));
+// const Page403 = withLazyLoadably(lazy(() => import('@/pages/errorPages/403')));
+// const Page500 = withLazyLoadably(lazy(() => import('@/pages/errorPages/500')));
+// const Page503 = withLazyLoadably(lazy(() => import('@/pages/errorPages/503')));
+// const Page505 = withLazyLoadably(lazy(() => import('@/pages/errorPages/505')));
 // const Pricing1Page = withLazyLoadably(lazy(() => import('@/pages/pricingPages/pricing1')));
 // const Pricing2Page = withLazyLoadably(lazy(() => import('@/pages/pricingPages/pricing2')));
 const EditProfilePage = withLazyLoadably(lazy(() => import('@/pages/editProfile')));
-const NotificationsPage = withLazyLoadably(lazy(() => import('@/pages/notificationsPage')));
-const WIPPage = withLazyLoadably(lazy(() => import('@/pages/wip')));
+// const NotificationsPage = withLazyLoadably(lazy(() => import('@/pages/notificationsPage')));
+// const WIPPage = withLazyLoadably(lazy(() => import('@/pages/wip')));
 // const SamplePage = withLazyLoadably(lazy(() => import('@/pages/sample')));
 // const ThemeTypographyPage = withLazyLoadably(lazy(() => import('@/pages/themePages/themeTypography')));
 // const ThemeColorsPage = withLazyLoadably(lazy(() => import('@/pages/themePages/themeColors')));
 // const ThemeShadowPage = withLazyLoadably(lazy(() => import('@/pages/themePages/themeShadow')));
 
 const FileWiseReportPage = withLazyLoadably(lazy(() => import('@/pages/bank/bureau/fileWiseReport')));
+const CardTracksPage = withLazyLoadably(lazy(() => import('@/pages/bank/card/CardTracks')));
 const FileTATReportPage = withLazyLoadably(lazy(() => import('@/pages/bank/bureau/FileTATReport')));
 const BureauComparisionPage = withLazyLoadably(lazy(() => import('@/pages/bank/bureau/bureauComparision')));
 
@@ -63,14 +64,17 @@ const getBankRoutes = () => (
 		<Route index element={<Dashboard1Page />} />
 		<Route path="dashboard" element={<Dashboard1Page />} />
 		<Route path="bureau">
-			<Route path="filewisereport" element={<FileWiseReportPage />} />
+			<Route path="filewisereport">
+				<Route index element={<FileWiseReportPage />} />
+				<Route path=":id" element={<CardTracksPage />} />
+			</Route>
 			<Route path="filetatreport" element={<FileTATReportPage />} />
 			<Route path="comparision" element={<BureauComparisionPage />} />
 			<Route path="pull">
-				{/* <Route index path="dashboard" element={<h1>Dashboard for Bank to see bureau(s) pull requests</h1>} /> */}
+				<Route index path="dashboard" element={<h1>Dashboard for Bank to see bureau(s) pull requests</h1>} />
 				{/* <Route path="create" element={<h1>Create Pull Requests option for bank to a bureau </h1>} /> */}
-				<Route path="list" element={<BureauPullRequestList />} />
-				<Route path="view/:id" element={<BureauViewPullRequestDetails />} />
+				{/* <Route path="list" element={<BureauPullRequestList />} /> */}
+				{/* <Route path="view/:id" element={<BureauViewPullRequestDetails />} /> */}
 			</Route>
 		</Route>
 		<Route path="pull">

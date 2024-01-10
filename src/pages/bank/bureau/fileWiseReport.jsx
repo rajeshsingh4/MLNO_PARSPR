@@ -42,7 +42,7 @@ function FileWiseReport() {
 	}
 
 	const viewFileDetails = (fileId, cardData) => {
-		navigate(`/files/${fileId}`, { state: cardData });
+		navigate(`/bank/bureau/filewisereport/${fileId}`, { state: cardData });
 	};
 
 	const getColumnMapping = (row) => {
@@ -50,13 +50,25 @@ function FileWiseReport() {
 			return [];
 		}
 		const columns = [];
-		const hiddenColumns = ['createdAt', 'updatedAt', 'FileAttribute'];
+		const hiddenColumns = [
+			'createdAt',
+			'updatedAt',
+			'FileAttribute',
+			'courieroutsidetat_list',
+			'courieroutsidetat_listData',
+			'courierwithintat_listData',
+			'bureauoutsidetat_list',
+			'bureauoutwip_list',
+			'bureauoutsidetat_listData',
+			'bureauwithintat_listData',
+		];
 		const rowFieldKeys = Object.keys(row);
 		rowFieldKeys.forEach((key) => {
 			const basicColumnFields = {
 				field: key,
 				headerName: key,
 				description: key, // shows as tooltip
+				hideable: true, // user can show hide the column
 				sortable: true,
 				width: 200,
 				editable: false,
@@ -65,10 +77,12 @@ function FileWiseReport() {
 				basicColumnFields.headerName = 'S. No.';
 				basicColumnFields.description = 'S. No.';
 				basicColumnFields.width = 80;
+				basicColumnFields.hideable = false;
 			}
 			if (key === 'fileName') {
 				basicColumnFields.headerName = 'File Name';
 				basicColumnFields.description = 'File Name';
+				basicColumnFields.hideable = false;
 			}
 			if (key === 'CuffOffTime') {
 				basicColumnFields.headerName = 'Cuff Off Time';
@@ -84,6 +98,7 @@ function FileWiseReport() {
 				basicColumnFields.headerName = 'Action';
 				basicColumnFields.description = 'Action';
 				basicColumnFields.sortable = false;
+				basicColumnFields.hideable = false;
 				basicColumnFields.renderCell = (params) => (
 					<Button
 						variant="contained"

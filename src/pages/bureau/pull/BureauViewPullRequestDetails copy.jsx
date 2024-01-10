@@ -87,6 +87,7 @@ function BureauViewPullRequestDetails(props) {
 				field: key,
 				headerName: key.split('_').join(' '),
 				description: key.split('_').join(' '), // shows as tooltip
+				hideable: true, // user can show hide the column
 				sortable: true,
 				width: 200,
 				editable: false,
@@ -95,6 +96,7 @@ function BureauViewPullRequestDetails(props) {
 				basicColumnFields.headerName = 'S. No.';
 				basicColumnFields.description = 'S. No.';
 				basicColumnFields.width = 80;
+				basicColumnFields.hideable = false;
 			}
 			if (fieldToShow.includes(key)) {
 				fieldList.push(basicColumnFields);

@@ -83,27 +83,20 @@ export const BANK_NAV_LINKS_CONFIG = [
 		title: 'Bureau Pull Request',
 		Icon: AutoStoriesOutlinedIcon,
 		menuChildren: [
-			// {
-			// 	title: 'Dashboard',
-			// 	href: '/bank/bureau/pull/dashboard',
-			// },
+			{
+				title: 'Dashboard',
+				href: '/bank/bureau/pull/dashboard',
+			},
 			// {
 			// 	title: 'Create',
 			// 	href: '/bank/bureau/pull/create',
 			// },
-			{
-				title: 'Manage',
-				href: '/bank/bureau/pull/list',
-			},
+			// {
+			// 	title: 'Manage',
+			// 	href: '/bank/bureau/pull/list',
+			// },
 		],
 	},
-	// {
-	// 	id: uuid(),
-	// 	type: 'item',
-	// 	title: 'Profile',
-	// 	Icon: AccountCircleOutlinedIcon,
-	// 	href: '/user/profile',
-	// },
 ];
 
 export const BUREAU_NAV_LINKS_CONFIG = [

@@ -13,7 +13,7 @@ import ClearIcon from '@mui/icons-material/Clear';
 import IconButton from '@mui/material/IconButton';
 import Loader from '@/components/loader';
 import FileMasterListService from '@/utils/services/files.services';
-import { FileTATReportCardDetails } from './FileTATReportCardDetails';
+import FileTATReportCardDetails from './FileTATReportCardDetails';
 
 export default function FileTATReport() {
 	const [fileTatLoader, setFileListLoader] = React.useState(false);
@@ -91,6 +91,7 @@ export default function FileTATReport() {
 				field: key,
 				headerName: key,
 				description: key, // shows as tooltip
+				hideable: true, // user can show hide the column
 				sortable: true,
 				width: 200,
 				editable: false,
@@ -99,10 +100,12 @@ export default function FileTATReport() {
 				basicColumnFields.headerName = 'S. No.';
 				basicColumnFields.description = 'S. No.';
 				basicColumnFields.width = 80;
+				basicColumnFields.hideable = false;
 			}
 			if (key === 'fileName') {
 				basicColumnFields.headerName = 'File Name';
 				basicColumnFields.description = 'File Name';
+				basicColumnFields.hideable = false;
 			}
 			if (key === 'totalCards') {
 				basicColumnFields.headerName = 'Records';

@@ -1,5 +1,5 @@
 import React from 'react';
-import { withStyles } from '@mui/styles';
+// import { withStyles } from '@mui/styles';
 import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
@@ -11,8 +11,8 @@ import IconButton from '@mui/material/IconButton';
 import EditIcon from '@mui/icons-material/Edit';
 import ClearIcon from '@mui/icons-material/Clear';
 import MUIDataTable from 'mui-datatables';
-import CardTrackingService from '@/utils/services/card.service';
 import CardActivity from './CardActivity';
+import CardTrackingService from '@/utils/services/card.service';
 
 const styles = () => ({
 	root: {
@@ -314,4 +314,5 @@ class CardTracks extends React.Component {
 		);
 	}
 }
-export default withStyles(styles)(CardTracks);
+// export default withStyles(styles)(CardTracks);
+export default CardTracks;

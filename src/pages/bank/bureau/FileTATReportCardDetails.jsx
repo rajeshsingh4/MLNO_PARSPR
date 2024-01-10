@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { DataGrid } from '@mui/x-data-grid';
 
-export function FileTATReportCardDetails(props) {
+export default function FileTATReportCardDetails(props) {
 	const { details } = props;
 	const [fileList] = useState(details.cardData);
 
@@ -33,10 +33,14 @@ export function FileTATReportCardDetails(props) {
 				field: key,
 				headerName: key.split('_').join(' '),
 				description: key.split('_').join(' '), // shows as tooltip
+				hideable: true, // user can show hide the column
 				sortable: true,
 				width: 200,
 				editable: false,
 			};
+			if (key === 'trackingId') {
+				baseFieldObj.hideable = false;
+			}
 			if (fieldToShow.includes(key)) {
 				fieldList.push(baseFieldObj);
 			}

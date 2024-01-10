@@ -85,6 +85,7 @@ function BankPullRequestList() {
 				field: key,
 				headerName: key,
 				description: key, // shows as tooltip
+				hideable: true, // user can show hide the column
 				sortable: true,
 				width: 200,
 				editable: false,
@@ -93,6 +94,7 @@ function BankPullRequestList() {
 				basicColumnFields.headerName = 'S. No.';
 				basicColumnFields.description = 'S. No.';
 				basicColumnFields.width = 80;
+				basicColumnFields.hideable = false;
 			}
 			if (key === 'action') {
 				basicColumnFields.headerName = 'Action Type';
@@ -151,6 +153,7 @@ function BankPullRequestList() {
 				basicColumnFields.headerName = 'Action';
 				basicColumnFields.description = 'Action';
 				basicColumnFields.sortable = false;
+				basicColumnFields.hideable = false;
 				basicColumnFields.renderCell = (params) => (
 					<>
 						<IconButton
