@@ -24,7 +24,7 @@ const login = (username, password) =>
 
 const logout = () => {
 	window.localStorage.removeItem('user');
-	const navigateTo = window.localStorage.getItem('navigateTo') || '/login/bank';
+	const navigateTo = window.localStorage.getItem('navigateTo') || '/login/landing';
 	window.localStorage.removeItem('navigateTo');
 	window.location.replace(navigateTo);
 };

@@ -11,7 +11,7 @@ import Fab from '@mui/material/Fab';
 // Icons
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 
-import navItems from './navItems';
+import { BANK_NAV_LINKS_CONFIG, BUREAU_NAV_LINKS_CONFIG } from './navItems';
 
 // Components
 import Footer from '@/components/footer';
@@ -32,13 +32,13 @@ function FabButton() {
 		</Fab>
 	);
 }
-function MainLayout({ container = 'lg', pb = true }) {
+function MainLayout({ container = 'lg', pb = true, loginType }) {
 	const location = useLocation();
 	const { pageTransitions } = useSelector(selectThemeConfig);
 
 	return (
 		<Box display="flex" minHeight="100vh" flexDirection="column">
-			<Header />
+			<Header loginType={loginType} />
 			<Container
 				maxWidth={container}
 				component="main"
@@ -63,13 +63,20 @@ function MainLayout({ container = 'lg', pb = true }) {
 	);
 }
 
-function Header() {
+function Header({ loginType }) {
 	const { stickyHeader } = useSelector(selectThemeConfig);
+
+	let navItems = BANK_NAV_LINKS_CONFIG;
+	if (loginType === 'bureau') {
+		navItems = BUREAU_NAV_LINKS_CONFIG;
+	} else if (loginType === 'courier') {
+		navItems = BANK_NAV_LINKS_CONFIG;
+	}
 
 	return (
 		<>
-			<MainHeader />
-			<Navbar navItems={navItems} position={stickyHeader ? 'sticky' : 'static'} />
+			<MainHeader loginType={loginType} />
+			<Navbar navItems={navItems} loginType={loginType} position={stickyHeader ? 'sticky' : 'static'} />
 		</>
 	);
 }

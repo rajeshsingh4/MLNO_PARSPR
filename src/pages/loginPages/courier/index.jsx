@@ -1,6 +1,5 @@
 import { useState } from 'react';
-import { Link as RouterLink, useNavigate } from 'react-router-dom';
-
+import { Link as RouterLink } from 'react-router-dom';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
@@ -8,17 +7,17 @@ import Stack from '@mui/material/Stack';
 import Link from '@mui/material/Link';
 import Card from '@mui/material/Card';
 import Container from '@mui/material/Container';
-// import Button from '@mui/material/Button';
+import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
-// import CircularProgress from '@mui/material/CircularProgress';
-
+import CircularProgress from '@mui/material/CircularProgress';
 import logo from '@/assets/images/logo/png/mlnologo.png';
-// import LoginIcon from '@mui/icons-material/Login';
+import LoginIcon from '@mui/icons-material/Login';
+import AuthService from '@/utils/services/auth.service';
 
 function LoginCourier() {
 	return (
 		<Container>
-			<Card elevation={20} type="none" variant="elevation" sx={{ my: 6 }} hover={false}>
+			<Card elevation={20} type="none" variant="elevation" sx={{ my: 6 }} hover="false">
 				<Grid
 					container
 					spacing={0}
@@ -90,28 +89,63 @@ function LoginCourier() {
 }
 
 function LoginForm() {
-	const navigate = useNavigate();
 	const [isLoading, setIsLoading] = useState(false);
+	const [username, setUsername] = useState('');
+	const [password, setPassword] = useState('');
+	const [loading, setLoading] = useState(false);
+	const [message, setMessage] = useState('');
 
-	const handleSubmit = async (e) => {
-		e.preventDefault();
-		console.log('submit');
-		setIsLoading(true);
-		setTimeout(() => {
-			setIsLoading(false);
-			navigate('/');
-		}, 1000);
+	const onChangeUsername = (e) => {
+		const username = e.target.value;
+		setUsername(username);
 	};
+
+	const onChangePassword = (e) => {
+		const password = e.target.value;
+		setPassword(password);
+	};
+
+	const handleLogin = (e) => {
+		e.preventDefault();
+
+		setMessage('');
+		setLoading(true);
+
+		AuthService.login(username, password).then(
+			() => {
+				window.location.replace('/courier');
+			},
+			(error) => {
+				const resMessage =
+					(error.response && error.response.data && error.response.data.message) ||
+					error.message ||
+					error.toString();
+
+				setLoading(false);
+				setMessage(resMessage);
+			},
+		);
+	};
+
 	return (
-		<form onSubmit={handleSubmit}>
+		<form onSubmit={handleLogin}>
+			{message && (
+				<Stack sx={{ width: '100%' }} spacing={2}>
+					<Alert variant="filled" severity="error">
+						{message}
+					</Alert>
+				</Stack>
+			)}
+
 			<TextField
 				autoFocus
 				color="primary"
-				name="Email"
-				label="Email"
+				name="username"
+				label="Username"
 				margin="normal"
 				variant="outlined"
 				fullWidth
+				onChange={onChangeUsername}
 			/>
 			<TextField
 				color="primary"
@@ -121,10 +155,46 @@ function LoginForm() {
 				label="Password"
 				variant="outlined"
 				fullWidth
+				onChange={onChangePassword}
 			/>
 			<Link to="/resetPassword" component={RouterLink} color="tertiary.main">
 				Forgot password?
 			</Link>
+			<Button
+				sx={{
+					mt: 2,
+					textTransform: 'uppercase',
+					color: 'primary.contrastText',
+					' &:not(:disabled)': {
+						background: (theme) =>
+							`linear-gradient(90deg, ${theme.palette.primary.main} 0%, ${theme.palette.tertiary.main} 100%)`,
+					},
+					'&:hover': {
+						background: (theme) =>
+							`linear-gradient(90deg, ${theme.palette.primary.dark} 0%, ${theme.palette.tertiary.dark} 100%)`,
+					},
+				}}
+				type="submit"
+				variant="contained"
+				disabled={isLoading}
+				endIcon={
+					isLoading ? (
+						<CircularProgress
+							color="secondary"
+							size={25}
+							sx={{
+								my: 'auto',
+							}}
+						/>
+					) : (
+						<LoginIcon />
+					)
+				}
+				fullWidth
+				color="primary"
+			>
+				Sign In
+			</Button>
 		</form>
 	);
 }

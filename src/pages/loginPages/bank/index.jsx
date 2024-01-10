@@ -115,7 +115,7 @@ function LoginForm() {
 
 		AuthService.login(username, password).then(
 			() => {
-				window.location.replace('/');
+				window.location.replace('/bank');
 			},
 			(error) => {
 				const resMessage =
