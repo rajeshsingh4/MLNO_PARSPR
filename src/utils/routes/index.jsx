@@ -49,12 +49,13 @@ const FileWiseReportPage = withLazyLoadably(lazy(() => import('@/pages/bank/bure
 const CardTracksPage = withLazyLoadably(lazy(() => import('@/pages/bank/card/CardTracks')));
 const FileTATReportPage = withLazyLoadably(lazy(() => import('@/pages/bank/bureau/FileTATReport')));
 const BureauComparisionPage = withLazyLoadably(lazy(() => import('@/pages/bank/bureau/bureauComparision')));
+const BureauDashboardPage = withLazyLoadably(lazy(() => import('@/pages/bureau/dashboard/BureauDashboard')));
 
 const BureauPullRequestList = withLazyLoadably(lazy(() => import('@/pages/bureau/pull/BureauPullRequestList')));
 const BureauViewPullRequestDetails = withLazyLoadably(
 	lazy(() => import('@/pages/bureau/pull/BureauViewPullRequestDetails')),
 );
-
+const BankDashboardPage = withLazyLoadably(lazy(() => import('@/pages/bank/dashboard/BankDashboard')));
 const BankPullRequestList = withLazyLoadably(lazy(() => import('@/pages/bank/Pull/BankPullRequestList')));
 const BankCreatePullRequestList = withLazyLoadably(lazy(() => import('@/pages/bank/Pull/BankCreatePullRequestList')));
 const BankViewPullRequestDetails = withLazyLoadably(lazy(() => import('@/pages/bank/Pull/BankViewPullRequestDetails')));
@@ -62,7 +63,7 @@ const BankViewPullRequestDetails = withLazyLoadably(lazy(() => import('@/pages/b
 const getBankRoutes = () => (
 	<Route path="bank">
 		<Route index element={<Dashboard1Page />} />
-		<Route path="dashboard" element={<Dashboard1Page />} />
+		<Route path="dashboard" element={<BankDashboardPage />} />
 		<Route path="bureau">
 			<Route path="filewisereport">
 				<Route index element={<FileWiseReportPage />} />
@@ -88,8 +89,8 @@ const getBankRoutes = () => (
 
 const getBureauRoutes = () => (
 	<Route path="bureau">
-		<Route index element={<Dashboard1Page />} />
-		<Route path="dashboard" element={<Dashboard1Page />} />
+		<Route index element={<BureauDashboardPage />} />
+		<Route path="dashboard" element={<BureauDashboardPage />} />
 		<Route path="pull">
 			<Route index path="dashboard" element={<h1>Dashboard for pull requests to my bureau</h1>} />
 			{/* <Route path="create" element={<h1>Create Pull Requests for bureau</h1>} /> */}

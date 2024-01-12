@@ -1,6 +1,7 @@
 export const AUTH_URL = '/auth/';
 export const USER_DETAILS_URL = '/userdetails';
 export const CHANGE_PASSWORD_URL = '/changepassword';
+export const DASHBOARD_URL = '/dashboard/';
 export const CARD_URL = '/cardtrack/';
 export const FILE_URL = '/fileList/';
 export const BUREAU_URL = '/bureauTAT/';
