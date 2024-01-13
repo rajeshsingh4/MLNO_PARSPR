@@ -122,7 +122,7 @@ function EditProfile() {
 						textTransform: 'uppercase',
 					}}
 				>
-					<Link underline="hover" component={RouterLink} to="/pages/profile">
+					<Link underline="hover" component={RouterLink} to="/user/profile">
 						Profile
 					</Link>
 					<Typography color="text.tertiary">Settings</Typography>

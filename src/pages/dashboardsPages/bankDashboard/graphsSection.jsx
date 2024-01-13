@@ -12,23 +12,24 @@ import Button from '@mui/material/Button';
 
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 
-function GraphsSection() {
+function GraphsSection(props) {
+	const { stackedBarChartConfig, doubleAreaChartConfig } = props;
 	return (
 		<section>
 			<Grid container spacing={3}>
 				<Grid item xs={12} sm={12} md={6}>
-					<BitcoinEarningsSection />
+					<DoubleAreaChartSection doubleAreaChartConfig={doubleAreaChartConfig} />
 				</Grid>
 				<Grid item xs={12} sm={12} md={6}>
 					<Grid container spacing={3}>
 						<Grid item xs={12} sm={12} md={12}>
-							<EtereumWalletSection />
+							<StackedBarChartSection stackedBarChartConfig={stackedBarChartConfig} />
 						</Grid>
 						<Grid item xs={12} sm={6} md={6}>
-							<MaleVisitorsSection />
+							<AreaChartSection1 />
 						</Grid>
 						<Grid item xs={12} sm={6} md={6}>
-							<FemaleVisitorsSection />
+							<AreaChartSection2 />
 						</Grid>
 					</Grid>
 				</Grid>
@@ -53,113 +54,35 @@ function SectionContainer({ children, background }) {
 	);
 }
 
-const bitcoinGraphConfig = {
-	options: {
-		colors: getDefaultChartsColors(3),
-		chart: {
-			toolbar: {
-				show: false,
-			},
-			sparkline: {
-				enabled: true,
-			},
-			parentHeightOffset: 0,
-		},
-		stroke: {
-			width: 2,
-		},
-		markers: {
-			size: 5,
-		},
-		grid: {
-			show: false,
-		},
-		xaxis: {
-			show: false,
-		},
-		tooltip: {
-			enabled: false,
-		},
-		yaxis: {
-			show: false,
-		},
-	},
-	series: [
-		{
-			name: 'series-1',
-			data: [6, 8, 7, 10, 14, 11, 16, 18],
-		},
-		{
-			name: 'series-2',
-			data: [2, 4, 3, 4, 5, 3, 5, 4],
-		},
-	],
-};
-
-function BitcoinEarningsSection() {
-	const counter = useAutoCounter({
-		limiter: 0.0345,
-		increment: 0.001,
-		interval: 10,
-	});
+function DoubleAreaChartSection(props) {
+	const { doubleAreaChartConfig } = props;
+	// const counter = useAutoCounter({
+	// 	limiter: 0.0345,
+	// 	increment: 0.001,
+	// 	interval: 10,
+	// });
 	return (
 		<SectionContainer
 			background={
 				<Chart
-					options={bitcoinGraphConfig.options}
-					series={bitcoinGraphConfig.series}
+					options={doubleAreaChartConfig.options}
+					series={doubleAreaChartConfig.series}
 					type="area"
 					style={{
 						position: 'absolute',
-						bottom: '-10px',
-						left: '-10px',
-						right: '-10px',
+						bottom: '10px',
+						left: '10px',
+						right: '10px',
 					}}
 					width="100%"
 					height="70%"
 				/>
 			}
-		>
-			<Stack
-				spacing={1}
-				direction="column"
-				height="100%"
-				width={{
-					xs: '100%',
-					md: '70%',
-				}}
-				pb={{
-					xs: 30,
-					md: 0,
-				}}
-			>
-				<Typography variant="subtitle1" fontSize={55}>
-					{Math.round(counter * 10000) / 10000}{' '}
-					<Typography variant="subtitle1" component="span">
-						BTC
-					</Typography>
-				</Typography>
-				<Typography variant="subtitle1">BITCOIN EARNINGS</Typography>
-				<Typography variant="body2" color="text.secondary" pb={2}>
-					Curabitur ullamcorper ultricies nisi. Nam eget dui. Etiam rhoncus...
-				</Typography>
-				<Button
-					variant="outlined"
-					size="medium"
-					endIcon={<ChevronRightIcon />}
-					sx={{
-						width: 'fit-content',
-						textTransform: 'uppercase',
-					}}
-				>
-					View Statements
-				</Button>
-			</Stack>
-		</SectionContainer>
+		/>
 	);
 }
 
-const ethereumGraphConfig = {
+const barGraphconfig = {
 	options: {
 		colors: getDefaultChartsColors(2),
 		plotOptions: {
@@ -185,7 +108,7 @@ const ethereumGraphConfig = {
 			categories: [1],
 		},
 		tooltip: {
-			enabled: false,
+			enabled: true,
 		},
 		yaxis: {
 			show: false,
@@ -193,16 +116,21 @@ const ethereumGraphConfig = {
 	},
 	series: [
 		{
-			name: 'series-1',
-			data: [20, 25, 10, 20, 15, 18, 15, 3, 2, 5, 3, 2, 4, 5, 1, 2],
+			name: 'HDFC',
+			data: [5],
 		},
 		{
-			name: 'series-2',
-			data: [10, 30, 45, 30, 25, 15, 10, 4, 3, 2, 5, 2, 3, 2, 4, 5],
+			name: 'IDFC',
+			data: [5],
+		},
+		{
+			name: 'SBI',
+			data: [100],
 		},
 	],
 };
-function EtereumWalletSection() {
+
+function BarChartSection() {
 	const counter = useAutoCounter({
 		limiter: 0.0873,
 		increment: 0.001,
@@ -212,8 +140,8 @@ function EtereumWalletSection() {
 		<SectionContainer
 			background={
 				<Chart
-					options={ethereumGraphConfig.options}
-					series={ethereumGraphConfig.series}
+					options={barGraphconfig.options}
+					series={barGraphconfig.series}
 					type="bar"
 					style={{
 						position: 'absolute',
@@ -253,7 +181,21 @@ function EtereumWalletSection() {
 	);
 }
 
-const maleVisitorsGraphConfig = {
+function StackedBarChartSection(props) {
+	const { stackedBarChartConfig } = props;
+	// const counter = useAutoCounter({
+	// 	limiter: 0.0873,
+	// 	increment: 0.001,
+	// 	interval: 10,
+	// });
+	return (
+		<SectionContainer background={null}>
+			<Chart options={stackedBarChartConfig.options} series={stackedBarChartConfig.series} type="bar" />
+		</SectionContainer>
+	);
+}
+
+const areaChartConfig1 = {
 	options: {
 		colors: getDefaultChartsColors(3),
 		chart: {
@@ -293,7 +235,7 @@ const maleVisitorsGraphConfig = {
 	],
 };
 
-function MaleVisitorsSection() {
+function AreaChartSection1() {
 	const counter = useAutoCounter({
 		limiter: 29931,
 		increment: 1000,
@@ -303,8 +245,8 @@ function MaleVisitorsSection() {
 		<SectionContainer
 			background={
 				<Chart
-					options={maleVisitorsGraphConfig.options}
-					series={maleVisitorsGraphConfig.series}
+					options={areaChartConfig1.options}
+					series={areaChartConfig1.series}
 					type="area"
 					style={{
 						position: 'absolute',
@@ -329,7 +271,7 @@ function MaleVisitorsSection() {
 		</SectionContainer>
 	);
 }
-const femaleVisitorsGraphConfig = {
+const areaChartConfig2 = {
 	options: {
 		colors: getDefaultChartsColors(4),
 		chart: {
@@ -369,7 +311,7 @@ const femaleVisitorsGraphConfig = {
 	],
 };
 
-function FemaleVisitorsSection() {
+function AreaChartSection2() {
 	const counter = useAutoCounter({
 		limiter: 45231,
 		increment: 1000,
@@ -379,8 +321,8 @@ function FemaleVisitorsSection() {
 		<SectionContainer
 			background={
 				<Chart
-					options={femaleVisitorsGraphConfig.options}
-					series={femaleVisitorsGraphConfig.series}
+					options={areaChartConfig2.options}
+					series={areaChartConfig2.series}
 					type="area"
 					style={{
 						position: 'absolute',

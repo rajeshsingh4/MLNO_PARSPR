@@ -13,6 +13,7 @@ import QueryStatsOutlinedIcon from '@mui/icons-material/QueryStatsOutlined';
 import DonutSmallOutlinedIcon from '@mui/icons-material/DonutSmallOutlined';
 import MonetizationOnOutlinedIcon from '@mui/icons-material/MonetizationOnOutlined';
 import AssessmentOutlinedIcon from '@mui/icons-material/AssessmentOutlined';
+import getDefaultChartsColors from '@helpers/getDefaultChartsColors';
 import DashboradService from '@/utils/services/dashboards.service';
 
 function BankDashboardPage() {
@@ -98,6 +99,186 @@ function BankDashboardPage() {
 		return transformedStats;
 	};
 
+	const createBankWiseAreaChartConfig = (stats) => {
+		const getAreaSeries = () => {
+			const series = [];
+			stats.bank.forEach((item) => {
+				const foundSeries = series.find((it) => it.name === item.Bank);
+				if (foundSeries) {
+					foundSeries.data.push(item.total_bank_records);
+				} else {
+					series.push({
+						name: item.Bank,
+						data: [item.total_bank_records],
+					});
+				}
+			});
+			return series;
+		};
+
+		const areaChartConfig = {
+			options: {
+				colors: getDefaultChartsColors(3),
+				chart: {
+					toolbar: {
+						show: false,
+					},
+					sparkline: {
+						enabled: true,
+					},
+					parentHeightOffset: 0,
+				},
+				stroke: {
+					width: 2,
+				},
+				markers: {
+					size: 5,
+				},
+				grid: {
+					show: false,
+				},
+				xaxis: {
+					show: false,
+				},
+				tooltip: {
+					enabled: true,
+				},
+				yaxis: {
+					show: false,
+				},
+			},
+			series: stats && stats.bank ? getAreaSeries() : [],
+		};
+		return areaChartConfig;
+	};
+
+	const createStackBarChartConfig = (stats) => {
+		const stackChartConfig = {
+			options: {
+				chart: {
+					type: 'bar',
+					height: 350,
+					stacked: true,
+					toolbar: {
+						show: false,
+					},
+				},
+				plotOptions: {
+					bar: {
+						horizontal: true,
+						dataLabels: {
+							total: {
+								enabled: false,
+								offsetX: 1,
+								style: {
+									fontSize: '13px',
+									fontWeight: 900,
+								},
+							},
+						},
+					},
+				},
+				stroke: {
+					width: 1,
+					colors: ['#fff'],
+				},
+				title: {
+					text: 'Status',
+				},
+				xaxis: {
+					categories: stats && stats.bank ? [...new Set(stats.bank.map((item) => item.Bank))] : [],
+					labels: {
+						formatter(val) {
+							return val;
+						},
+					},
+					title: {
+						text: undefined,
+					},
+				},
+				yaxis: {
+					title: {
+						text: undefined,
+					},
+				},
+				tooltip: {
+					y: {
+						formatter(val) {
+							return val;
+						},
+					},
+				},
+				fill: {
+					opacity: 1,
+				},
+				legend: {
+					position: 'top',
+					horizontalAlign: 'left',
+					offsetX: 40,
+				},
+			},
+			series: [
+				{
+					name: 'Bureau In-Progress',
+					data:
+						stats && stats.bank
+							? stats.bank
+									.map((item) => {
+										if (item.Bureau_Status !== 1) {
+											return item.total_bank_records;
+										}
+										return null;
+									})
+									.filter((it) => it)
+							: [],
+				},
+				{
+					name: 'Bureau Completed',
+					data:
+						stats && stats.bank
+							? stats.bank
+									.map((item) => {
+										if (item.Bureau_Status === 1) {
+											return item.total_bank_records;
+										}
+										return null;
+									})
+									.filter((it) => it)
+							: [],
+				},
+				{
+					name: 'Courier In-Progress',
+					data:
+						stats && stats.bank
+							? stats.bank
+									.map((item) => {
+										if (item.Courier_Status !== 1) {
+											return item.total_bank_records;
+										}
+										return null;
+									})
+									.filter((it) => it)
+							: [],
+				},
+				{
+					name: 'Courier Completed',
+					data:
+						stats && stats.bank
+							? stats.bank
+									.map((item) => {
+										if (item.Courier_Status === 1) {
+											return item.total_bank_records;
+										}
+										return null;
+									})
+									.filter((it) => it)
+							: [],
+				},
+			],
+		};
+		return stackChartConfig;
+	};
+
 	return (
 		<>
 			<PageHeader title="Dashboard">
@@ -107,14 +288,17 @@ function BankDashboardPage() {
 						textTransform: 'uppercase',
 					}}
 				>
-					<Link underline="hover" href="#!">
+					<Link underline="hover" href="/">
 						Dashboard
 					</Link>
 				</Breadcrumbs>
 			</PageHeader>
 			<Stack spacing={3}>
 				<StatsSection STATS_DATA={transformStatsData(statsData)} />
-				<GraphsSection />
+				<GraphsSection
+					doubleAreaChartConfig={createBankWiseAreaChartConfig(statsData)}
+					stackedBarChartConfig={createStackBarChartConfig(statsData)}
+				/>
 				<section>
 					<Grid container spacing={3}>
 						<Grid item xs={12} md={12} lg={6}>

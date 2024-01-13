@@ -154,7 +154,7 @@ function UserMenu({ handleClose, loggedInUser }) {
 					my: 1,
 				}}
 			/>
-			<MenuItem onClick={handleClose} to="/pages/notifications" component={RouterLink}>
+			{/* <MenuItem onClick={handleClose} to="/pages/notifications" component={RouterLink}>
 				<ListItemIcon>
 					<NotificationsNoneOutlinedIcon fontSize="small" />
 				</ListItemIcon>
@@ -184,7 +184,7 @@ function UserMenu({ handleClose, loggedInUser }) {
 					borderColor: 'primary.light',
 					my: 1,
 				}}
-			/>
+			/> */}
 			<MenuItem onClick={handleClose} to="/user/profile" component={RouterLink}>
 				<ListItemIcon>
 					<Person2OutlinedIcon fontSize="small" />
@@ -192,12 +192,12 @@ function UserMenu({ handleClose, loggedInUser }) {
 				Profile
 			</MenuItem>
 
-			<MenuItem onClick={handleClose} to="/pages/settings" component={RouterLink}>
+			{/* <MenuItem onClick={handleClose} to="/pages/settings" component={RouterLink}>
 				<ListItemIcon>
 					<SettingsOutlinedIcon fontSize="small" />
 				</ListItemIcon>
 				Account Settings
-			</MenuItem>
+			</MenuItem> */}
 			<Divider
 				sx={{
 					borderColor: 'primary.light',
@@ -208,7 +208,7 @@ function UserMenu({ handleClose, loggedInUser }) {
 				<ListItemIcon>
 					<ExitToAppIcon fontSize="small" />
 				</ListItemIcon>
-				Logout 1
+				Logout
 			</MenuItem>
 		</MenuList>
 	);

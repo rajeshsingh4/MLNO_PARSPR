@@ -247,7 +247,7 @@ export default function FileTATReport() {
 						textTransform: 'uppercase',
 					}}
 				>
-					<Link underline="hover" href="/dashboards/dashboard1">
+					<Link underline="hover" href="/">
 						Dashboard
 					</Link>
 					<Typography color="text.tertiary">bureau</Typography>

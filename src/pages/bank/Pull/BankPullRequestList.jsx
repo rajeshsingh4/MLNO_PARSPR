@@ -195,7 +195,7 @@ function BankPullRequestList() {
 						textTransform: 'uppercase',
 					}}
 				>
-					<Link underline="hover" href="/dashboards/dashboard1">
+					<Link underline="hover" href="/">
 						Dashboard
 					</Link>
 					<Typography color="text.tertiary">Bank</Typography>

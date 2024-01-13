@@ -12,7 +12,7 @@ const AxiosInstance = axios.create({
 AxiosInstance.interceptors.response.use(
 	(response) => response,
 	(error) => {
-		if (error.response.status === 403 || error.message === 'Network Error') {
+		if (error.response.status === 403 || error.response.status === 401 || error.message === 'Network Error') {
 			console.log(error.message);
 			AuthService.logout();
 		}
