@@ -15,6 +15,7 @@ import AuditLogService from '@/utils/services/auditlog.service';
 import getJSONDiffValue from '@/utils/helpers/getJSONDiff';
 
 export default function CardActivity(props) {
+	const { id } = props;
 	const [cardActivityLoader, setCardActivityLoader] = React.useState(false);
 	const [cardActivityError, setcardActivityError] = React.useState(false);
 	const [cardActivityLogs, setCardActivityLogs] = React.useState(null);
@@ -22,7 +23,7 @@ export default function CardActivity(props) {
 	const getCardTrackingLogs = async () => {
 		setCardActivityLoader(true);
 		try {
-			const activityLogsForCard = await AuditLogService.getCardAuditLogList(props.id);
+			const activityLogsForCard = await AuditLogService.getCardAuditLogList(id);
 			setCardActivityLogs(activityLogsForCard.data);
 		} catch (err) {
 			console.error('Error fetching list of activity logs ', err);
@@ -33,12 +34,12 @@ export default function CardActivity(props) {
 	};
 
 	React.useEffect(() => {
-		if (props.id) {
+		if (id) {
 			getCardTrackingLogs();
 		}
-	}, [props.id]);
+	}, [id]);
 
-	if (!props.id) {
+	if (!id) {
 		// show error message
 		return (
 			<Alert severity="info" color="secondary">

@@ -62,7 +62,7 @@ const BankViewPullRequestDetails = withLazyLoadably(lazy(() => import('@/pages/b
 
 const getBankRoutes = () => (
 	<Route path="bank">
-		<Route index element={<Dashboard1Page />} />
+		<Route index element={<BankDashboardPage />} />
 		<Route path="dashboard" element={<BankDashboardPage />} />
 		<Route path="bureau">
 			<Route path="filewisereport">
@@ -170,10 +170,13 @@ function Router() {
 	const navigateTo = localStorage.getItem('navigateTo') || '/login/landing';
 
 	let loginType = 'bank';
+	let IndexRouteElement = <BankDashboardPage />;
 	if (navigateTo === '/login/bureau') {
 		loginType = 'bureau';
+		IndexRouteElement = <BureauDashboardPage />;
 	} else if (navigateTo === '/login/courier') {
 		loginType = 'courier';
+		IndexRouteElement = <BankDashboardPage />;
 	}
 
 	return (
@@ -185,10 +188,7 @@ function Router() {
 						element={<MainLayout loginType={loginType} menuRoles={menuRole} />}
 						menuRoles={menuRole}
 					>
-						{/* <Route index element={<Dashboard1Page />} />
-						<Route path="dashboards/">
-							<Route path="dashboard1" element={<Dashboard1Page />} />
-						</Route> */}
+						<Route index element={IndexRouteElement} />
 						<Route path="user/">
 							<Route path="profile" element={<EditProfilePage />} />
 						</Route>
@@ -196,28 +196,28 @@ function Router() {
 						{loginType === 'bank' && getBankRoutes()}
 						{loginType === 'bureau' && getBureauRoutes()}
 						{loginType === 'courier' && getBankRoutes()}
-						{/* <Route path="pages/">
-							<Route path="settings" element={<EditProfilePage />} />
-							<Route path="notifications" element={<NotificationsPage />} />
-							<Route path="pricing/">
-								<Route path="pricing1" element={<Pricing1Page />} />
-								<Route path="pricing2" element={<Pricing2Page />} />
-							</Route>
-							<Route path="error/">
-								<Route path="404" element={<Page404 />} />
-								<Route path="403" element={<Page403 />} />
-								<Route path="500" element={<Page500 />} />
-								<Route path="503" element={<Page503 />} />
-								<Route path="505" element={<Page505 />} />
-							</Route>
-						</Route> */}
 					</Route>
-					{/* <Route path="/" element={<MainLayout container={false} pb={false} />}>
+					<Route path="*" element={<Page404 />} />
+					{/* <Route path="pages/">
+						<Route path="settings" element={<EditProfilePage />} />
+						<Route path="notifications" element={<NotificationsPage />} />
+						<Route path="pricing/">
+							<Route path="pricing1" element={<Pricing1Page />} />
+							<Route path="pricing2" element={<Pricing2Page />} />
+						</Route>
+						<Route path="error/">
+							<Route path="404" element={<Page404 />} />
+							<Route path="403" element={<Page403 />} />
+							<Route path="500" element={<Page500 />} />
+							<Route path="503" element={<Page503 />} />
+							<Route path="505" element={<Page505 />} />
+						</Route>
+					</Route>
+					<Route path="/" element={<MainLayout container={false} pb={false} />}>
 						<Route path="pages/">
 							<Route path="wip" element={<WIPPage />} />
 						</Route>
 					</Route> */}
-					<Route path="*" element={<Page404 />} />
 				</Routes>
 			</ScrollToTopOnRouteChange>
 		</BrowserRouter>

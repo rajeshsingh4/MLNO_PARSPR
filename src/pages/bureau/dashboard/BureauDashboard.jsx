@@ -102,7 +102,7 @@ function BureauDashboardPage() {
 	const createBankWiseAreaChartConfig = (stats) => {
 		const getAreaSeries = () => {
 			const series = [];
-			stats.bureau.forEach((item) => {
+			stats.cards.forEach((item) => {
 				const foundSeries = series.find((it) => it.name === item.Bank);
 				if (foundSeries) {
 					foundSeries.data.push(item.total_bank_records);
@@ -147,7 +147,7 @@ function BureauDashboardPage() {
 					show: false,
 				},
 			},
-			series: stats && stats.bureau ? getAreaSeries() : [],
+			series: stats && stats.cards ? getAreaSeries() : [],
 		};
 		return areaChartConfig;
 	};
@@ -186,7 +186,7 @@ function BureauDashboardPage() {
 					text: 'Status',
 				},
 				xaxis: {
-					categories: stats && stats.bureau ? [...new Set(stats.bureau.map((item) => item.Bank))] : [],
+					categories: stats && stats.cards ? [...new Set(stats.cards.map((item) => item.Bank))] : [],
 					labels: {
 						formatter(val) {
 							return val;
@@ -221,8 +221,8 @@ function BureauDashboardPage() {
 				{
 					name: 'Bureau In-Progress',
 					data:
-						stats && stats.bureau
-							? stats.bureau
+						stats && stats.cards
+							? stats.cards
 									.map((item) => {
 										if (item.Bureau_Status !== 1) {
 											return item.total_bank_records;
@@ -235,8 +235,8 @@ function BureauDashboardPage() {
 				{
 					name: 'Bureau Completed',
 					data:
-						stats && stats.bureau
-							? stats.bureau
+						stats && stats.cards
+							? stats.cards
 									.map((item) => {
 										if (item.Bureau_Status === 1) {
 											return item.total_bank_records;
@@ -249,8 +249,8 @@ function BureauDashboardPage() {
 				{
 					name: 'Courier In-Progress',
 					data:
-						stats && stats.bureau
-							? stats.bureau
+						stats && stats.cards
+							? stats.cards
 									.map((item) => {
 										if (item.Courier_Status !== 1) {
 											return item.total_bank_records;
@@ -263,8 +263,8 @@ function BureauDashboardPage() {
 				{
 					name: 'Courier Completed',
 					data:
-						stats && stats.bureau
-							? stats.bureau
+						stats && stats.cards
+							? stats.cards
 									.map((item) => {
 										if (item.Courier_Status === 1) {
 											return item.total_bank_records;
@@ -277,6 +277,63 @@ function BureauDashboardPage() {
 			],
 		};
 		return stackChartConfig;
+	};
+
+	const createRecentCardsDetails = (stats) => {
+		if (!stats || !stats.recentCards) {
+			return [];
+		}
+		const recentCardsList = [];
+		stats.recentCards.forEach((card) => {
+			const item = {
+				id: card.id,
+				bank: card.Bank,
+				status: card.Bureau_Status === 1 ? card.Courier_Status : card.Bureau_Status,
+				bureauStatus: card.Bureau_Status,
+				courierStatus: card.courierStatus,
+				updatedAt: new Date(card.updatedAt).toLocaleString(),
+			};
+			recentCardsList.push(item);
+		});
+		return recentCardsList;
+	};
+
+	const createRecentFiles = (stats) => {
+		if (!stats || !stats.recentFiles) {
+			return [];
+		}
+		const recentFileList = [];
+		stats.recentFiles.forEach((file) => {
+			const item = {
+				id: file.id,
+				name: file.fileName,
+				bureauName: file.BureauName,
+				cutOffTime: new Date(file.CutOffTime).toLocaleString(),
+				updatedBy: file.modifiedBy,
+				updatedAt: new Date(file.updatedAt).toLocaleString(),
+			};
+			recentFileList.push(item);
+		});
+		console.log(recentFileList);
+		return recentFileList;
+	};
+
+	const createRecentPullRequests = (stats) => {
+		if (!stats || !stats.recentFiles) {
+			return [];
+		}
+		const recentPullRequestList = [];
+		stats.recentPullRequests.forEach((pull) => {
+			const item = {
+				id: pull.id,
+				status: pull.status,
+				comment: pull.comment,
+				updatedBy: pull.modifiedBy,
+				updatedAt: new Date(pull.updatedAt).toLocaleString(),
+			};
+			recentPullRequestList.push(item);
+		});
+		return recentPullRequestList;
 	};
 
 	return (
@@ -302,10 +359,10 @@ function BureauDashboardPage() {
 				<section>
 					<Grid container spacing={3}>
 						<Grid item xs={12} md={12} lg={6}>
-							<ProductsSection />
+							<ProductsSection recentCards={createRecentCardsDetails(statsData)} />
 						</Grid>
 						<Grid item xs={12} md={12} lg={6}>
-							<TransactionsSection />
+							<TransactionsSection recentPullRequests={createRecentPullRequests(statsData)} />
 						</Grid>
 					</Grid>
 				</section>

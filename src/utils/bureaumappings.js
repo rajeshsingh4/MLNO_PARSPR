@@ -114,6 +114,16 @@ export const bureauStatusMap = {
 	6: 'Delete',
 };
 
+export const bureauStatusColorMap = {
+	0: 'info',
+	1: 'success',
+	2: 'warning',
+	3: 'success',
+	4: 'default',
+	5: 'error',
+	6: 'error',
+};
+
 export const courierStatusMap = {
 	0: 'Received',
 	1: 'Completed',
@@ -124,6 +134,18 @@ export const courierStatusMap = {
 	6: 'Lost',
 	7: 'Returned to bank',
 	8: 'Re-attempt delivery',
+};
+
+export const courierStatusColorMap = {
+	0: 'info',
+	1: 'success',
+	2: 'warning',
+	3: 'success',
+	4: 'default',
+	5: 'warning',
+	6: 'error',
+	7: 'warning',
+	8: 'info',
 };
 
 export const pullRequestStatusMap = {
