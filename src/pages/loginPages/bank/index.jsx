@@ -114,8 +114,12 @@ function LoginForm() {
 		setLoading(true);
 
 		AuthService.login(username, password, 'bank').then(
-			() => {
-				window.location.replace('/bank/dashboard');
+			(resp) => {
+				if (resp.accessToken) {
+					window.location.replace('/bank/dashboard');
+				} else {
+					console.error(resp.message);
+				}
 			},
 			(error) => {
 				const resMessage =

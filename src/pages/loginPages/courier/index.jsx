@@ -111,9 +111,13 @@ function LoginForm() {
 		setMessage('');
 		setLoading(true);
 
-		AuthService.login(username, password).then(
-			() => {
-				window.location.replace('/courier/dashboard');
+		AuthService.login(username, password, 'courier').then(
+			(resp) => {
+				if (resp.accessToken) {
+					window.location.replace('/courier/dashboard');
+				} else {
+					console.error(resp.message);
+				}
 			},
 			(error) => {
 				const resMessage =

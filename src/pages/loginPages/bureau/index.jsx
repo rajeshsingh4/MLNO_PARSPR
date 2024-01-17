@@ -112,9 +112,13 @@ function LoginForm() {
 		setMessage('');
 		setLoading(true);
 
-		AuthService.login(username, password).then(
-			() => {
-				window.location.replace('/bureau/dashboard');
+		AuthService.login(username, password, 'bureau').then(
+			(resp) => {
+				if (resp.accessToken) {
+					window.location.replace('/bureau/dashboard');
+				} else {
+					console.error(resp.message);
+				}
 			},
 			(error) => {
 				const resMessage =
