@@ -113,9 +113,9 @@ function LoginForm() {
 		setMessage('');
 		setLoading(true);
 
-		AuthService.login(username, password).then(
+		AuthService.login(username, password, 'bank').then(
 			() => {
-				window.location.replace('/bank');
+				window.location.replace('/bank/dashboard');
 			},
 			(error) => {
 				const resMessage =

@@ -9,18 +9,20 @@ const register = (username, email, password) =>
 		password,
 	});
 
-const login = (username, password) =>
+const login = (username, password, type) =>
 	AxiosInstance.post(`${AUTH_URL}signin`, {
 		username,
 		password,
-	}).then((response) => {
-		if (response.data.accessToken) {
-			window.localStorage.setItem('user', JSON.stringify(response.data));
-			const navigateLocation = window.location.pathname;
-			window.localStorage.setItem('navigateTo', navigateLocation);
-		}
-		return response.data;
-	});
+		type,
+	})
+		.then((response) => {
+			if (response.data.accessToken) {
+				window.localStorage.setItem('user', JSON.stringify(response.data));
+				window.localStorage.setItem('navigateTo', `/login/${type}`);
+			}
+			return response.data;
+		})
+		.catch((err) => ({ data: null, error: true, message: 'Invalid creds', errorMessage: err }));
 
 const logout = () => {
 	window.localStorage.removeItem('user');

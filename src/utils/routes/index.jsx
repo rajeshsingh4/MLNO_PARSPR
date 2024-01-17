@@ -12,7 +12,7 @@ import Page404 from '@/pages/errorPages/404';
 
 import UserService from '@/utils/services/user.service';
 
-const Dashboard1Page = withLazyLoadably(lazy(() => import('@/pages/dashboardsPages/bankDashboard')));
+// const Dashboard1Page = withLazyLoadably(lazy(() => import('@/pages/dashboardsPages/bankDashboard')));
 
 // const FormsComponentPage = withLazyLoadably(lazy(() => import('@/pages/componentsPages/forms')));
 // const LoadersComponentPage = withLazyLoadably(lazy(() => import('@/pages/componentsPages/loaders')));
@@ -47,13 +47,20 @@ const EditProfilePage = withLazyLoadably(lazy(() => import('@/pages/editProfile'
 
 const FileWiseReportPage = withLazyLoadably(lazy(() => import('@/pages/bank/bureau/fileWiseReport')));
 const CardTracksPage = withLazyLoadably(lazy(() => import('@/pages/bank/card/CardTracks')));
-const FileTATReportPage = withLazyLoadably(lazy(() => import('@/pages/bank/bureau/FileTATReport')));
-const BureauComparisionPage = withLazyLoadably(lazy(() => import('@/pages/bank/bureau/bureauComparision')));
 const BureauDashboardPage = withLazyLoadably(lazy(() => import('@/pages/bureau/dashboard/BureauDashboard')));
-
 const BureauPullRequestList = withLazyLoadably(lazy(() => import('@/pages/bureau/pull/BureauPullRequestList')));
 const BureauViewPullRequestDetails = withLazyLoadably(
 	lazy(() => import('@/pages/bureau/pull/BureauViewPullRequestDetails')),
+);
+
+// Bank Routes
+const FileTATReportPage = withLazyLoadably(lazy(() => import('@/pages/bank/bureau/FileTATReport')));
+const BankPullRequestDashboard = withLazyLoadably(
+	lazy(() => import('@/pages/bank/dashboard/BankPullRequestDashboard')),
+);
+const BureauComparisionPage = withLazyLoadably(lazy(() => import('@/pages/bank/bureau/bureauComparision')));
+const BureauPullRequestDashboard = withLazyLoadably(
+	lazy(() => import('@/pages/bank/dashboard/BureauPullRequestDashboard')),
 );
 const BankDashboardPage = withLazyLoadably(lazy(() => import('@/pages/bank/dashboard/BankDashboard')));
 const BankPullRequestList = withLazyLoadably(lazy(() => import('@/pages/bank/Pull/BankPullRequestList')));
@@ -79,7 +86,7 @@ const getBankRoutes = () => (
 			</Route>
 		</Route>
 		<Route path="pull">
-			<Route index path="dashboard" element={<h1>Dashboard for Pull Requests</h1>} />
+			<Route index path="dashboard" element={<BankPullRequestDashboard />} />
 			<Route path="create" element={<BankCreatePullRequestList />} />
 			<Route path="list" element={<BankPullRequestList />} />
 			<Route path="view/:id" element={<BankViewPullRequestDetails />} />
@@ -92,7 +99,7 @@ const getBureauRoutes = () => (
 		<Route index element={<BureauDashboardPage />} />
 		<Route path="dashboard" element={<BureauDashboardPage />} />
 		<Route path="pull">
-			<Route index path="dashboard" element={<h1>Dashboard for pull requests to my bureau</h1>} />
+			<Route index path="dashboard" element={<BureauPullRequestDashboard />} />
 			{/* <Route path="create" element={<h1>Create Pull Requests for bureau</h1>} /> */}
 			<Route path="list" element={<BureauPullRequestList />} />
 			<Route path="view/:id" element={<BureauViewPullRequestDetails />} />

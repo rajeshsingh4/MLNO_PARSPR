@@ -113,7 +113,7 @@ function LoginForm() {
 
 		AuthService.login(username, password).then(
 			() => {
-				window.location.replace('/courier');
+				window.location.replace('/courier/dashboard');
 			},
 			(error) => {
 				const resMessage =

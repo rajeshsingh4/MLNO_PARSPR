@@ -114,7 +114,7 @@ function LoginForm() {
 
 		AuthService.login(username, password).then(
 			() => {
-				window.location.replace('/bureau');
+				window.location.replace('/bureau/dashboard');
 			},
 			(error) => {
 				const resMessage =
