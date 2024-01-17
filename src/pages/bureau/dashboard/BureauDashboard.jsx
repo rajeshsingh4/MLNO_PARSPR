@@ -37,7 +37,7 @@ function BureauDashboardPage() {
 	}, []);
 
 	const transformStatsData = (stats) => {
-		if (!stats || !stats.bank) {
+		if (!stats || !stats.cards) {
 			return [];
 		}
 		const iconNameList = {
@@ -72,7 +72,7 @@ function BureauDashboardPage() {
 		};
 
 		const transformedStats = [iconNameList[0]];
-		stats.bank.forEach((item) => {
+		stats.cards.forEach((item) => {
 			const isBureauCompleted = item.Bureau_Status === 1;
 			const isCourierCompleted = item.Courier_Status === 1;
 			const isCompleted = isBureauCompleted && isCourierCompleted;
@@ -319,7 +319,7 @@ function BureauDashboardPage() {
 	};
 
 	const createRecentPullRequests = (stats) => {
-		if (!stats || !stats.recentFiles) {
+		if (!stats || !stats.recentPullRequests) {
 			return [];
 		}
 		const recentPullRequestList = [];
