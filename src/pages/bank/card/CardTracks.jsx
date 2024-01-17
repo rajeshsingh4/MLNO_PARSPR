@@ -1,5 +1,6 @@
-import React from 'react';
+import { useEffect, useState } from 'react';
 // import { withStyles } from '@mui/styles';
+import { useLocation, useNavigate } from 'react-router-dom';
 import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
@@ -38,43 +39,41 @@ const styles = () => ({
 	},
 });
 
-class CardTracks extends React.Component {
-	constructor(props) {
-		super(props);
-		this.state = {
-			results: props.fileDetails.cards,
-			openModal: false,
-			edit: false,
-			formData: null,
-			openDrawer: false,
-			cardId: null,
-		};
-		this.array = [];
-		this.fieldNameMapping = { id: 'trackingId', Field_1: 'TestRajesh', Field_2: 'Pankajfld' };
-	}
+function CardTracks() {
+	const navigate = useNavigate();
+	const location = useLocation();
+	const { state: fileDetails } = location;
+	const classes = {};
+	const [results, setResults] = useState(fileDetails.cards);
+	const [formData, setFormData] = useState(null);
+	const [card, setCard] = useState(null);
+	const [modal, setModal] = useState(false);
+	const [edit, setEdit] = useState(false);
+	const [drawer, setDrawer] = useState(false);
 
-	loadContentFromServer() {
-		CardTrackingService.getCardTrackingList(this.props.fileDetails.id).then((response) => {
-			this.setState({ results: response.data.cards });
-		});
-	}
+	const fieldNameMapping = { id: 'trackingId', Field_1: 'TestRajesh', Field_2: 'Pankajfld' };
 
-	updateFormData = (e) => {
-		const { name } = e.target;
-		const { value } = e.target;
-		const { formData } = this.state;
-		this.setState({
-			...this.state,
-			formData: {
-				...formData,
-				[name]: value,
-			},
+	const loadContentFromServer = () => {
+		CardTrackingService.getCardTrackingList(fileDetails.id).then((response) => {
+			setResults(response.data);
 		});
 	};
 
-	createFormElement = () => {
+	useEffect(() => {
+		loadContentFromServer();
+	}, []);
+
+	const updateFormData = (e) => {
+		const { name } = e.target;
+		const { value } = e.target;
+		setFormData({
+			...formData,
+			[name]: value,
+		});
+	};
+
+	const createFormElement = () => {
 		const hiddenElements = ['id', 'createdAt', 'updatedAt'];
-		const { formData } = this.state;
 		const listElements = Object.keys(formData);
 		const formElements = [];
 
@@ -85,7 +84,7 @@ class CardTracks extends React.Component {
 				label: key,
 				placeholder: key,
 				value: formData[key],
-				onChange: (e) => this.updateFormData(e),
+				onChange: (e) => updateFormData(e),
 				type: typeof formData[key] === 'number' ? 'number' : 'text',
 				'aria-label': key,
 				fullWidth: true,
@@ -102,16 +101,29 @@ class CardTracks extends React.Component {
 		return formElements;
 	};
 
-	handleEdit = (row, tableMeta) => {
-		this.setState({
-			cardId: row.id,
-			openModal: true,
-			edit: true,
-			formData: { ...row },
-		});
+	const handleEdit = (row, tableMeta) => {
+		setCard(row.id);
+		setFormData({ ...row });
+		setModal(true);
+		setEdit(true);
 	};
 
-	getColumnMapping = (row) => {
+	const handleOpen = () => {
+		setModal(true);
+	};
+
+	const handleClose = () => {
+		setCard(null);
+		setModal({ openModal: false, edit: false });
+		setFormData(null);
+	};
+
+	const toggleDrawer = (id, open) => {
+		setCard(id);
+		setDrawer(open);
+	};
+
+	const getColumnMapping = (row) => {
 		const fieldList = [];
 		const listKey = Object.keys(row);
 
@@ -135,15 +147,15 @@ class CardTracks extends React.Component {
 				name: listKey[i],
 				options: { filter: true, viewColumns: true, display: !!fieldToShow.includes(listKey[i]) },
 			};
-			if (this.fieldNameMapping.hasOwnProperty(key)) {
-				baseFieldObj.label = this.fieldNameMapping[key];
+			if (fieldNameMapping.hasOwnProperty(key)) {
+				baseFieldObj.label = fieldNameMapping[key];
 			}
 			if (listKey[i] === 'id') {
 				baseFieldObj.options.customBodyRender = (value, tableMeta, updateValue) => (
 					<Button
-						className={this.props.classes.linkItem}
+						// className={props.classes.linkItem}
 						variant="text"
-						onClick={() => this.toggleDrawer(value, true)}
+						onClick={() => toggleDrawer(value, true)}
 					>
 						{value}
 					</Button>
@@ -165,7 +177,7 @@ class CardTracks extends React.Component {
 									value={value}
 									data-custom={{ tableMeta, updateValue }}
 									row={row}
-									onClick={() => this.handleEdit(row, tableMeta)}
+									onClick={() => handleEdit(row, tableMeta)}
 								>
 									<EditIcon />
 								</IconButton>
@@ -182,137 +194,97 @@ class CardTracks extends React.Component {
 		return fieldList;
 	};
 
-	handleUpdate = (e) => {
+	const handleUpdate = (e) => {
 		e.preventDefault();
-		CardTrackingService.updateCardTrackingList(this.state.formData.id, this.state.formData).then((resp) => {
-			this.handleClose();
-			this.loadContentFromServer();
+		CardTrackingService.updateCardTrackingList(formData.id, formData).then((resp) => {
+			handleClose();
+			loadContentFromServer();
 		});
 	};
 
-	handleOpen = () => {
-		this.setState({ openModal: true });
+	const goBackToFiles = () => {
+		navigate(-1);
 	};
 
-	handleClose = () => {
-		this.setState({ openModal: false, edit: false, formData: null, cardId: null });
+	const options = {
+		filter: true,
+		fixedHeader: true,
+		filterType: 'dropdown',
+		responsive: 'standard',
+		print: false,
+		selectableRows: 'none',
+		rowsPerPage: 10,
+		rowsPerPageOptions: [10, 20, 50, 100],
 	};
 
-	toggleDrawer = (id, open) => {
-		this.setState({ ...this.state, cardId: id, openDrawer: open });
-	};
-
-	goBackToFiles = () => {
-		this.props.navigate('files');
-	};
-
-	render() {
-		const { classes } = this.props;
-		let data = [];
-		const editing = this.state.edit;
-		const { formData } = this.state;
-		let columns = [];
-
-		if (this.state.results) {
-			this.array = this.state.results;
-		}
-
-		if (this.state.array) {
-			data = this.state.array;
-		} else {
-			data = this.array;
-		}
-
-		if (data && data.length > 0) {
-			columns = this.getColumnMapping(data[0]);
-		}
-
-		const options = {
-			filter: true,
-			fixedHeader: true,
-			filterType: 'dropdown',
-			responsive: 'standard',
-			print: false,
-			selectableRows: 'none',
-			rowsPerPage: 10,
-			rowsPerPageOptions: [10, 20, 50, 100],
-		};
-
-		return (
-			<div className={classes.root}>
+	return (
+		<div className={classes.root}>
+			<Box>
+				<div>
+					<Button sx={{ mb: 2 }} variant="outlined" onClick={goBackToFiles}>
+						Go Back
+					</Button>
+				</div>
+				<MUIDataTable
+					className="mui-data-table card-track"
+					title="Track Cards"
+					data={results}
+					columns={getColumnMapping(results[0])}
+					options={options}
+				/>
+			</Box>
+			<Drawer anchor="right" open={drawer} onClose={() => toggleDrawer(null, false)}>
 				<Box>
-					<div>
-						<Button sx={{ mb: 2 }} variant="outlined" onClick={this.goBackToFiles}>
-							Go Back
-						</Button>
-					</div>
-					<MUIDataTable
-						className="mui-data-table card-track"
-						title="Track Cards"
-						data={data}
-						columns={columns}
-						options={options}
-					/>
+					<CardActivity toggleDrawer={toggleDrawer} id={card} />
 				</Box>
-				<Drawer anchor="right" open={this.state.openDrawer} onClose={() => this.toggleDrawer(null, false)}>
-					<Box>
-						<CardActivity toggleDrawer={this.toggleDrawer} id={this.state.cardId} />
+			</Drawer>
+			<Modal
+				id="edit-track-card-item"
+				aria-labelledby="track-card-item"
+				aria-describedby="track-card-item-description"
+				open={modal}
+				onClose={handleClose}
+			>
+				<Box className={classes.modalContent}>
+					<Typography
+						id="modal-modal-title"
+						variant="h6"
+						component="h2"
+						sx={{ display: 'flex', justifyContent: 'space-between' }}
+					>
+						Edit {edit && formData && formData.Product}
+						<IconButton id="close-edit-item" onClick={handleClose}>
+							<ClearIcon />
+						</IconButton>
+					</Typography>
+					<Box component="form" id="card-form-container" noValidate autoComplete="off" sx={{ mt: 2, mb: 1 }}>
+						<Grid container spacing={3} id="card-form-element-container">
+							{edit && formData && createFormElement()}
+						</Grid>
+						<Grid container spacing={3} sx={{ mt: 2 }} justifyContent="end">
+							<Button
+								type="submit"
+								id="card-form-close-button"
+								onClick={handleClose}
+								variant="outlined"
+								sx={{ mr: 1 }}
+							>
+								Close
+							</Button>
+							<Button
+								type="submit"
+								id="card-form-submit-button"
+								onClick={(e) => handleUpdate(e)}
+								variant="contained"
+							>
+								Update
+							</Button>
+						</Grid>
 					</Box>
-				</Drawer>
-				<Modal
-					id="edit-track-card-item"
-					aria-labelledby="track-card-item"
-					aria-describedby="track-card-item-description"
-					open={this.state.openModal}
-					onClose={this.handleClose}
-				>
-					<Box className={classes.modalContent}>
-						<Typography
-							id="modal-modal-title"
-							variant="h6"
-							component="h2"
-							sx={{ display: 'flex', justifyContent: 'space-between' }}
-						>
-							Edit {editing && formData && formData.Product}
-							<IconButton id="close-edit-item" onClick={this.handleClose}>
-								<ClearIcon />
-							</IconButton>
-						</Typography>
-						<Box
-							component="form"
-							id="card-form-container"
-							noValidate
-							autoComplete="off"
-							sx={{ mt: 2, mb: 1 }}
-						>
-							<Grid container spacing={3} id="card-form-element-container">
-								{editing && formData && this.createFormElement()}
-							</Grid>
-							<Grid container spacing={3} sx={{ mt: 2 }} justifyContent="end">
-								<Button
-									type="submit"
-									id="card-form-close-button"
-									onClick={this.handleClose}
-									variant="outlined"
-									sx={{ mr: 1 }}
-								>
-									Close
-								</Button>
-								<Button
-									type="submit"
-									id="card-form-submit-button"
-									onClick={(e) => this.handleUpdate(e)}
-									variant="contained"
-								>
-									Update
-								</Button>
-							</Grid>
-						</Box>
-					</Box>
-				</Modal>
-			</div>
-		);
-	}
+				</Box>
+			</Modal>
+		</div>
+	);
 }
-// export default withStyles(styles)(CardTracks);
+
 export default CardTracks;
