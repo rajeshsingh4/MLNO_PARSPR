@@ -26,7 +26,7 @@ function BankCreatePullRequestList() {
 	const getCardListForPullRequest = async () => {
 		setCardListLoader(true);
 		try {
-			const cardDetails = await CardTrackingService.getAllCardsWithFileDeatils('bank=HDFC');
+			const cardDetails = await CardTrackingService.getAllCardsWithFileDeatils();
 			setCardList(cardDetails.data);
 		} catch (err) {
 			console.error('Error fetching list of cards for creating pull-request ', err);
@@ -142,7 +142,11 @@ function BankCreatePullRequestList() {
 				</Breadcrumbs>
 			</PageHeader>
 			<Container>
-				<Card component="section" type="section">
+				<Card
+					component="section"
+					type="section"
+					sx={{ '& > .create-pull-request-list': { boxShadow: 'none' } }}
+				>
 					<MUIDataTable
 						// title="Name of Table"
 						className="mui-data-table create-pull-request-list"

@@ -6,8 +6,7 @@ const getCardTrackingList = () => AxiosInstance.get(`${CARD_URL}all`, { headers:
 
 const updateCardTrackingList = (id, data) => AxiosInstance.put(CARD_URL + id, data, { headers: authHeader() });
 
-const getAllCardsWithFileDeatils = (query) =>
-	AxiosInstance.get(`${CARD_URL}all?fileList=true&${query}`, { headers: authHeader() });
+const getAllCardsWithFileDeatils = () => AxiosInstance.get(`${CARD_URL}all`, { headers: authHeader() });
 
 const CardTrackingService = {
 	getCardTrackingList,

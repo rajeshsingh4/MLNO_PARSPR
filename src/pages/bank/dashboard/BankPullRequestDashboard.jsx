@@ -1,12 +1,15 @@
 import Stack from '@mui/material/Stack';
 // import Grid from '@mui/material/Grid';
+import Breadcrumbs from '@mui/material/Breadcrumbs';
+import Link from '@mui/material/Link';
+import PageHeader from '@/components/pageHeader';
 
-import WelcomeSection from './welcomeSection';
-// import StatsSection from './statsSection';
-// import GraphsSection from './graphsSection';
-import BitcoinSection from './bitcoinSection';
-// import ProductsSection from './productsSection';
-// import TransactionsSection from './transactionsSection';
+// import WelcomeSection from '@/pages/dashboardsPages/bankDashboard/welcomeSection';
+// import StatsSection from '@/pages/dashboardsPages/bankDashboard/statsSection';
+// import GraphsSection from '@/pages/dashboardsPages/bankDashboard/graphsSection';
+import BitcoinSection from '@/pages/dashboardsPages/bankDashboard/bitcoinSection';
+// import ProductsSection from '@/pages/dashboardsPages/bankDashboard/productsSection';
+// import TransactionsSection from '@/pages/dashboardsPages/bankDashboard/transactionsSection';
 
 // import QueryStatsOutlinedIcon from '@mui/icons-material/QueryStatsOutlined';
 // import DonutSmallOutlinedIcon from '@mui/icons-material/DonutSmallOutlined';
@@ -47,7 +50,19 @@ import BitcoinSection from './bitcoinSection';
 function BankPullRequestDashboard() {
 	return (
 		<>
-			<WelcomeSection />
+			<PageHeader title="Dashboard">
+				<Breadcrumbs
+					aria-label="breadcrumb"
+					sx={{
+						textTransform: 'uppercase',
+					}}
+				>
+					<Link underline="hover" href="/">
+						Dashboard
+					</Link>
+				</Breadcrumbs>
+			</PageHeader>
+			{/* <WelcomeSection /> */}
 			<Stack spacing={3}>
 				{/* <StatsSection STATS_DATA={SAMPLE_STATS_DATA} /> */}
 				{/* <GraphsSection />
