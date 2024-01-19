@@ -153,6 +153,31 @@ function BankDashboardPage() {
 	};
 
 	const createStackBarChartConfig = (stats) => {
+		const createSeries = () => {
+			const series = [];
+			stats.cards.forEach((item) => {
+				const sItem = {
+					name: '',
+					data: [item.total_bank_records],
+				};
+				if (item.Bureau_Status !== 1 && (item.Courier_Status === null || item.Courier_Status === undefined)) {
+					sItem.name = 'Bureau In-Progress';
+				} else if (item.Courier_Status !== 1 && item.Bureau_Status === 1) {
+					sItem.name = 'Courier In-Progress';
+				} else if (item.Bureau_Status === 1 && item.Courier_Status === 1) {
+					sItem.name = 'Completed';
+				} else {
+					console.log(
+						'invalid bureau statuss: ',
+						item.Bureau_Status,
+						' invalid courier status: ',
+						item.Courier_Status,
+					);
+				}
+				series.push(sItem);
+			});
+			return series;
+		};
 		const stackChartConfig = {
 			options: {
 				chart: {
@@ -165,7 +190,7 @@ function BankDashboardPage() {
 				},
 				plotOptions: {
 					bar: {
-						horizontal: true,
+						horizontal: false,
 						dataLabels: {
 							total: {
 								enabled: false,
@@ -217,64 +242,7 @@ function BankDashboardPage() {
 					offsetX: 40,
 				},
 			},
-			series: [
-				{
-					name: 'Bureau In-Progress',
-					data:
-						stats && stats.cards
-							? stats.cards
-									.map((item) => {
-										if (item.Bureau_Status !== 1) {
-											return item.total_bank_records;
-										}
-										return null;
-									})
-									.filter((it) => it)
-							: [],
-				},
-				{
-					name: 'Bureau Completed',
-					data:
-						stats && stats.cards
-							? stats.cards
-									.map((item) => {
-										if (item.Bureau_Status === 1) {
-											return item.total_bank_records;
-										}
-										return null;
-									})
-									.filter((it) => it)
-							: [],
-				},
-				{
-					name: 'Courier In-Progress',
-					data:
-						stats && stats.cards
-							? stats.cards
-									.map((item) => {
-										if (item.Courier_Status !== 1) {
-											return item.total_bank_records;
-										}
-										return null;
-									})
-									.filter((it) => it)
-							: [],
-				},
-				{
-					name: 'Courier Completed',
-					data:
-						stats && stats.cards
-							? stats.cards
-									.map((item) => {
-										if (item.Courier_Status === 1) {
-											return item.total_bank_records;
-										}
-										return null;
-									})
-									.filter((it) => it)
-							: [],
-				},
-			],
+			series: stats && stats.cards ? createSeries() : [],
 		};
 		return stackChartConfig;
 	};

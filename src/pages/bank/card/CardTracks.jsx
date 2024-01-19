@@ -14,37 +14,20 @@ import ClearIcon from '@mui/icons-material/Clear';
 import MUIDataTable from 'mui-datatables';
 import CardActivity from './CardActivity';
 import CardTrackingService from '@/utils/services/card.service';
-
-const styles = () => ({
-	root: {
-		flexGrow: 1,
-	},
-	modalContent: {
-		position: 'absolute',
-		top: '50%',
-		left: '50%',
-		transform: 'translate(-50%, -50%)',
-		width: 'calc(80vw)',
-		height: '80vh',
-		backgroundColor: '#FFFFFF',
-		overflowX: 'hidden',
-		overflowY: 'auto',
-		fontWeight: 500,
-		textAlign: 'start',
-		padding: '24px',
-	},
-	linkItem: {
-		cursor: 'pointer',
-		width: '100%',
-	},
-});
+import Loader from '@/components/loader';
+import Dialog from '@mui/material/Dialog';
+import DialogTitle from '@mui/material/DialogTitle';
+import DialogContent from '@mui/material/DialogContent';
+import DialogActions from '@mui/material/DialogActions';
 
 function CardTracks() {
 	const navigate = useNavigate();
 	const location = useLocation();
 	const { state: fileDetails } = location;
 	const classes = {};
-	const [results, setResults] = useState(fileDetails.cards);
+	const [results, setResults] = useState([]);
+	const [resultsLoader, setResultsLoader] = useState(false);
+	const [resultsError, setResultsError] = useState(false);
 	const [formData, setFormData] = useState(null);
 	const [card, setCard] = useState(null);
 	const [modal, setModal] = useState(false);
@@ -54,14 +37,38 @@ function CardTracks() {
 	const fieldNameMapping = { id: 'trackingId', Field_1: 'TestRajesh', Field_2: 'Pankajfld' };
 
 	const loadContentFromServer = () => {
-		CardTrackingService.getCardTrackingList(fileDetails.id).then((response) => {
-			setResults(response.data);
-		});
+		setResultsLoader(true);
+		CardTrackingService.getCardTrackingList(fileDetails.id)
+			.then((response) => {
+				setResults(response.data);
+			})
+			.catch((err) => {
+				setResultsError(true);
+			})
+			.finally(() => {
+				setResultsLoader(false);
+			});
 	};
 
 	useEffect(() => {
 		loadContentFromServer();
 	}, []);
+
+	if (resultsLoader) {
+		return (
+			<Loader
+				addSx={{
+					mt: 5,
+				}}
+			/>
+		);
+	}
+
+	if (resultsError) {
+		return (
+			Error Loading cards
+		);
+	}
 
 	const updateFormData = (e) => {
 		const { name } = e.target;
@@ -73,7 +80,16 @@ function CardTracks() {
 	};
 
 	const createFormElement = () => {
-		const hiddenElements = ['id', 'createdAt', 'updatedAt'];
+		const hiddenElements = [
+			'id',
+			'createdAt',
+			'updatedAt',
+			'fileMaster',
+			'userId',
+			'createdBy',
+			'modifiedBy',
+			'fileMasterId',
+		];
 		const listElements = Object.keys(formData);
 		const formElements = [];
 
@@ -83,7 +99,7 @@ function CardTracks() {
 				name: key,
 				label: key,
 				placeholder: key,
-				value: formData[key],
+				value: formData[key] || undefined,
 				onChange: (e) => updateFormData(e),
 				type: typeof formData[key] === 'number' ? 'number' : 'text',
 				'aria-label': key,
@@ -108,13 +124,10 @@ function CardTracks() {
 		setEdit(true);
 	};
 
-	const handleOpen = () => {
-		setModal(true);
-	};
-
 	const handleClose = () => {
 		setCard(null);
-		setModal({ openModal: false, edit: false });
+		setEdit(false);
+		setModal(false);
 		setFormData(null);
 	};
 
@@ -125,6 +138,9 @@ function CardTracks() {
 
 	const getColumnMapping = (row) => {
 		const fieldList = [];
+		if (!row || row.length === 0) {
+			return fieldList;
+		}
 		const listKey = Object.keys(row);
 
 		const fieldToShow = [
@@ -221,7 +237,7 @@ function CardTracks() {
 		<div className={classes.root}>
 			<Box>
 				<div>
-					<Button sx={{ mb: 2 }} variant="outlined" onClick={goBackToFiles}>
+					<Button sx={{ mb: 2, mt: 2 }} variant="outlined" onClick={goBackToFiles}>
 						Go Back
 					</Button>
 				</div>
@@ -238,18 +254,20 @@ function CardTracks() {
 					<CardActivity toggleDrawer={toggleDrawer} id={card} />
 				</Box>
 			</Drawer>
-			<Modal
+			<Dialog
 				id="edit-track-card-item"
 				aria-labelledby="track-card-item"
 				aria-describedby="track-card-item-description"
 				open={modal}
 				onClose={handleClose}
+				maxWidth="md"
+				sx={{ '& > div[aria-labelledby="track-card-item"]': { overflow: 'hidden' } }}
 			>
-				<Box className={classes.modalContent}>
+				<DialogTitle>
 					<Typography
 						id="modal-modal-title"
 						variant="h6"
-						component="h2"
+						component="span"
 						sx={{ display: 'flex', justifyContent: 'space-between' }}
 					>
 						Edit {edit && formData && formData.Product}
@@ -257,32 +275,44 @@ function CardTracks() {
 							<ClearIcon />
 						</IconButton>
 					</Typography>
-					<Box component="form" id="card-form-container" noValidate autoComplete="off" sx={{ mt: 2, mb: 1 }}>
-						<Grid container spacing={3} id="card-form-element-container">
-							{edit && formData && createFormElement()}
-						</Grid>
-						<Grid container spacing={3} sx={{ mt: 2 }} justifyContent="end">
-							<Button
-								type="submit"
-								id="card-form-close-button"
-								onClick={handleClose}
-								variant="outlined"
-								sx={{ mr: 1 }}
-							>
-								Close
-							</Button>
-							<Button
-								type="submit"
-								id="card-form-submit-button"
-								onClick={(e) => handleUpdate(e)}
-								variant="contained"
-							>
-								Update
-							</Button>
-						</Grid>
+				</DialogTitle>
+				<DialogContent>
+					<Box className={classes.modalContent}>
+						<Box
+							component="form"
+							id="card-form-container"
+							noValidate
+							autoComplete="off"
+							sx={{ mt: 2, mb: 1 }}
+						>
+							<Grid container spacing={3} id="card-form-element-container">
+								{edit && formData && createFormElement()}
+							</Grid>
+						</Box>
 					</Box>
-				</Box>
-			</Modal>
+				</DialogContent>
+				<DialogActions>
+					<Grid container justifyContent="end">
+						<Button
+							type="submit"
+							id="card-form-close-button"
+							onClick={handleClose}
+							variant="outlined"
+							sx={{ mr: 1 }}
+						>
+							Close
+						</Button>
+						<Button
+							type="submit"
+							id="card-form-submit-button"
+							onClick={(e) => handleUpdate(e)}
+							variant="contained"
+						>
+							Update
+						</Button>
+					</Grid>
+				</DialogActions>
+			</Dialog>
 		</div>
 	);
 }

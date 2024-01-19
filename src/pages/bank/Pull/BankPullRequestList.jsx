@@ -78,7 +78,16 @@ function BankPullRequestList() {
 			return [];
 		}
 		const columns = [];
-		const hiddenColumns = ['updatedAt', 'fileMasterId', 'createdBy', 'modifiedBy', 'cardId'];
+		const hiddenColumns = [
+			'updatedAt',
+			'fileMasterId',
+			'createdBy',
+			'modifiedBy',
+			'cardId',
+			'card',
+			'user',
+			'fileMaster',
+		];
 		const rowFieldKeys = Object.keys(row);
 		rowFieldKeys.forEach((key) => {
 			const basicColumnFields = {
