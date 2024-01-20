@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 // import { withStyles } from '@mui/styles';
 import { useLocation, useNavigate } from 'react-router-dom';
-import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
 import Grid from '@mui/material/Unstable_Grid2';
@@ -12,13 +11,13 @@ import IconButton from '@mui/material/IconButton';
 import EditIcon from '@mui/icons-material/Edit';
 import ClearIcon from '@mui/icons-material/Clear';
 import MUIDataTable from 'mui-datatables';
-import CardActivity from './CardActivity';
-import CardTrackingService from '@/utils/services/card.service';
-import Loader from '@/components/loader';
 import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
+import Loader from '@/components/loader';
+import CardActivity from './CardActivity';
+import CardTrackingService from '@/utils/services/card.service';
 
 function CardTracks() {
 	const navigate = useNavigate();
@@ -65,9 +64,7 @@ function CardTracks() {
 	}
 
 	if (resultsError) {
-		return (
-			Error Loading cards
-		);
+		return <>Error Loading cards</>;
 	}
 
 	const updateFormData = (e) => {
@@ -277,7 +274,7 @@ function CardTracks() {
 					</Typography>
 				</DialogTitle>
 				<DialogContent>
-					<Box className={classes.modalContent}>
+					<Box>
 						<Box
 							component="form"
 							id="card-form-container"

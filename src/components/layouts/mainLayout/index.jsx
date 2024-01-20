@@ -66,17 +66,21 @@ function MainLayout({ container = 'lg', pb = true, loginType }) {
 function Header({ loginType }) {
 	const { stickyHeader } = useSelector(selectThemeConfig);
 
-	let navItems = BANK_NAV_LINKS_CONFIG;
+	let navItems = [];
 	if (loginType === 'bureau') {
 		navItems = BUREAU_NAV_LINKS_CONFIG;
 	} else if (loginType === 'courier') {
+		navItems = BANK_NAV_LINKS_CONFIG;
+	} else if (loginType === 'bank') {
 		navItems = BANK_NAV_LINKS_CONFIG;
 	}
 
 	return (
 		<>
 			<MainHeader loginType={loginType} />
-			<Navbar navItems={navItems} loginType={loginType} position={stickyHeader ? 'sticky' : 'static'} />
+			{navItems && navItems.length > 0 && (
+				<Navbar navItems={navItems} loginType={loginType} position={stickyHeader ? 'sticky' : 'static'} />
+			)}
 		</>
 	);
 }

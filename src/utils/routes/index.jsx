@@ -1,19 +1,20 @@
 import { useEffect, lazy, useState } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-
-import ScrollToTopOnRouteChange from '@hocs/withScrollTopOnRouteChange';
 import withLazyLoadably from '@hocs/withLazyLoadably';
-// import Loader from '@/components/loader';
+
+import BankRoutes from './bankRoutes';
+import BureauRoutes from './bureauRoutes';
+import SuperadminRoutes from './superadminRoutes';
 
 import MinimalLayout from '@/components/layouts/minimalLayout';
 import MainLayout from '@/components/layouts/mainLayout';
-
+import ScrollToTopOnRouteChange from '@hocs/withScrollTopOnRouteChange';
 import Page404 from '@/pages/errorPages/404';
 
 import UserService from '@/utils/services/user.service';
 
+// import Loader from '@/components/loader';
 // const Dashboard1Page = withLazyLoadably(lazy(() => import('@/pages/dashboardsPages/bankDashboard')));
-
 // const FormsComponentPage = withLazyLoadably(lazy(() => import('@/pages/componentsPages/forms')));
 // const LoadersComponentPage = withLazyLoadably(lazy(() => import('@/pages/componentsPages/loaders')));
 // const TablesComponentPage = withLazyLoadably(lazy(() => import('@/pages/componentsPages/tables')));
@@ -24,10 +25,6 @@ import UserService from '@/utils/services/user.service';
 // const CardComponentPage = withLazyLoadably(lazy(() => import('@/pages/uiComponentsPages/card')));
 // const CardHeaderComponentPage = withLazyLoadably(lazy(() => import('@/pages/uiComponentsPages/cardHeader')));
 // const PageHeaderComponentPage = withLazyLoadably(lazy(() => import('@/pages/uiComponentsPages/pageHeader')));
-const LoginCourierPage = withLazyLoadably(lazy(() => import('@/pages/loginPages/courier')));
-const LoginBankPage = withLazyLoadably(lazy(() => import('@/pages/loginPages/bank')));
-const LoginBureauPage = withLazyLoadably(lazy(() => import('@/pages/loginPages/bureau')));
-const LandingPage = withLazyLoadably(lazy(() => import('@/pages/loginPages/landing')));
 // const SignupSplitPage = withLazyLoadably(lazy(() => import('@/pages/signupPages/signupSplit')));
 // const SignupSimplePage = withLazyLoadably(lazy(() => import('@/pages/signupPages/signupSimple')));
 // const SignupPage = withLazyLoadably(lazy(() => import('@/pages/signupPages/signup')));
@@ -37,7 +34,6 @@ const LandingPage = withLazyLoadably(lazy(() => import('@/pages/loginPages/landi
 // const Page505 = withLazyLoadably(lazy(() => import('@/pages/errorPages/505')));
 // const Pricing1Page = withLazyLoadably(lazy(() => import('@/pages/pricingPages/pricing1')));
 // const Pricing2Page = withLazyLoadably(lazy(() => import('@/pages/pricingPages/pricing2')));
-const EditProfilePage = withLazyLoadably(lazy(() => import('@/pages/editProfile')));
 // const NotificationsPage = withLazyLoadably(lazy(() => import('@/pages/notificationsPage')));
 // const WIPPage = withLazyLoadably(lazy(() => import('@/pages/wip')));
 // const SamplePage = withLazyLoadably(lazy(() => import('@/pages/sample')));
@@ -45,72 +41,12 @@ const EditProfilePage = withLazyLoadably(lazy(() => import('@/pages/editProfile'
 // const ThemeColorsPage = withLazyLoadably(lazy(() => import('@/pages/themePages/themeColors')));
 // const ThemeShadowPage = withLazyLoadably(lazy(() => import('@/pages/themePages/themeShadow')));
 
-const FileWiseReportPage = withLazyLoadably(lazy(() => import('@/pages/bank/bureau/fileWiseReport')));
-const CardTracksPage = withLazyLoadably(lazy(() => import('@/pages/bank/card/CardTracks')));
-const BureauDashboardPage = withLazyLoadably(lazy(() => import('@/pages/bureau/dashboard/BureauDashboard')));
-const BureauPullRequestList = withLazyLoadably(lazy(() => import('@/pages/bureau/pull/BureauPullRequestList')));
-const BureauViewPullRequestDetails = withLazyLoadably(
-	lazy(() => import('@/pages/bureau/pull/BureauViewPullRequestDetails')),
-);
-
-// Bank Routes
-const FileTATReportPage = withLazyLoadably(lazy(() => import('@/pages/bank/bureau/FileTATReport')));
-const BankPullRequestDashboard = withLazyLoadably(
-	lazy(() => import('@/pages/bank/dashboard/BankPullRequestDashboard')),
-);
-const BureauComparisionPage = withLazyLoadably(lazy(() => import('@/pages/bank/bureau/bureauComparision')));
-const BureauPullRequestDashboard = withLazyLoadably(
-	lazy(() => import('@/pages/bank/dashboard/BureauPullRequestDashboard')),
-);
-const BankDashboardPage = withLazyLoadably(lazy(() => import('@/pages/bank/dashboard/BankDashboard')));
-const BankPullRequestList = withLazyLoadably(lazy(() => import('@/pages/bank/Pull/BankPullRequestList')));
-const BankCreatePullRequestList = withLazyLoadably(lazy(() => import('@/pages/bank/Pull/BankCreatePullRequestList')));
-const BankViewPullRequestDetails = withLazyLoadably(lazy(() => import('@/pages/bank/Pull/BankViewPullRequestDetails')));
-
-const getBankRoutes = () => (
-	<Route path="bank">
-		<Route index element={<BankDashboardPage />} />
-		<Route path="dashboard" element={<BankDashboardPage />} />
-		<Route path="bureau">
-			<Route path="filewisereport">
-				<Route index element={<FileWiseReportPage />} />
-				<Route path=":id" element={<CardTracksPage />} />
-			</Route>
-			<Route path="filetatreport" element={<FileTATReportPage />} />
-			<Route path="comparision" element={<BureauComparisionPage />} />
-			<Route path="pull">
-				<Route index path="dashboard" element={<h1>Dashboard for Bank to see bureau(s) pull requests</h1>} />
-				{/* <Route path="create" element={<h1>Create Pull Requests option for bank to a bureau </h1>} /> */}
-				{/* <Route path="list" element={<BureauPullRequestList />} /> */}
-				{/* <Route path="view/:id" element={<BureauViewPullRequestDetails />} /> */}
-			</Route>
-		</Route>
-		<Route path="pull">
-			<Route index path="dashboard" element={<BankPullRequestDashboard />} />
-			<Route path="create" element={<BankCreatePullRequestList />} />
-			<Route path="list" element={<BankPullRequestList />} />
-			<Route path="view/:id" element={<BankViewPullRequestDetails />} />
-		</Route>
-	</Route>
-);
-
-const getBureauRoutes = () => (
-	<Route path="bureau">
-		<Route index element={<BureauDashboardPage />} />
-		<Route path="dashboard" element={<BureauDashboardPage />} />
-		<Route path="pull">
-			<Route index path="dashboard" element={<BureauPullRequestDashboard />} />
-			{/* <Route path="create" element={<h1>Create Pull Requests for bureau</h1>} /> */}
-			<Route path="list" element={<BureauPullRequestList />} />
-			<Route path="view/:id" element={<BureauViewPullRequestDetails />} />
-		</Route>
-		<Route path="file">
-			{/* <Route path="filewisereport" element={<FileWiseReportPage />} /> */}
-			<Route path="filetatreport" element={<FileTATReportPage />} />
-			{/* <Route path="comparision" element={<BureauComparisionPage />} /> */}
-		</Route>
-	</Route>
-);
+const LandingPage = withLazyLoadably(lazy(() => import('@/pages/loginPages/landing')));
+const LoginBankPage = withLazyLoadably(lazy(() => import('@/pages/loginPages/bank')));
+const LoginBureauPage = withLazyLoadably(lazy(() => import('@/pages/loginPages/bureau')));
+const LoginSuperadminPage = withLazyLoadably(lazy(() => import('@/pages/loginPages/superadmin')));
+const LoginCourierPage = withLazyLoadably(lazy(() => import('@/pages/loginPages/courier')));
+const EditProfilePage = withLazyLoadably(lazy(() => import('@/pages/editProfile')));
 
 function Router() {
 	const [menuRole, setMenuRoles] = useState(null);
@@ -147,6 +83,9 @@ function Router() {
 		} else if (loginPathName === '/login/courier') {
 			loginPathRoute = 'courier';
 			LoginElement = LoginCourierPage;
+		} else if (loginPathName === '/login/superadmin') {
+			loginPathRoute = 'superadmin';
+			LoginElement = LoginSuperadminPage;
 		}
 		return (
 			<BrowserRouter>
@@ -177,13 +116,12 @@ function Router() {
 	const navigateTo = localStorage.getItem('navigateTo') || '/login/landing';
 
 	let loginType = 'bank';
-	let IndexRouteElement = <BankDashboardPage />;
 	if (navigateTo === '/login/bureau') {
 		loginType = 'bureau';
-		IndexRouteElement = <BureauDashboardPage />;
 	} else if (navigateTo === '/login/courier') {
 		loginType = 'courier';
-		IndexRouteElement = <BankDashboardPage />;
+	} else if (navigateTo === '/login/superadmin') {
+		loginType = 'superadmin';
 	}
 
 	return (
@@ -195,14 +133,15 @@ function Router() {
 						element={<MainLayout loginType={loginType} menuRoles={menuRole} />}
 						menuRoles={menuRole}
 					>
-						<Route index element={IndexRouteElement} />
-						<Route path="user/">
-							<Route path="profile" element={<EditProfilePage />} />
-						</Route>
-
-						{loginType === 'bank' && getBankRoutes()}
-						{loginType === 'bureau' && getBureauRoutes()}
-						{loginType === 'courier' && getBankRoutes()}
+						{loginType === 'superadmin' && SuperadminRoutes()}
+						{loginType === 'bank' && BankRoutes()}
+						{loginType === 'bureau' && BureauRoutes()}
+						{loginType === 'courier' && BankRoutes()}
+						{loginType !== 'superadmin' && (
+							<Route path="user/">
+								<Route path="profile" element={<EditProfilePage />} />
+							</Route>
+						)}
 					</Route>
 					<Route path="*" element={<Page404 />} />
 					{/* <Route path="pages/">

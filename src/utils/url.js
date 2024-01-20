@@ -8,6 +8,6 @@ export const BUREAU_URL = '/bureauTAT/';
 export const BUREAUDETAIL_URL = '/bureauData/';
 export const PULL_REQUEST_LOG_URL = '/pullrequestlog/';
 export const PULL_REQUEST_URL = '/pull-request/';
-export const USER_URL = '/test/';
+export const USER_URL = '/user/';
 export const MENU_URL = '/menu/';
 export const AUDIT_LOG_URL = '/auditlog/';

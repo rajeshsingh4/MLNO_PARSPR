@@ -79,47 +79,53 @@ export default function PullRequestActivityTimeline(props) {
 		>
 			{pullRequestActivityLogs &&
 				pullRequestActivityLogs.length > 0 &&
-				pullRequestActivityLogs.map((logs, i) => {
-					const diffValues = getJSONDiffValue(
-						JSON.parse(JSON.parse(logs.previous)),
-						JSON.parse(JSON.parse(logs.current)),
-					);
-					const keys = Object.keys(diffValues);
-					return (
-						<TimelineItem key={i}>
-							<TimelineOppositeContent color="text.secondary">
-								{new Date(logs.createdAt).toLocaleString()}
-							</TimelineOppositeContent>
-							<TimelineSeparator>
-								<TimelineDot />
-								<TimelineConnector />
-							</TimelineSeparator>
-							<TimelineContent>
-								{i === 0 ? (
-									<Stack direction="row" spacing={1} key="start" mt={1} mb={1}>
-										<Typography variant="body2" component="h2">
-											Status:
-										</Typography>
-										<Chip label="Created" color="success" size="small" />
-									</Stack>
-								) : (
-									<>
-										{keys.map((key) => (
-											<Stack direction="row" spacing={1} key={key} mt={1} mb={1}>
-												<Typography variant="body2" component="h2">
-													{key}:
-												</Typography>
-												<Chip label={diffValues[key].previous} color="error" size="small" />
-												<ArrowForwardIosIcon fontSize="small" />
-												<Chip label={diffValues[key].current} color="success" size="small" />
-											</Stack>
-										))}
-									</>
-								)}
-							</TimelineContent>
-						</TimelineItem>
-					);
-				})}
+				pullRequestActivityLogs
+					.map((logs, i) => {
+						const diffValues = getJSONDiffValue(
+							JSON.parse(JSON.parse(logs.previous)),
+							JSON.parse(JSON.parse(logs.current)),
+						);
+						const keys = Object.keys(diffValues);
+						return (
+							<TimelineItem key={i}>
+								<TimelineOppositeContent color="text.secondary">
+									{new Date(logs.createdAt).toLocaleString()}
+								</TimelineOppositeContent>
+								<TimelineSeparator>
+									<TimelineDot />
+									<TimelineConnector />
+								</TimelineSeparator>
+								<TimelineContent>
+									{i === 0 ? (
+										<Stack direction="row" spacing={1} key="start" mt={1} mb={1}>
+											<Typography variant="body2" component="h2">
+												Status:
+											</Typography>
+											<Chip label="Created" color="success" size="small" />
+										</Stack>
+									) : (
+										<>
+											{keys.map((key) => (
+												<Stack direction="row" spacing={1} key={key} mt={1} mb={1}>
+													<Typography variant="body2" component="h2">
+														{key}:
+													</Typography>
+													<Chip label={diffValues[key].previous} color="error" size="small" />
+													<ArrowForwardIosIcon fontSize="small" />
+													<Chip
+														label={diffValues[key].current}
+														color="success"
+														size="small"
+													/>
+												</Stack>
+											))}
+										</>
+									)}
+								</TimelineContent>
+							</TimelineItem>
+						);
+					})
+					.reverse()}
 		</Timeline>
 	);
 }
