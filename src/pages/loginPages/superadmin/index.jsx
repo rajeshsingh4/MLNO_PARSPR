@@ -18,7 +18,13 @@ import Alert from '@mui/material/Alert';
 function Superadmin() {
 	return (
 		<Container>
-			<Card elevation={20} type="none" variant="elevation" sx={{ my: 6 }} hover="false">
+			<Card
+				elevation={20}
+				type="none"
+				variant="elevation"
+				sx={{ width: '35%', position: 'absolute', left: '50%', top: '50%', transform: 'translate(-50%, -50%)' }}
+				hover="false"
+			>
 				<Grid
 					container
 					spacing={0}
@@ -26,7 +32,7 @@ function Superadmin() {
 						minHeight: 500,
 					}}
 				>
-					<Grid item xs={12} sm={12} md={6} lg={6}>
+					<Grid item xs={12}>
 						<Box
 							py={8}
 							px={{
@@ -38,14 +44,14 @@ function Superadmin() {
 							<Stack direction="column" spacing={5} justifyContent="space-between" height="100%">
 								<div>
 									<Typography variant="h1" fontWeight="medium">
-										Login To MLNO Bank Dashboard!
+										Login To MLNO Superadmin Dashboard!
 									</Typography>
 								</div>
 								<LoginForm />
 							</Stack>
 						</Box>
 					</Grid>
-					<Grid item xs={12} sm={12} md={6} lg={6}>
+					{/* <Grid item xs={12} sm={12} md={6} lg={6}>
 						<Stack
 							bgcolor="primary.main"
 							direction="column"
@@ -82,7 +88,7 @@ function Superadmin() {
 								location.
 							</Typography>
 						</Stack>
-					</Grid>
+					</Grid> */}
 				</Grid>
 			</Card>
 		</Container>
