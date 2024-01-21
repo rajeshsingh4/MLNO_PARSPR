@@ -1,10 +1,10 @@
-import React from 'react';
-import { DataGrid } from '@mui/x-data-grid';
+import { useEffect, useState } from 'react';
+// import { DataGrid } from '@mui/x-data-grid';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
-import Paper from '@mui/material/Paper';
+// import Paper from '@mui/material/Paper';
 import TableRow from '@mui/material/TableRow';
 import Card from '@mui/material/Card';
 import Container from '@mui/material/Container';
@@ -31,10 +31,10 @@ import PageHeader from '@/components/pageHeader';
 import CreatePullRequestForm from '@/pages/bank/Pull/CreatePullRequestForm';
 
 function BureauViewPullRequestDetails(props) {
-	const [pullRequestDetailsLoader, setPullRequestDetailsLoader] = React.useState(true);
-	const [pullRequestDetailsError, setPullRequestDetailsError] = React.useState(false);
-	const [pullRequestDetails, setPullRequestDetails] = React.useState({});
-	const [pullRequestModal, setPullRequestModal] = React.useState({
+	const [pullRequestDetailsLoader, setPullRequestDetailsLoader] = useState(true);
+	const [pullRequestDetailsError, setPullRequestDetailsError] = useState(false);
+	const [pullRequestDetails, setPullRequestDetails] = useState({});
+	const [pullRequestModal, setPullRequestModal] = useState({
 		open: false,
 		rowData: null,
 		tableMeta: null,
@@ -55,7 +55,7 @@ function BureauViewPullRequestDetails(props) {
 		}
 	};
 
-	React.useEffect(() => {
+	useEffect(() => {
 		getPullRequestListDetails();
 	}, []);
 
@@ -90,46 +90,6 @@ function BureauViewPullRequestDetails(props) {
 
 	const handleClosePullModal = () => {
 		setPullRequestModal({ open: false, rowData: null, tableMeta: null, isEdit: false });
-	};
-
-	const getColumnMapping = (row) => {
-		const fieldList = [];
-		const listKey = Object.keys(row);
-
-		const fieldToShow = [
-			'id',
-			'Bank',
-			'AWB_No',
-			'Product',
-			'Logo',
-			'PA_Flag',
-			'NRWC_Flag',
-			'Bureau_Total_TAT_Days',
-			'Bureau_TAT_Extra_Days_Passed',
-			'Bureau_Status',
-			'Courier_Status',
-			'Courier_TAT_Extra_Days_Passed',
-		];
-
-		listKey.forEach((key) => {
-			const basicColumnFields = {
-				field: key,
-				headerName: key.split('_').join(' '),
-				description: key.split('_').join(' '), // shows as tooltip
-				sortable: true,
-				width: 200,
-				editable: false,
-			};
-			if (key === 'id') {
-				basicColumnFields.headerName = 'S. No.';
-				basicColumnFields.description = 'S. No.';
-				basicColumnFields.width = 80;
-			}
-			if (fieldToShow.includes(key)) {
-				fieldList.push(basicColumnFields);
-			}
-		});
-		return fieldList;
 	};
 
 	return (

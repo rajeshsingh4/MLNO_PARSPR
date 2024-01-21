@@ -81,7 +81,7 @@ export default function UserList() {
 
 		const hiddenColumns = ['createdBy', 'modifiedBy', 'user'];
 
-		listKey.forEach((key, i) => {
+		listKey.forEach((key) => {
 			const baseFieldObj = {
 				field: key,
 				headerName: key,
@@ -138,18 +138,12 @@ export default function UserList() {
 				</Breadcrumbs>
 			</PageHeader>
 			<Container>
-				<Grid container spacing={3} justifyContent="end">
-					<Button
-						aria-label="create"
-						onClick={handleCreateModalOpen}
-						variant="contained"
-						color="grey"
-						sx={{ mb: 2 }}
-					>
-						<AddIcon />
-					</Button>
-				</Grid>
 				<Card component="section" type="section">
+					<Grid container spacing={3} sx={{ mb: 2 }} justifyContent="end">
+						<Button aria-label="create" onClick={handleCreateModalOpen} variant="contained" color="grey">
+							<AddIcon />
+						</Button>
+					</Grid>
 					<DataGrid
 						className="mui-data-grid users-list"
 						loading={userListLoader}

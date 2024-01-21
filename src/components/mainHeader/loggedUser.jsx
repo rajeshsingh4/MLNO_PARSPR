@@ -214,21 +214,21 @@ function UserMenu({ handleClose, loggedInUser }) {
 	);
 }
 
-function ListBadge({ color, count }) {
-	return (
-		<Box
-			ml={1}
-			bgcolor={color}
-			color="primary.contrastText"
-			height={20}
-			width={20}
-			fontSize="body1"
-			borderRadius="50%"
-			display="grid"
-			sx={{ placeItems: 'center' }}
-		>
-			{count}
-		</Box>
-	);
-}
+// function ListBadge({ color, count }) {
+// 	return (
+// 		<Box
+// 			ml={1}
+// 			bgcolor={color}
+// 			color="primary.contrastText"
+// 			height={20}
+// 			width={20}
+// 			fontSize="body1"
+// 			borderRadius="50%"
+// 			display="grid"
+// 			sx={{ placeItems: 'center' }}
+// 		>
+// 			{count}
+// 		</Box>
+// 	);
+// }
 export default LoggedUser;

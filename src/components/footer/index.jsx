@@ -6,7 +6,7 @@ import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 // import Grid from '@mui/material/Grid';
 // import Divider from '@mui/material/Divider';
-import Link from '@mui/material/Link';
+// import Link from '@mui/material/Link';
 import Container from '@mui/material/Container';
 // import TextField from '@mui/material/TextField';
 // import InputAdornment from '@mui/material/InputAdornment';
@@ -17,7 +17,7 @@ import Container from '@mui/material/Container';
 // import GitHubIcon from '@mui/icons-material/GitHub';
 // import TwitterIcon from '@mui/icons-material/Twitter';
 // import GoogleIcon from '@mui/icons-material/Google';
-import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+// import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 // import LocalPhoneOutlinedIcon from '@mui/icons-material/LocalPhoneOutlined';
 // import EmailOutlinedIcon from '@mui/icons-material/EmailOutlined';
 // import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined';
@@ -75,60 +75,60 @@ function Footer() {
 	);
 }
 
-function ContactLink({ Icon, text }) {
-	return (
-		<Stack spacing={1} alignItems="center" direction="row">
-			<Icon
-				color="primary"
-				sx={{
-					mr: 3,
-				}}
-			/>
-			<Typography variant="body1">{text}</Typography>
-		</Stack>
-	);
-}
+// function ContactLink({ Icon, text }) {
+// 	return (
+// 		<Stack spacing={1} alignItems="center" direction="row">
+// 			<Icon
+// 				color="primary"
+// 				sx={{
+// 					mr: 3,
+// 				}}
+// 			/>
+// 			<Typography variant="body1">{text}</Typography>
+// 		</Stack>
+// 	);
+// }
 
-function FooterLink({ text }) {
-	return (
-		<Link
-			variant="body2"
-			fontWeight="300"
-			href="#!"
-			underline="hover"
-			sx={{
-				color: 'text.primary',
-				'&:hover': {
-					'& svg': {
-						opacity: '1',
-						ml: 2,
-					},
-				},
-				'&::before': {
-					content: '""',
-					display: 'inline-block',
-					borderRadius: '50%',
-					bgcolor: 'primary.main',
-					width: '4px',
-					height: '4px',
-					mb: '2px',
-					mr: 2,
-				},
-			}}
-		>
-			{/* <span style={{ marginRight: '15px' }}>•</span> */}
-			{text}
-			<ArrowForwardIosIcon
-				color="primary"
-				sx={{
-					transition: '0.3s',
-					fontSize: '11px',
-					ml: 0,
-					opacity: '0',
-				}}
-			/>
-		</Link>
-	);
-}
+// function FooterLink({ text }) {
+// 	return (
+// 		<Link
+// 			variant="body2"
+// 			fontWeight="300"
+// 			href="#!"
+// 			underline="hover"
+// 			sx={{
+// 				color: 'text.primary',
+// 				'&:hover': {
+// 					'& svg': {
+// 						opacity: '1',
+// 						ml: 2,
+// 					},
+// 				},
+// 				'&::before': {
+// 					content: '""',
+// 					display: 'inline-block',
+// 					borderRadius: '50%',
+// 					bgcolor: 'primary.main',
+// 					width: '4px',
+// 					height: '4px',
+// 					mb: '2px',
+// 					mr: 2,
+// 				},
+// 			}}
+// 		>
+// 			{/* <span style={{ marginRight: '15px' }}>•</span> */}
+// 			{text}
+// 			<ArrowForwardIosIcon
+// 				color="primary"
+// 				sx={{
+// 					transition: '0.3s',
+// 					fontSize: '11px',
+// 					ml: 0,
+// 					opacity: '0',
+// 				}}
+// 			/>
+// 		</Link>
+// 	);
+// }
 
 export default Footer;

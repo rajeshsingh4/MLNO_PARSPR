@@ -23,7 +23,6 @@ function CardTracks() {
 	const navigate = useNavigate();
 	const location = useLocation();
 	const { state: fileDetails } = location;
-	const classes = {};
 	const [results, setResults] = useState([]);
 	const [resultsLoader, setResultsLoader] = useState(false);
 	const [resultsError, setResultsError] = useState(false);
@@ -41,7 +40,7 @@ function CardTracks() {
 			.then((response) => {
 				setResults(response.data);
 			})
-			.catch((err) => {
+			.catch(() => {
 				setResultsError(true);
 			})
 			.finally(() => {
@@ -114,7 +113,7 @@ function CardTracks() {
 		return formElements;
 	};
 
-	const handleEdit = (row, tableMeta) => {
+	const handleEdit = (row) => {
 		setCard(row.id);
 		setFormData({ ...row });
 		setModal(true);
@@ -164,12 +163,8 @@ function CardTracks() {
 				baseFieldObj.label = fieldNameMapping[key];
 			}
 			if (listKey[i] === 'id') {
-				baseFieldObj.options.customBodyRender = (value, tableMeta, updateValue) => (
-					<Button
-						// className={props.classes.linkItem}
-						variant="text"
-						onClick={() => toggleDrawer(value, true)}
-					>
+				baseFieldObj.options.customBodyRender = (value) => (
+					<Button variant="text" onClick={() => toggleDrawer(value, true)}>
 						{value}
 					</Button>
 				);
@@ -209,7 +204,7 @@ function CardTracks() {
 
 	const handleUpdate = (e) => {
 		e.preventDefault();
-		CardTrackingService.updateCardTrackingList(formData.id, formData).then((resp) => {
+		CardTrackingService.updateCardTrackingList(formData.id, formData).then(() => {
 			handleClose();
 			loadContentFromServer();
 		});
@@ -231,7 +226,7 @@ function CardTracks() {
 	};
 
 	return (
-		<div className={classes.root}>
+		<div>
 			<Box>
 				<div>
 					<Button sx={{ mb: 2, mt: 2 }} variant="outlined" onClick={goBackToFiles}>

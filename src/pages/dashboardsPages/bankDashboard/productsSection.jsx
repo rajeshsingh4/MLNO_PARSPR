@@ -117,6 +117,7 @@ function CardTableRow({ card }) {
 			<TableCell align="center">
 				<Stack direction="column" alignItems="center" spacing={1}>
 					<Typography variant="body1" color="text.tertiary">
+						{/* eslint-disable-next-line no-nested-ternary */}
 						{bureauStatus === 1 ? (courierStatus === 1 ? '' : 'With courier') : 'With Bureau'}
 					</Typography>
 					<Chip label={bureauStatusMap[status]} size="small" color={bureauStatusColorMap[status]} />
