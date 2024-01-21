@@ -137,6 +137,10 @@ export const BUREAU_NAV_LINKS_CONFIG = [
 				title: 'File TAT Report',
 				href: '/bureau/file/filetatreport',
 			},
+			{
+				title: 'Pending Report',
+				href: '/bureau/file/pending-report',
+			},
 		],
 	},
 	{
