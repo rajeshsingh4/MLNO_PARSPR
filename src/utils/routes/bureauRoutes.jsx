@@ -2,7 +2,6 @@ import { lazy } from 'react';
 import { Route } from 'react-router-dom';
 import withLazyLoadably from '@hocs/withLazyLoadably';
 
-const BureauReportDashboard = withLazyLoadably(lazy(() => import('@/pages/bureau/dashboard/BureauReportDashboard')));
 const BureauDashboardPage = withLazyLoadably(lazy(() => import('@/pages/bureau/dashboard/BureauDashboard')));
 const BureauPullRequestList = withLazyLoadably(lazy(() => import('@/pages/bureau/pull/BureauPullRequestList')));
 const BureauViewPullRequestDetails = withLazyLoadably(
@@ -28,7 +27,6 @@ function BureauRoutes() {
 				</Route>
 				<Route path="file">
 					<Route path="filetatreport" element={<FileTATReportPage />} />
-					<Route path="pending-report" element={<BureauReportDashboard />} />
 					{/* <Route path="filewisereport" element={<FileWiseReportPage />} /> */}
 					{/* <Route path="comparision" element={<BureauComparisionPage />} /> */}
 				</Route>

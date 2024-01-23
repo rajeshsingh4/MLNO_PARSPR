@@ -75,6 +75,10 @@ export const BANK_NAV_LINKS_CONFIG = [
 				title: 'File TAT Report',
 				href: '/bank/bureau/filetatreport',
 			},
+			{
+				title: 'Pending Report',
+				href: '/bank/bureau/pending-report',
+			},
 		],
 	},
 	{
