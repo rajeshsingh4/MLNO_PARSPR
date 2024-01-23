@@ -21,7 +21,7 @@ import Card from '@mui/material/Card';
 import PageHeader from '@/components/pageHeader';
 import FileMasterListService from '@/utils/services/files.services';
 
-export default function BureauReportDashboard(props) {
+export default function BankReportDashboardForBureau(props) {
 	const [bureauList, setBureauList] = React.useState([]);
 	const [fileList, setFileList] = React.useState([]);
 	const [selectedBureau, setSelectedBureau] = React.useState('');

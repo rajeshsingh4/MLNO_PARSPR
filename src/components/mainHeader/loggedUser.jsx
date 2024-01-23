@@ -67,12 +67,12 @@ function LoggedUser() {
 				<UserMenu handleClose={handleClose} loggedInUser={loggedInUser} />
 			</Menu>
 			<Stack height="100%" direction="row" flex={1} justifyContent="flex-end" alignItems="center" spacing={0}>
-				<NotificationsButton />
+				{/* <NotificationsButton />
 				<IconButton size="small">
 					<Badge color="tertiary" overlap="rectangular" variant="dot">
 						<CommentOutlinedIcon color="primary" fontSize="small" />
 					</Badge>
-				</IconButton>
+				</IconButton> */}
 				<ButtonBase
 					onClick={handleClick}
 					variant="outlined"

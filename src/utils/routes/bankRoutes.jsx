@@ -10,7 +10,7 @@ const BureauComparisionPage = withLazyLoadably(lazy(() => import('@/pages/bank/b
 const BankPullRequestDashboard = withLazyLoadably(
 	lazy(() => import('@/pages/bank/dashboard/BankPullRequestDashboard')),
 );
-const BureauReportDashboard = withLazyLoadably(lazy(() => import('@/pages/bank/bureau/BureauReportDashboard')));
+const PendingReportDashboard = withLazyLoadably(lazy(() => import('@/pages/bank/bureau/BureauReportDashboardForBank')));
 const FileTATReportPage = withLazyLoadably(lazy(() => import('@/pages/bank/bureau/FileTATReport')));
 const FileWiseReportPage = withLazyLoadably(lazy(() => import('@/pages/bank/bureau/fileWiseReport')));
 const CardTracksPage = withLazyLoadably(lazy(() => import('@/pages/bank/card/CardTracks')));
@@ -28,7 +28,7 @@ function BankRoutes() {
 						<Route path=":id" element={<CardTracksPage />} />
 					</Route>
 					<Route path="filetatreport" element={<FileTATReportPage />} />
-					<Route path="pending-report" element={<BureauReportDashboard />} />
+					<Route path="pending-report" element={<PendingReportDashboard />} />
 					<Route path="comparision" element={<BureauComparisionPage />} />
 					<Route path="pull">
 						<Route
