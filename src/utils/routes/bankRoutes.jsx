@@ -10,7 +10,7 @@ const BureauComparisionPage = withLazyLoadably(lazy(() => import('@/pages/bank/b
 const BankPullRequestDashboard = withLazyLoadably(
 	lazy(() => import('@/pages/bank/dashboard/BankPullRequestDashboard')),
 );
-const PendingReportDashboard = withLazyLoadably(lazy(() => import('@/pages/bank/bureau/BureauReportDashboardForBank')));
+const PendingReportDashboard = withLazyLoadably(lazy(() => import('@/pages/bank/bureau/BankPendingReportDashboard')));
 const FileTATReportPage = withLazyLoadably(lazy(() => import('@/pages/bank/bureau/FileTATReport')));
 const FileWiseReportPage = withLazyLoadably(lazy(() => import('@/pages/bank/bureau/fileWiseReport')));
 const CardTracksPage = withLazyLoadably(lazy(() => import('@/pages/bank/card/CardTracks')));

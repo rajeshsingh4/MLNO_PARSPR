@@ -21,7 +21,7 @@ import Card from '@mui/material/Card';
 import PageHeader from '@/components/pageHeader';
 import FileMasterListService from '@/utils/services/files.services';
 
-export default function BureauReportDashboardForBank(props) {
+export default function BankPendingReportDashboard(props) {
 	const [bureauList, setBureauList] = React.useState([]);
 	const [fileList, setFileList] = React.useState([]);
 	const [selectedBureau, setSelectedBureau] = React.useState('');
@@ -45,7 +45,7 @@ export default function BureauReportDashboardForBank(props) {
 	const getFileList = async () => {
 		setFileListLoader(true);
 		try {
-			const bureauDetails = await FileMasterListService.getFileMasterList();
+			const bureauDetails = await FileMasterListService.getFileMasterListForBank();
 			createUniqueBureauList(bureauDetails.data);
 			setFileList(bureauDetails.data);
 		} catch (err) {
@@ -84,8 +84,6 @@ export default function BureauReportDashboardForBank(props) {
 		setSelectedBureau(e.target.value);
 		getReportForBureau(e.target.value);
 	};
-
-	const getSelectedFilesForBureau = (bureauName) => fileList((item) => item.BureauName === bureauName);
 
 	if (fileListLoader || bureauReportLoader) {
 		return (

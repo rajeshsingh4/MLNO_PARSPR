@@ -4,6 +4,10 @@ import { FILE_URL, BUREAUDETAIL_URL, BUREAU_URL } from '@/utils/url';
 
 const getFileMasterList = () => AxiosInstance.get(`${FILE_URL}all`, { headers: authHeader() });
 
+const getFileMasterListForBank = () => AxiosInstance.get(`${FILE_URL}all/bank`, { headers: authHeader() });
+
+const getFileMasterListForBureau = () => AxiosInstance.get(`${FILE_URL}all/bureau`, { headers: authHeader() });
+
 const getFileMasterListByFileId = (fileId) => AxiosInstance.get(FILE_URL + fileId, { headers: authHeader() });
 
 const getBureauTAT = () => AxiosInstance.get(`${BUREAU_URL}all`, { headers: authHeader() });
@@ -15,6 +19,8 @@ const FlieMasterListService = {
 	getFileMasterListByFileId,
 	getBureauTAT,
 	getBureauReport,
+	getFileMasterListForBank,
+	getFileMasterListForBureau
 };
 
 export default FlieMasterListService;

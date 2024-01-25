@@ -21,10 +21,9 @@ import Card from '@mui/material/Card';
 import PageHeader from '@/components/pageHeader';
 import FileMasterListService from '@/utils/services/files.services';
 
-export default function BankReportDashboardForBureau(props) {
-	const [bureauList, setBureauList] = React.useState([]);
+export default function BureauPendingReportDashboard(props) {
 	const [fileList, setFileList] = React.useState([]);
-	const [selectedBureau, setSelectedBureau] = React.useState('');
+	const [selectedBank, setSelectedBank] = React.useState('');
 	const [fileListLoader, setFileListLoader] = React.useState(false);
 	const [fileListError, setFileListError] = React.useState(false);
 	const [bureauReport, setBureauReport] = React.useState(null);
@@ -37,16 +36,10 @@ export default function BankReportDashboardForBureau(props) {
         'countDispatched': 'Count Dispatched'
     }); */
 
-	const createUniqueBureauList = (bureauDetails) => {
-		const uniqueBureauData = [...new Map(bureauDetails.map((item) => [item.BureauName, item])).values()];
-		setBureauList(uniqueBureauData);
-	};
-
 	const getFileList = async () => {
 		setFileListLoader(true);
 		try {
-			const bureauDetails = await FileMasterListService.getFileMasterList();
-			createUniqueBureauList(bureauDetails.data);
+			const bureauDetails = await FileMasterListService.getFileMasterListForBureau();
 			setFileList(bureauDetails.data);
 		} catch (err) {
 			console.error('Error fetching list of files for bureau report dashboard ', err);
@@ -56,7 +49,7 @@ export default function BankReportDashboardForBureau(props) {
 		}
 	};
 
-	const getReportForBureau = async (bureauName) => {
+	const getReportForBank = async (bureauName) => {
 		setBureauReportLoader(true);
 		try {
 			const bureauDetails = await FileMasterListService.getBureauReport(bureauName);
@@ -73,19 +66,10 @@ export default function BankReportDashboardForBureau(props) {
 		getFileList();
 	}, []);
 
-	React.useEffect(() => {
-		if (bureauList.length > 0) {
-			getReportForBureau(bureauList[0].BureauName);
-			setSelectedBureau(bureauList[0].BureauName);
-		}
-	}, [bureauList]);
-
 	const handleBureauSelect = (e) => {
-		setSelectedBureau(e.target.value);
-		getReportForBureau(e.target.value);
+		setSelectedBank(e.target.value);
+		getReportForBank(e.target.value);
 	};
-
-	const getSelectedFilesForBureau = (bureauName) => fileList((item) => item.BureauName === bureauName);
 
 	if (fileListLoader || bureauReportLoader) {
 		return (
@@ -98,12 +82,22 @@ export default function BankReportDashboardForBureau(props) {
 	}
 
 	if (fileListError) {
-		return <>Error loading bureau list....!!</>;
+		return <>Error loading bank list....!!</>;
 	}
 
 	if (bureauReportError) {
 		return <>Error loading bureau reports....!!</>;
 	}
+
+	const getFileListingFromBank = () => {
+		const filteredBankListing = [];
+		fileList.forEach((item) => {
+			item.cards.forEach((card) => {
+				filteredBankListing.push(card.Bank);
+			});
+		});
+		return [...new Set(filteredBankListing)];
+	};
 
 	return (
 		<>
@@ -127,17 +121,17 @@ export default function BankReportDashboardForBureau(props) {
 						<Grid container spacing={3}>
 							<Grid xs={12} sm={3}>
 								<FormControl sx={{ minWidth: 200 }}>
-									<InputLabel id="select-bureau-dashboard">Select Bureau</InputLabel>
+									<InputLabel id="select-bank-dashboard">Select Bank</InputLabel>
 									<Select
-										labelId="select-bureau-dashboard"
-										id="select-bureau"
-										value={selectedBureau}
-										label="Select Bureau"
+										labelId="select-bank-dashboard"
+										id="select-bank"
+										value={selectedBank}
+										label="Select Bank"
 										onChange={(e) => handleBureauSelect(e)}
 									>
-										{bureauList.map((item, index) => (
-											<MenuItem key={index} value={item.BureauName}>
-												{item.BureauName}
+										{getFileListingFromBank().map((item, index) => (
+											<MenuItem key={index} value={item}>
+												{item}
 											</MenuItem>
 										))}
 									</Select>
