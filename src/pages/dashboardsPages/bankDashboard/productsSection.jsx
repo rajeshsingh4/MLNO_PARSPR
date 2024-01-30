@@ -57,6 +57,11 @@ const STATUS_CONFIG = {
 
 function CardsTable(props) {
 	const { recentCards } = props;
+	const localUser = window.localStorage.getItem('user');
+	let label = '';
+	if (localUser) {
+		label = JSON.parse(localUser).user_type === 'bank' ? 'Bureau' : 'Bank';
+	}
 	return (
 		<TableContainer>
 			<Table aria-label="recent cards listing" size="medium">
@@ -64,7 +69,7 @@ function CardsTable(props) {
 					<TableRow>
 						<TableCell>ID</TableCell>
 						<TableCell align="left" padding="none">
-							Bank
+							{label}
 						</TableCell>
 						<TableCell align="center">Status</TableCell>
 						<TableCell align="center">Updated At</TableCell>
@@ -73,7 +78,7 @@ function CardsTable(props) {
 				</TableHead>
 				<TableBody>
 					{recentCards.map((card) => (
-						<CardTableRow key={card.id} card={card} />
+						<CardTableRow key={card.id} card={card} label={label} />
 					))}
 				</TableBody>
 			</Table>
@@ -81,8 +86,8 @@ function CardsTable(props) {
 	);
 }
 
-function CardTableRow({ card }) {
-	const { id, bank, status, bureauStatus, updatedAt, courierStatus } = card;
+function CardTableRow({ card, label }) {
+	const { id, bank, bureauName, status, bureauStatus, updatedAt, courierStatus } = card;
 	return (
 		<TableRow hover>
 			<TableCell>{id}</TableCell>
@@ -99,7 +104,7 @@ function CardTableRow({ card }) {
 						},
 					}}
 				>
-					{bank}
+					{label === 'Bank' ? bureauName : bank}
 				</Link>
 				{/* <Stack direction="row" alignItems="center" spacing={1}>
 					<Box

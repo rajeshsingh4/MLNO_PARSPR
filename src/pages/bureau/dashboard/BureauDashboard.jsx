@@ -256,6 +256,7 @@ function BureauDashboardPage() {
 			const item = {
 				id: card.id,
 				bank: card.Bank,
+				bureauName: card.fileMaster.BureauName,
 				status: card.Bureau_Status === 1 ? card.Courier_Status : card.Bureau_Status,
 				bureauStatus: card.Bureau_Status,
 				courierStatus: card.courierStatus,

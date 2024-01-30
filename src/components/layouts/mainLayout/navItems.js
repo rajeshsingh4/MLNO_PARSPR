@@ -81,26 +81,26 @@ export const BANK_NAV_LINKS_CONFIG = [
 			},
 		],
 	},
-	{
-		id: uuid(),
-		type: 'group',
-		title: 'Bureau Pull Request',
-		Icon: AutoStoriesOutlinedIcon,
-		menuChildren: [
-			{
-				title: 'Dashboard',
-				href: '/bank/bureau/pull/dashboard',
-			},
-			// {
-			// 	title: 'Create',
-			// 	href: '/bank/bureau/pull/create',
-			// },
-			// {
-			// 	title: 'Manage',
-			// 	href: '/bank/bureau/pull/list',
-			// },
-		],
-	},
+	// {
+	// 	id: uuid(),
+	// 	type: 'group',
+	// 	title: 'Bureau Pull Request',
+	// 	Icon: AutoStoriesOutlinedIcon,
+	// 	menuChildren: [
+	// 		{
+	// 			title: 'Dashboard',
+	// 			href: '/bank/bureau/pull/dashboard',
+	// 		},
+	// 		{
+	// 			title: 'Create',
+	// 			href: '/bank/bureau/pull/create',
+	// 		},
+	// 		{
+	// 			title: 'Manage',
+	// 			href: '/bank/bureau/pull/list',
+	// 		},
+	// 	],
+	// },
 ];
 
 export const BUREAU_NAV_LINKS_CONFIG = [

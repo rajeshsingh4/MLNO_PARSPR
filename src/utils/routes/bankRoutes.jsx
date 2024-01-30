@@ -30,16 +30,16 @@ function BankRoutes() {
 					<Route path="filetatreport" element={<FileTATReportPage />} />
 					<Route path="pending-report" element={<PendingReportDashboard />} />
 					<Route path="comparision" element={<BureauComparisionPage />} />
-					<Route path="pull">
+					{/* <Route path="pull">
 						<Route
 							index
 							path="dashboard"
 							element={<h1>Dashboard for Bank to see bureau(s) pull requests</h1>}
 						/>
-						{/* <Route path="create" element={<h1>Create Pull Requests option for bank to a bureau </h1>} /> */}
-						{/* <Route path="list" element={<BureauPullRequestList />} /> */}
-						{/* <Route path="view/:id" element={<BureauViewPullRequestDetails />} /> */}
-					</Route>
+						<Route path="create" element={<h1>Create Pull Requests option for bank to a bureau </h1>} />
+						<Route path="list" element={<BureauPullRequestList />} />
+						<Route path="view/:id" element={<BureauViewPullRequestDetails />} />
+					</Route> */}
 				</Route>
 				<Route path="pull">
 					<Route index path="dashboard" element={<BankPullRequestDashboard />} />
