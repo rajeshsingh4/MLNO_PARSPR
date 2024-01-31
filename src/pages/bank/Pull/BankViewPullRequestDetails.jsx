@@ -4,12 +4,15 @@ import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
-import Paper from '@mui/material/Paper';
+// import Paper from '@mui/material/Paper';
 import TableRow from '@mui/material/TableRow';
 import { useParams } from 'react-router-dom';
 import Container from '@mui/material/Container';
+import CardHeader from '@/components/cardHeader';
+import Grid from '@mui/material/Grid';
+import Stack from '@mui/material/Stack';
 import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
+// import CardContent from '@mui/material/CardContent';
 import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
@@ -133,7 +136,7 @@ function ViewPullRequestDetails(props) {
 
 	return (
 		<>
-			<PageHeader title="Bank View Pull Requests">
+			<PageHeader title="Pull Request Detail">
 				<Breadcrumbs
 					aria-label="breadcrumb"
 					sx={{
@@ -147,121 +150,166 @@ function ViewPullRequestDetails(props) {
 					<Typography color="text.tertiary">{id}</Typography>
 				</Breadcrumbs>
 			</PageHeader>
+
 			<Container>
-				<Card component="section" type="section">
-					<TableContainer>
-						<Table>
-							<TableBody>
-								<TableRow>
-									<TableCell>Pull Request ID</TableCell>
-									<TableCell>{pullRequestDetails.id}</TableCell>
-									<TableCell>
-										<Button
-											variant="contained"
-											startIcon={<UpgradeIcon />}
-											onClick={editPullRequestHandler}
-										>
-											Edit
-										</Button>
-									</TableCell>
-								</TableRow>
-								<TableRow>
-									<TableCell>Date</TableCell>
-									<TableCell>{new Date(pullRequestDetails.createdAt).toLocaleDateString()}</TableCell>
-								</TableRow>
-								<TableRow>
-									<TableCell>Time</TableCell>
-									<TableCell>{getHoursMinutesSeconds(pullRequestDetails.createdAt)}</TableCell>
-								</TableRow>
-								<TableRow>
-									<TableCell>Change Originator</TableCell>
-									<TableCell>{pullRequestDetails.userId}</TableCell>
-								</TableRow>
-								<TableRow>
-									<TableCell>Change Communicated To</TableCell>
-									<TableCell>{pullRequestDetails.changeCommunicatedTo}</TableCell>
-								</TableRow>
-								<TableRow>
-									<TableCell>Action</TableCell>
-									<TableCell>{pullRequestDetails.action}</TableCell>
-								</TableRow>
-								<TableRow>
-									<TableCell>Field</TableCell>
-									<TableCell>{pullRequestDetails.field}</TableCell>
-								</TableRow>
-								<TableRow>
-									<TableCell>Original Value</TableCell>
-									<TableCell>{pullRequestDetails.originalValue}</TableCell>
-								</TableRow>
-								<TableRow>
-									<TableCell>New Value</TableCell>
-									<TableCell>{pullRequestDetails.newValue}</TableCell>
-								</TableRow>
-								<TableRow>
-									<TableCell>Mode of Communication</TableCell>
-									<TableCell>{pullRequestDetails.mode}</TableCell>
-								</TableRow>
-								<TableRow>
-									<TableCell>Status</TableCell>
-									<TableCell>
-										<Chip
-											size="small"
-											label={pullRequestStatusMap[pullRequestDetails.status]}
-											color={pullRequestStatusColorMap[pullRequestDetails.status]}
-										/>
-									</TableCell>
-								</TableRow>
-								<TableRow>
-									<TableCell>IP Address</TableCell>
-									<TableCell>{pullRequestDetails.ipaddress}</TableCell>
-								</TableRow>
-								<TableRow>
-									<TableCell>Service Request ID</TableCell>
-									<TableCell>{pullRequestDetails.serviceRequest}</TableCell>
-								</TableRow>
-							</TableBody>
-						</Table>
-					</TableContainer>
-					<TableContainer component={Paper} sx={{ mt: 3 }}>
-						<DataGrid
-							className="mui-data-grid file-master"
-							loading={pullRequestDetailsLoader}
-							rows={[pullRequestDetails.card]}
-							columns={getColumnMapping(pullRequestDetails.card)}
-							initialState={{
-								pagination: {
-									paginationModel: { page: 0, pageSize: 10 },
-								},
-							}}
-							pageSizeOptions={[10, 20, 50, 100]}
-							// checkboxSelection
-						/>
-					</TableContainer>
-					<Accordion sx={{ mt: 2 }}>
-						<AccordionSummary
-							expandIcon={<ExpandMoreIcon />}
-							aria-controls="panel1a-content"
-							id="panel1a-header"
-						>
-							<Typography>Pull Request Activity Timeline</Typography>
-						</AccordionSummary>
-						<AccordionDetails>
-							<Card elevation={0}>
-								<CardContent>
-									<PullRequestActivityTimeline {...pullRequestDetails} />
-								</CardContent>
+				<Grid container spacing={1}>
+					<Grid item xs={12} sm={6} md={6}>
+						<Card>
+							<CardHeader title="Pull Detail" size="small" />
+							<TableContainer>
+								<Table>
+									<TableBody>
+										<TableRow>
+											<TableCell>Pull Request ID</TableCell>
+											<TableCell>{pullRequestDetails.id}</TableCell>
+											<TableCell>
+												<Button
+													variant="contained"
+													startIcon={<UpgradeIcon />}
+													onClick={editPullRequestHandler}
+												>
+													Edit
+												</Button>
+											</TableCell>
+										</TableRow>
+										<TableRow>
+											<TableCell>Date</TableCell>
+											<TableCell>
+												{new Date(pullRequestDetails.createdAt).toLocaleDateString()}
+											</TableCell>
+										</TableRow>
+										<TableRow>
+											<TableCell>Time</TableCell>
+											<TableCell>
+												{getHoursMinutesSeconds(pullRequestDetails.createdAt)}
+											</TableCell>
+										</TableRow>
+										<TableRow>
+											<TableCell>Field</TableCell>
+											<TableCell>{pullRequestDetails.field}</TableCell>
+										</TableRow>
+										<TableRow>
+											<TableCell>Original Value</TableCell>
+											<TableCell>{pullRequestDetails.originalValue}</TableCell>
+										</TableRow>
+
+										<TableRow>
+											<TableCell>New Value</TableCell>
+											<TableCell>{pullRequestDetails.newValue}</TableCell>
+										</TableRow>
+
+										<TableRow>
+											<TableCell>Action</TableCell>
+											<TableCell>{pullRequestDetails.action}</TableCell>
+										</TableRow>
+
+										<TableRow>
+											<TableCell>Status</TableCell>
+											<TableCell>
+												<Chip
+													size="small"
+													label={pullRequestStatusMap[pullRequestDetails.status]}
+													color={pullRequestStatusColorMap[pullRequestDetails.status]}
+												/>
+											</TableCell>
+										</TableRow>
+										<TableRow />
+										<TableRow>
+											<TableCell>Service ID</TableCell>
+											<TableCell>{pullRequestDetails.serviceRequest}</TableCell>
+										</TableRow>
+									</TableBody>
+								</Table>
+							</TableContainer>
+						</Card>
+					</Grid>
+					<Grid item xs={12} sm={6} md={6}>
+						<Stack spacing={3} direction="column">
+							<Card>
+								<CardHeader title="Action" size="small" />
 							</Card>
-						</AccordionDetails>
-					</Accordion>
-				</Card>
-				{pullRequestModal.open && pullRequestModal.rowData && (
-					<CreatePullRequestForm
-						handleClose={handleClosePullModal}
-						pullRequestModal={pullRequestModal}
-						goBackTo="/bank/pull/list"
-					/>
-				)}
+
+							<Card>
+								<CardHeader title="Pull  Created By" size="small" />
+								<TableContainer>
+									<Table>
+										<TableBody>
+											<TableRow>
+												<TableCell>Change Originator</TableCell>
+												<TableCell>{pullRequestDetails.userId}</TableCell>
+											</TableRow>
+											<TableRow>
+												<TableCell>IP Address</TableCell>
+												<TableCell>{pullRequestDetails.ipaddress}</TableCell>
+											</TableRow>
+											<TableRow>
+												<TableCell>Requested By</TableCell>
+												<TableCell>{pullRequestDetails.changeCommunicatedTo}</TableCell>
+											</TableRow>
+
+											<TableRow>
+												<TableCell>Communicated Via</TableCell>
+												<TableCell>{pullRequestDetails.mode}</TableCell>
+											</TableRow>
+										</TableBody>
+									</Table>
+								</TableContainer>
+							</Card>
+						</Stack>
+					</Grid>
+				</Grid>
+				<Grid container spacing={1} sx={{ mt: 2 }}>
+					<Grid item xs={12}>
+						<Accordion>
+							<AccordionSummary
+								expandIcon={<ExpandMoreIcon />}
+								aria-controls="panel1a-content"
+								id="panel1a-header"
+							>
+								<Typography>Action Timeline</Typography>
+							</AccordionSummary>
+							<AccordionDetails>
+								<Card>
+									<PullRequestActivityTimeline {...pullRequestDetails} />
+								</Card>
+							</AccordionDetails>
+						</Accordion>
+					</Grid>
+					<Grid item xs={12}>
+						<Accordion sx={{ mt: 2 }}>
+							<AccordionSummary
+								expandIcon={<ExpandMoreIcon />}
+								aria-controls="panel1a-content"
+								id="panel1a-header"
+							>
+								<Typography>Card Details</Typography>
+							</AccordionSummary>
+							<AccordionDetails>
+								<DataGrid
+									className="mui-data-grid file-master"
+									loading={pullRequestDetailsLoader}
+									rows={[pullRequestDetails.card]}
+									columns={getColumnMapping(pullRequestDetails.card)}
+									initialState={{
+										pagination: {
+											paginationModel: { page: 0, pageSize: 10 },
+										},
+									}}
+									pageSizeOptions={[10, 20, 50, 100]}
+									// checkboxSelection
+								/>
+							</AccordionDetails>
+						</Accordion>
+					</Grid>
+				</Grid>
 			</Container>
+			{pullRequestModal.open && pullRequestModal.rowData && (
+				<CreatePullRequestForm
+					handleClose={handleClosePullModal}
+					pullRequestModal={pullRequestModal}
+					goBackTo="/bank/pull/list"
+				/>
+			)}
 		</>
 	);
 }

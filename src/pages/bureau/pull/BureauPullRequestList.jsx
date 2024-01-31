@@ -25,9 +25,12 @@ function BureauPullRequestList(props) {
 	const navigate = useNavigate();
 
 	const getPullRequestList = async () => {
+		const organisationName = window.localStorage.getItem('user')
+			? JSON.parse(window.localStorage.getItem('user')).organisation
+			: 'NA';
 		setPullRequestLoader(true);
 		try {
-			const pullRequestResp = await PullRequestService.getPullRequest('bureau=BureauName_c');
+			const pullRequestResp = await PullRequestService.getPullRequest(`bureau=${organisationName}`);
 			setPullRequestList(pullRequestResp.data);
 		} catch (err) {
 			console.error('Error fetching list of pull requests', err);

@@ -2,7 +2,9 @@ import { lazy } from 'react';
 import { Route } from 'react-router-dom';
 import withLazyLoadably from '@hocs/withLazyLoadably';
 
-const PendingReportDashboard = withLazyLoadably(lazy(() => import('@/pages/bureau/dashboard/BureauPendingReportDashboard')));
+const PendingReportDashboard = withLazyLoadably(
+	lazy(() => import('@/pages/bureau/dashboard/BureauPendingReportDashboard')),
+);
 const BureauDashboardPage = withLazyLoadably(lazy(() => import('@/pages/bureau/dashboard/BureauDashboard')));
 const BureauPullRequestList = withLazyLoadably(lazy(() => import('@/pages/bureau/pull/BureauPullRequestList')));
 const BureauViewPullRequestDetails = withLazyLoadably(

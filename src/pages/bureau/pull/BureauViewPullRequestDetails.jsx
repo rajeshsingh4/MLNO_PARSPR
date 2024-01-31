@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-// import { DataGrid } from '@mui/x-data-grid';
+import { DataGrid } from '@mui/x-data-grid';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -11,7 +11,7 @@ import Container from '@mui/material/Container';
 import CardHeader from '@/components/cardHeader';
 import Grid from '@mui/material/Grid';
 import Stack from '@mui/material/Stack';
-import CardContent from '@mui/material/CardContent';
+// import CardContent from '@mui/material/CardContent';
 import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
@@ -72,6 +72,48 @@ function BureauViewPullRequestDetails(props) {
 	if (pullRequestDetailsError) {
 		return <>Error Loading Pull Requests Details, Please try again!!</>;
 	}
+
+	const getColumnMapping = (row) => {
+		const fieldList = [];
+		const listKey = Object.keys(row);
+
+		const fieldToShow = [
+			'id',
+			'Bank',
+			'AWB_No',
+			'Product',
+			'Logo',
+			'PA_Flag',
+			'NRWC_Flag',
+			'Bureau_Total_TAT_Days',
+			'Bureau_TAT_Extra_Days_Passed',
+			'Bureau_Status',
+			'Courier_Status',
+			'Courier_TAT_Extra_Days_Passed',
+		];
+
+		listKey.forEach((key) => {
+			const basicColumnFields = {
+				field: key,
+				headerName: key.split('_').join(' '),
+				description: key.split('_').join(' '), // shows as tooltip
+				hideable: true, // user can show hide the column
+				sortable: true,
+				width: 200,
+				editable: false,
+			};
+			if (key === 'id') {
+				basicColumnFields.headerName = 'S. No.';
+				basicColumnFields.description = 'S. No.';
+				basicColumnFields.width = 80;
+				basicColumnFields.hideable = false;
+			}
+			if (fieldToShow.includes(key)) {
+				fieldList.push(basicColumnFields);
+			}
+		});
+		return fieldList;
+	};
 
 	const getHoursMinutesSeconds = (date) => {
 		const tempDate = new Date(date);
@@ -215,45 +257,51 @@ function BureauViewPullRequestDetails(props) {
 						</Stack>
 					</Grid>
 				</Grid>
+				<Grid container sx={{ mt: 2 }}>
+					<Grid item xs={12}>
+						<Accordion>
+							<AccordionSummary
+								expandIcon={<ExpandMoreIcon />}
+								aria-controls="panel1a-content"
+								id="panel1a-header"
+							>
+								<Typography>Action Timeline</Typography>
+							</AccordionSummary>
+							<AccordionDetails>
+								<Card>
+									<PullRequestActivityTimeline {...pullRequestDetails} />
+								</Card>
+							</AccordionDetails>
+						</Accordion>
+					</Grid>
+					<Grid item xs={12}>
+						<Accordion sx={{ mt: 2 }}>
+							<AccordionSummary
+								expandIcon={<ExpandMoreIcon />}
+								aria-controls="panel1a-content"
+								id="panel1a-header"
+							>
+								<Typography>Card Details</Typography>
+							</AccordionSummary>
+							<AccordionDetails>
+								<DataGrid
+									className="mui-data-grid file-master"
+									loading={pullRequestDetailsLoader}
+									rows={[pullRequestDetails.card]}
+									columns={getColumnMapping(pullRequestDetails.card)}
+									initialState={{
+										pagination: {
+											paginationModel: { page: 0, pageSize: 10 },
+										},
+									}}
+									pageSizeOptions={[10, 20, 50, 100]}
+									// checkboxSelection
+								/>
+							</AccordionDetails>
+						</Accordion>
+					</Grid>
+				</Grid>
 			</Container>
-
-			<Accordion sx={{ mt: 2 }}>
-				<AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="panel1a-content" id="panel1a-header">
-					<Typography>Action Timeline</Typography>
-				</AccordionSummary>
-				<AccordionDetails>
-					<Card>
-						<PullRequestActivityTimeline {...pullRequestDetails} />
-					</Card>
-				</AccordionDetails>
-			</Accordion>
-
-			<Accordion sx={{ mt: 2 }}>
-				<AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="panel1a-content" id="panel1a-header">
-					<Typography>Card Details</Typography>
-				</AccordionSummary>
-				<AccordionDetails>
-					<Card elevation={0}>
-						<CardContent>
-							<Container>
-								<Grid container spacing={2} mt={2}>
-									{Object.entries(pullRequestDetails.card).map(([key, value]) => (
-										<Grid item spacing={2} mt={2}>
-											<span>{key}</span>
-											<span>{value}</span>
-										</Grid>
-									))}
-								</Grid>
-								<Grid container spacing={2} mt={2}>
-									<div>
-										<pre>{JSON.stringify(pullRequestDetails.card)}</pre>
-									</div>
-								</Grid>
-							</Container>
-						</CardContent>
-					</Card>
-				</AccordionDetails>
-			</Accordion>
 
 			{pullRequestModal.open && pullRequestModal.rowData && (
 				<CreatePullRequestForm

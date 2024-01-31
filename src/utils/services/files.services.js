@@ -20,7 +20,7 @@ const FlieMasterListService = {
 	getBureauTAT,
 	getBureauReport,
 	getFileMasterListForBank,
-	getFileMasterListForBureau
+	getFileMasterListForBureau,
 };
 
 export default FlieMasterListService;
