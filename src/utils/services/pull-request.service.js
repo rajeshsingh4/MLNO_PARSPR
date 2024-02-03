@@ -11,11 +11,18 @@ const createPullRequest = (data) => AxiosInstance.post(PULL_REQUEST_URL, data, {
 
 const updatePullRequest = (id, data) => AxiosInstance.put(PULL_REQUEST_URL + id, data, { headers: authHeader() });
 
+const getBankDashboardDetails = () => AxiosInstance.get(`${PULL_REQUEST_URL}dashboard/bank`, { headers: authHeader() });
+
+const getBureauDashboardDetails = () =>
+	AxiosInstance.get(`${PULL_REQUEST_URL}dashboard/bureau`, { headers: authHeader() });
+
 const PullRequestService = {
 	getPullRequest,
 	getPullRequestById,
 	createPullRequest,
 	updatePullRequest,
+	getBankDashboardDetails,
+	getBureauDashboardDetails,
 };
 
 export default PullRequestService;

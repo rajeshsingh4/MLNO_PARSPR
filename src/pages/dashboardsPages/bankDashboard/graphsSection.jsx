@@ -181,7 +181,7 @@ function BarChartSection() {
 	);
 }
 
-function StackedBarChartSection(props) {
+export function StackedBarChartSection(props) {
 	const { stackedBarChartConfig } = props;
 	// const counter = useAutoCounter({
 	// 	limiter: 0.0873,
