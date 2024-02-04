@@ -6,12 +6,19 @@ const getCardTrackingList = (fileId) => AxiosInstance.get(`${CARD_URL}all?fileId
 
 const updateCardTrackingList = (id, data) => AxiosInstance.put(CARD_URL + id, data, { headers: authHeader() });
 
-const getAllCardsWithFileDeatils = () => AxiosInstance.get(`${CARD_URL}all`, { headers: authHeader() });
+const getAllCardsWithFileDetailsForBank = () => AxiosInstance.get(`${CARD_URL}bank/all`, { headers: authHeader() });
+
+const getAllCardsWithFileDetailsForBureau = () => AxiosInstance.get(`${CARD_URL}bureau/all`, { headers: authHeader() });
+
+const postBureauCardsToCourier = (id, data) =>
+	AxiosInstance.post(`${CARD_URL}${id}/courier/start`, data, { headers: authHeader() });
 
 const CardTrackingService = {
 	getCardTrackingList,
 	updateCardTrackingList,
-	getAllCardsWithFileDeatils,
+	getAllCardsWithFileDetailsForBank,
+	getAllCardsWithFileDetailsForBureau,
+	postBureauCardsToCourier,
 };
 
 export default CardTrackingService;

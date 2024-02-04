@@ -157,10 +157,10 @@ export const BUREAU_NAV_LINKS_CONFIG = [
 				title: 'Dashboard',
 				href: '/bureau/pull/dashboard',
 			},
-			// {
-			// 	title: 'Create',
-			// 	href: '/bureau/pull/create',
-			// },
+			{
+				title: 'Cards List',
+				href: '/bureau/pull/cards',
+			},
 			{
 				title: 'Manage',
 				href: '/bureau/pull/list',

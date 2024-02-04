@@ -10,9 +10,9 @@ import PageHeader from '@/components/pageHeader';
 import Container from '@mui/material/Container';
 import Card from '@mui/material/Card';
 import CardTrackingService from '@/utils/services/card.service';
-import CreatePullRequestForm from './CreatePullRequestForm';
+import SendToCourierForm from './SendToCourierForm';
 
-function BankCreatePullRequestList() {
+function BureauCardList() {
 	const [cardList, setCardList] = React.useState([]);
 	const [cardListLoader, setCardListLoader] = React.useState(false);
 	const [cardListError, setCardListError] = React.useState(false);
@@ -26,7 +26,7 @@ function BankCreatePullRequestList() {
 	const getCardListForPullRequest = async () => {
 		setCardListLoader(true);
 		try {
-			const cardDetails = await CardTrackingService.getAllCardsWithFileDetailsForBank();
+			const cardDetails = await CardTrackingService.getAllCardsWithFileDetailsForBureau();
 			setCardList(cardDetails.data);
 		} catch (err) {
 			console.error('Error fetching list of cards for creating pull-request ', err);
@@ -40,7 +40,7 @@ function BankCreatePullRequestList() {
 		getCardListForPullRequest();
 	}, []);
 
-	const createPullRequest = (tableMeta) => {
+	const sendToCourier = (tableMeta) => {
 		setPullRequestModal({ open: true, rowData: tableMeta.rowData, tableMeta, isEdit: false });
 	};
 
@@ -95,10 +95,10 @@ function BankCreatePullRequestList() {
 						viewColumns: false,
 						customBodyRender: (value, tableMeta, updateValue) => (
 							<IconButton
-								aria-label="edit"
+								aria-label="send-to-courier"
 								value={value}
 								data-custom={{ tableMeta, updateValue }}
-								onClick={() => createPullRequest(tableMeta)}
+								onClick={() => sendToCourier(tableMeta)}
 							>
 								<EditIcon />
 							</IconButton>
@@ -137,8 +137,8 @@ function BankCreatePullRequestList() {
 					<Link underline="hover" href="/">
 						Dashboard
 					</Link>
-					<Typography color="text.tertiary">Bank</Typography>
-					<Typography color="text.tertiary">Create Pull</Typography>
+					<Typography color="text.tertiary">Bureau</Typography>
+					<Typography color="text.tertiary">Cards List</Typography>
 				</Breadcrumbs>
 			</PageHeader>
 			<Container>
@@ -167,14 +167,14 @@ function BankCreatePullRequestList() {
 				</Card>
 			</Container>
 			{pullRequestModal.open && pullRequestModal.rowData && (
-				<CreatePullRequestForm
+				<SendToCourierForm
 					handleClose={handleClose}
 					pullRequestModal={pullRequestModal}
-					goBackTo="/bank/pull/list"
+					goBackTo="/bureau/pull/list"
 				/>
 			)}
 		</>
 	);
 }
 
-export default BankCreatePullRequestList;
+export default BureauCardList;

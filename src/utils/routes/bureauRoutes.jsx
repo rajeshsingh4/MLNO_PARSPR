@@ -2,6 +2,7 @@ import { lazy } from 'react';
 import { Route } from 'react-router-dom';
 import withLazyLoadably from '@hocs/withLazyLoadably';
 
+const BureauCardList = withLazyLoadably(lazy(() => import('@/pages/bureau/cards/BureauCardList')));
 const PendingReportDashboard = withLazyLoadably(
 	lazy(() => import('@/pages/bureau/dashboard/BureauPendingReportDashboard')),
 );
@@ -25,6 +26,7 @@ function BureauRoutes() {
 				<Route path="pull">
 					<Route index path="dashboard" element={<BureauPullRequestDashboard />} />
 					{/* <Route path="create" element={<h1>Create Pull Requests for bureau</h1>} /> */}
+					<Route path="cards" element={<BureauCardList />} />
 					<Route path="list" element={<BureauPullRequestList />} />
 					<Route path="view/:id" element={<BureauViewPullRequestDetails />} />
 				</Route>
