@@ -21,7 +21,7 @@ import { bureauStatusMap, bureauStatusColorMap } from '@/utils/bureaumappings';
 // import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 
 function CardsSection(props) {
-	const { recentCards } = props;
+	const { recentCards, navigateCards } = props;
 	return (
 		<Card type="none">
 			<Stack direction="column" alignItems="flex-start">
@@ -29,15 +29,18 @@ function CardsSection(props) {
 					Recent Cards
 				</Typography>
 				<CardsTable recentCards={recentCards} />
-				<Button
-					size="small"
-					startIcon={<KeyboardArrowDownIcon />}
-					sx={{
-						m: 1,
-					}}
-				>
-					View All
-				</Button>
+				{recentCards && recentCards.length > 0 && (
+					<Button
+						size="small"
+						startIcon={<KeyboardArrowDownIcon />}
+						sx={{
+							m: 1,
+						}}
+						onClick={() => navigateCards()}
+					>
+						View All
+					</Button>
+				)}
 			</Stack>
 		</Card>
 	);
@@ -77,6 +80,19 @@ function CardsTable(props) {
 					</TableRow>
 				</TableHead>
 				<TableBody>
+					{recentCards.length === 0 && (
+						<Typography
+							variant="body3"
+							sx={{
+								height: '50px',
+								display: 'flex',
+								justifyContent: 'space-between',
+								alignItems: 'center',
+							}}
+						>
+							No recent cards were created
+						</Typography>
+					)}
 					{recentCards.map((card) => (
 						<CardTableRow key={card.id} card={card} label={label} />
 					))}

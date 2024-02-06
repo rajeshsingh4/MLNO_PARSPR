@@ -1,24 +1,26 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Stack from '@mui/material/Stack';
 import Grid from '@mui/material/Grid';
 import Breadcrumbs from '@mui/material/Breadcrumbs';
 import Link from '@mui/material/Link';
+import QueryStatsOutlinedIcon from '@mui/icons-material/QueryStatsOutlined';
+import DonutSmallOutlinedIcon from '@mui/icons-material/DonutSmallOutlined';
+import MonetizationOnOutlinedIcon from '@mui/icons-material/MonetizationOnOutlined';
+import AssessmentOutlinedIcon from '@mui/icons-material/AssessmentOutlined';
 import PageHeader from '@/components/pageHeader';
 import StatsSection from '@/pages/dashboardsPages/bankDashboard/statsSection';
 import GraphsSection from '@/pages/dashboardsPages/bankDashboard/graphsSection';
 import BitcoinSection from '@/pages/dashboardsPages/bankDashboard/bitcoinSection';
 import ProductsSection from '@/pages/dashboardsPages/bankDashboard/productsSection';
 import TransactionsSection from '@/pages/dashboardsPages/bankDashboard/transactionsSection';
-import QueryStatsOutlinedIcon from '@mui/icons-material/QueryStatsOutlined';
-import DonutSmallOutlinedIcon from '@mui/icons-material/DonutSmallOutlined';
-import MonetizationOnOutlinedIcon from '@mui/icons-material/MonetizationOnOutlined';
-import AssessmentOutlinedIcon from '@mui/icons-material/AssessmentOutlined';
 import getDefaultChartsColors from '@helpers/getDefaultChartsColors';
 import DashboradService from '@/utils/services/dashboards.service';
 
 function BureauDashboardPage() {
 	const [statsData, setStatsData] = useState(null);
 	const [statsDataLoader, setStatsDataLoader] = useState(true);
+	const navigate = useNavigate();
 
 	const getStatsData = async () => {
 		setStatsDataLoader(true);
@@ -328,10 +330,16 @@ function BureauDashboardPage() {
 				<section>
 					<Grid container spacing={3}>
 						<Grid item xs={12} md={12} lg={6}>
-							<ProductsSection recentCards={createRecentCardsDetails(statsData)} />
+							<ProductsSection
+								recentCards={createRecentCardsDetails(statsData)}
+								navigateCards={() => navigate('/bureau/pull/cards')}
+							/>
 						</Grid>
 						<Grid item xs={12} md={12} lg={6}>
-							<TransactionsSection recentPullRequests={createRecentPullRequests(statsData)} />
+							<TransactionsSection
+								recentPullRequests={createRecentPullRequests(statsData)}
+								navigatePullRequests={() => navigate('/bureau/pull/list')}
+							/>
 						</Grid>
 					</Grid>
 				</section>

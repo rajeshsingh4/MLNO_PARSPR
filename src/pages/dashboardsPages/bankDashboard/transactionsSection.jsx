@@ -13,7 +13,7 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import Chip from '@mui/material/Chip';
 import { pullRequestStatusMap, pullRequestStatusColorMap } from '@/utils/bureaumappings';
 
-function TransactionsSection({ recentPullRequests }) {
+function TransactionsSection({ recentPullRequests, navigatePullRequests }) {
 	return (
 		<Card type="none">
 			<Stack direction="column" alignItems="flex-start">
@@ -21,15 +21,18 @@ function TransactionsSection({ recentPullRequests }) {
 					Recent Pull Requests
 				</Typography>
 				<TransactionsTable recentPullRequests={recentPullRequests} />
-				<Button
-					size="small"
-					startIcon={<KeyboardArrowDownIcon />}
-					sx={{
-						m: 1,
-					}}
-				>
-					View All
-				</Button>
+				{recentPullRequests && recentPullRequests.length > 0 && (
+					<Button
+						size="small"
+						startIcon={<KeyboardArrowDownIcon />}
+						sx={{
+							m: 1,
+						}}
+						onClick={() => navigatePullRequests()}
+					>
+						View All
+					</Button>
+				)}
 			</Stack>
 		</Card>
 	);
@@ -49,6 +52,19 @@ function TransactionsTable({ recentPullRequests }) {
 					</TableRow>
 				</TableHead>
 				<TableBody>
+					{recentPullRequests.length === 0 && (
+						<Typography
+							variant="body3"
+							sx={{
+								height: '50px',
+								display: 'flex',
+								justifyContent: 'space-between',
+								alignItems: 'center',
+							}}
+						>
+							No recent pull reuqests were created
+						</Typography>
+					)}
 					{recentPullRequests.map((pull) => (
 						<TransactionRow key={pull.id} pull={pull} />
 					))}
