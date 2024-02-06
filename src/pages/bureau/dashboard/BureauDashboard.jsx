@@ -8,6 +8,11 @@ import QueryStatsOutlinedIcon from '@mui/icons-material/QueryStatsOutlined';
 import DonutSmallOutlinedIcon from '@mui/icons-material/DonutSmallOutlined';
 import MonetizationOnOutlinedIcon from '@mui/icons-material/MonetizationOnOutlined';
 import AssessmentOutlinedIcon from '@mui/icons-material/AssessmentOutlined';
+import Card from '@mui/material/Card';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
 import PageHeader from '@/components/pageHeader';
 import StatsSection from '@/pages/dashboardsPages/bankDashboard/statsSection';
 import GraphsSection from '@/pages/dashboardsPages/bankDashboard/graphsSection';
@@ -16,16 +21,19 @@ import ProductsSection from '@/pages/dashboardsPages/bankDashboard/productsSecti
 import TransactionsSection from '@/pages/dashboardsPages/bankDashboard/transactionsSection';
 import getDefaultChartsColors from '@helpers/getDefaultChartsColors';
 import DashboradService from '@/utils/services/dashboards.service';
+import Loader from '@/components/loader';
+import { getDateRange } from '@/utils/helpers/dateHandlers';
 
 function BureauDashboardPage() {
 	const [statsData, setStatsData] = useState(null);
 	const [statsDataLoader, setStatsDataLoader] = useState(true);
+	const [selectedDateRange, setSelectedDateRange] = useState('all');
 	const navigate = useNavigate();
 
-	const getStatsData = async () => {
+	const getStatsData = async (queryParams) => {
 		setStatsDataLoader(true);
 		try {
-			const pullRequestResp = await DashboradService.getBureauDashboardDetails();
+			const pullRequestResp = await DashboradService.getBureauDashboardDetails(queryParams);
 			setStatsData(pullRequestResp.data);
 		} catch (err) {
 			console.error('Error fetching pull request details ', err);
@@ -35,7 +43,7 @@ function BureauDashboardPage() {
 	};
 
 	useEffect(() => {
-		getStatsData();
+		getStatsData(`?sortType=${selectedDateRange}`);
 	}, []);
 
 	const transformStatsData = (stats) => {
@@ -307,6 +315,41 @@ function BureauDashboardPage() {
 		return recentPullRequestList;
 	};
 
+	const handleDateChange = async (e) => {
+		const { value } = e.target;
+		const sortType = value;
+		let dateRange = getDateRange('all');
+		switch (value) {
+			case 'all':
+				console.log('show all data');
+				break;
+			case 'week':
+				dateRange = getDateRange('currentWeek');
+				break;
+			case 'lastWeek':
+				dateRange = getDateRange('lastWeek');
+				break;
+			case 'currentMonth':
+				dateRange = getDateRange('currentMonth');
+				break;
+			case 'lastMonth':
+				dateRange = getDateRange('lastMonth');
+				break;
+			case 'threeMonths':
+				dateRange = getDateRange('threeMonths');
+				break;
+			default:
+				console.log('default show all data');
+				break;
+		}
+		setSelectedDateRange(sortType);
+		const queryParams =
+			sortType === 'all'
+				? `?sortType=${sortType}`
+				: `?sortType=${sortType}&startDate=${dateRange.startDate}&endDate=${dateRange.endDate}`;
+		await getStatsData(queryParams);
+	};
+
 	return (
 		<>
 			<PageHeader title="Dashboard">
@@ -322,28 +365,62 @@ function BureauDashboardPage() {
 				</Breadcrumbs>
 			</PageHeader>
 			<Stack spacing={3}>
-				<StatsSection STATS_DATA={transformStatsData(statsData)} />
-				<GraphsSection
-					doubleAreaChartConfig={createBankWiseAreaChartConfig(statsData)}
-					stackedBarChartConfig={createStackBarChartConfig(statsData)}
-				/>
-				<section>
-					<Grid container spacing={3}>
-						<Grid item xs={12} md={12} lg={6}>
-							<ProductsSection
-								recentCards={createRecentCardsDetails(statsData)}
-								navigateCards={() => navigate('/bureau/pull/cards')}
-							/>
-						</Grid>
-						<Grid item xs={12} md={12} lg={6}>
-							<TransactionsSection
-								recentPullRequests={createRecentPullRequests(statsData)}
-								navigatePullRequests={() => navigate('/bureau/pull/list')}
-							/>
-						</Grid>
+				<Grid container spacing={1}>
+					<Grid item xs={12}>
+						<Card elevation={0}>
+							<FormControl sx={{ m: 1, minWidth: 240 }}>
+								<InputLabel id="dashboard-date-range-label">Select Date Range</InputLabel>
+								<Select
+									labelId="dashboard-date-range-label"
+									id="dashboard-date-range"
+									value={selectedDateRange}
+									label="Select Date Range"
+									onChange={handleDateChange}
+								>
+									<MenuItem value="all">
+										<em>All</em>
+									</MenuItem>
+									<MenuItem value="week">This week</MenuItem>
+									<MenuItem value="currentMonth">This month</MenuItem>
+									<MenuItem value="lastMonth">Last month</MenuItem>
+									<MenuItem value="threeMonths">Past 3 months</MenuItem>
+								</Select>
+							</FormControl>
+						</Card>
 					</Grid>
-				</section>
-				<BitcoinSection />
+				</Grid>
+				{statsDataLoader ? (
+					<Loader
+						addSx={{
+							mt: 5,
+						}}
+					/>
+				) : (
+					<>
+						<StatsSection STATS_DATA={transformStatsData(statsData)} />
+						<GraphsSection
+							doubleAreaChartConfig={createBankWiseAreaChartConfig(statsData)}
+							stackedBarChartConfig={createStackBarChartConfig(statsData)}
+						/>
+						<section>
+							<Grid container spacing={3}>
+								<Grid item xs={12} md={12} lg={6}>
+									<ProductsSection
+										recentCards={createRecentCardsDetails(statsData)}
+										navigateCards={() => navigate('/bureau/pull/cards')}
+									/>
+								</Grid>
+								<Grid item xs={12} md={12} lg={6}>
+									<TransactionsSection
+										recentPullRequests={createRecentPullRequests(statsData)}
+										navigatePullRequests={() => navigate('/bureau/pull/list')}
+									/>
+								</Grid>
+							</Grid>
+						</section>
+						<BitcoinSection />
+					</>
+				)}
 			</Stack>
 		</>
 	);

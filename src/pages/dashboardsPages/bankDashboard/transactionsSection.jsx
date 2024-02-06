@@ -53,17 +53,22 @@ function TransactionsTable({ recentPullRequests }) {
 				</TableHead>
 				<TableBody>
 					{recentPullRequests.length === 0 && (
-						<Typography
-							variant="body3"
-							sx={{
-								height: '50px',
-								display: 'flex',
-								justifyContent: 'space-between',
-								alignItems: 'center',
-							}}
-						>
-							No recent pull reuqests were created
-						</Typography>
+						<TableRow hover>
+							<TableCell colSpan={5}>
+								<Typography
+									variant="body3"
+									component="tr"
+									sx={{
+										height: '50px',
+										display: 'flex',
+										justifyContent: 'space-between',
+										alignItems: 'center',
+									}}
+								>
+									No recent pull reuqests were created
+								</Typography>
+							</TableCell>
+						</TableRow>
 					)}
 					{recentPullRequests.map((pull) => (
 						<TransactionRow key={pull.id} pull={pull} />

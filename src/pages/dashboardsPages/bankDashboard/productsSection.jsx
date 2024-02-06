@@ -81,17 +81,22 @@ function CardsTable(props) {
 				</TableHead>
 				<TableBody>
 					{recentCards.length === 0 && (
-						<Typography
-							variant="body3"
-							sx={{
-								height: '50px',
-								display: 'flex',
-								justifyContent: 'space-between',
-								alignItems: 'center',
-							}}
-						>
-							No recent cards were created
-						</Typography>
+						<TableRow>
+							<TableCell colSpan={5}>
+								<Typography
+									variant="body3"
+									component="tr"
+									sx={{
+										height: '50px',
+										display: 'flex',
+										justifyContent: 'space-between',
+										alignItems: 'center',
+									}}
+								>
+									No recent cards were created
+								</Typography>
+							</TableCell>
+						</TableRow>
 					)}
 					{recentCards.map((card) => (
 						<CardTableRow key={card.id} card={card} label={label} />
