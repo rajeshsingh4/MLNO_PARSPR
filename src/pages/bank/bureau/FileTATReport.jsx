@@ -162,7 +162,11 @@ export default function FileTATReport() {
 						variant="contained"
 						color="warning"
 						onClick={() =>
-							showTATDetailsReport('bureauwithintat', records[tableMeta.rowIndex].id, records[tableMeta.rowIndex].bureauwithintat_listData)
+							showTATDetailsReport(
+								'bureauwithintat',
+								records[tableMeta.rowIndex].id,
+								records[tableMeta.rowIndex].bureauwithintat_listData,
+							)
 						}
 						disableElevation
 						size="small"
@@ -177,7 +181,11 @@ export default function FileTATReport() {
 						variant="contained"
 						color="success"
 						onClick={() =>
-							showTATDetailsReport('bureauWIP', records[tableMeta.rowIndex].id, records[tableMeta.rowIndex].bureauwithintat_listData)
+							showTATDetailsReport(
+								'bureauWIP',
+								records[tableMeta.rowIndex].id,
+								records[tableMeta.rowIndex].bureauwithintat_listData,
+							)
 						}
 						disableElevation
 						size="small"

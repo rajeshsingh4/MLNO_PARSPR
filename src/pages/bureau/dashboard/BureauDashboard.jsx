@@ -43,7 +43,12 @@ function BureauDashboardPage() {
 	};
 
 	useEffect(() => {
-		getStatsData(`?sortType=${selectedDateRange}`);
+		const dateRange = getDateRange(selectedDateRange);
+		getStatsData(
+			`?sortType=${selectedDateRange}${
+				selectedDateRange !== 'all' ? `&startDate=${dateRange.startDate}&endDate=${dateRange.endDate}` : ''
+			}`,
+		);
 	}, []);
 
 	const transformStatsData = (stats) => {
@@ -323,6 +328,12 @@ function BureauDashboardPage() {
 			case 'all':
 				console.log('show all data');
 				break;
+			case 'today':
+				dateRange = getDateRange('currentDay');
+				break;
+			case 'yesterday':
+				dateRange = getDateRange('yesterday');
+				break;
 			case 'week':
 				dateRange = getDateRange('currentWeek');
 				break;
@@ -380,6 +391,8 @@ function BureauDashboardPage() {
 									<MenuItem value="all">
 										<em>All</em>
 									</MenuItem>
+									<MenuItem value="today">Current Day</MenuItem>
+									<MenuItem value="yesterday">Yesterday</MenuItem>
 									<MenuItem value="week">This week</MenuItem>
 									<MenuItem value="currentMonth">This month</MenuItem>
 									<MenuItem value="lastMonth">Last month</MenuItem>

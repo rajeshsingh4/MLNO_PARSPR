@@ -38,7 +38,7 @@ function GraphsSection(props) {
 	);
 }
 
-function SectionContainer({ children, background }) {
+export function SectionContainer({ children, background }) {
 	return (
 		<Card
 			sx={{

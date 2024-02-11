@@ -13,9 +13,10 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
+import Chart from 'react-apexcharts';
 import PageHeader from '@/components/pageHeader';
 import StatsSection from '@/pages/dashboardsPages/bankDashboard/statsSection';
-import GraphsSection from '@/pages/dashboardsPages/bankDashboard/graphsSection';
+import GraphsSection, { SectionContainer } from '@/pages/dashboardsPages/bankDashboard/graphsSection';
 import BitcoinSection from '@/pages/dashboardsPages/bankDashboard/bitcoinSection';
 import ProductsSection from '@/pages/dashboardsPages/bankDashboard/productsSection';
 import TransactionsSection from '@/pages/dashboardsPages/bankDashboard/transactionsSection';
@@ -43,7 +44,12 @@ function BankDashboardPage() {
 	};
 
 	useEffect(() => {
-		getStatsData(`?sortType=${selectedDateRange}`);
+		const dateRange = getDateRange(selectedDateRange);
+		getStatsData(
+			`?sortType=${selectedDateRange}${
+				selectedDateRange !== 'all' ? `&startDate=${dateRange.startDate}&endDate=${dateRange.endDate}` : ''
+			}`,
+		);
 	}, []);
 
 	const transformStatsData = (stats) => {
@@ -323,6 +329,12 @@ function BankDashboardPage() {
 			case 'all':
 				console.log('show all data');
 				break;
+			case 'today':
+				dateRange = getDateRange('currentDay');
+				break;
+			case 'yesterday':
+				dateRange = getDateRange('yesterday');
+				break;
 			case 'week':
 				dateRange = getDateRange('currentWeek');
 				break;
@@ -348,6 +360,141 @@ function BankDashboardPage() {
 				? `?sortType=${sortType}`
 				: `?sortType=${sortType}&startDate=${dateRange.startDate}&endDate=${dateRange.endDate}`;
 		await getStatsData(queryParams);
+	};
+
+	const getTotalCardsReceiveDispatchFiles = (stats) => {
+		const getSeries = () => {
+			if (stats.cards && stats.cards.length === 0) {
+				return [];
+			}
+			let received = 0;
+			let dispatched = 0;
+			stats.cards.forEach((item) => {
+				if (item.Bureau_Status === 0) {
+					received += item.total_bank_records;
+				}
+				if (item.Bureau_Status && item.Courier_Status === 1) {
+					dispatched += item.total_bank_records;
+				}
+			});
+			return [received, dispatched];
+		};
+
+		const options = {
+			chart: {
+				width: 380,
+				type: 'pie',
+			},
+			title: {
+				text: 'Total Cards Received/Dispatched',
+			},
+			labels: ['Recieved', 'Dispatched'],
+			responsive: [
+				{
+					breakpoint: 480,
+					options: {
+						chart: {
+							width: 200,
+						},
+						legend: {
+							position: 'bottom',
+						},
+					},
+				},
+			],
+		};
+		const series = getSeries();
+		return { options, series };
+	};
+
+	const getBureauCardsReceiveDispatchFiles = (stats) => {
+		const getSeries = () => {
+			if (stats.cards && stats.cards.length === 0) {
+				return [];
+			}
+			let received = 0;
+			let dispatched = 0;
+			stats.cards.forEach((item) => {
+				if (item.Bureau_Status === 0) {
+					received += item.total_bank_records;
+				}
+				if (item.Bureau_Status === 1) {
+					dispatched += item.total_bank_records;
+				}
+			});
+			return [received, dispatched];
+		};
+
+		const options = {
+			chart: {
+				width: 380,
+				type: 'pie',
+			},
+			title: {
+				text: 'Cards Received/Sent to Courier By Bureau',
+			},
+			labels: ['Recieved', 'Sent to Courier'],
+			responsive: [
+				{
+					breakpoint: 480,
+					options: {
+						chart: {
+							width: 200,
+						},
+						legend: {
+							position: 'bottom',
+						},
+					},
+				},
+			],
+		};
+		const series = getSeries();
+		return { options, series };
+	};
+
+	const getCourierCardsReceiveDispatchFiles = (stats) => {
+		const getSeries = () => {
+			if (stats.cards && stats.cards.length === 0) {
+				return [];
+			}
+			let received = 0;
+			let dispatched = 0;
+			stats.cards.forEach((item) => {
+				if (item.Courier_Status === 0) {
+					received += item.total_bank_records;
+				}
+				if (item.Courier_Status === 1) {
+					dispatched += item.total_bank_records;
+				}
+			});
+			return [received, dispatched];
+		};
+
+		const options = {
+			chart: {
+				width: 380,
+				type: 'pie',
+			},
+			title: {
+				text: 'Cards Received from bureau/Dispatched by Courier',
+			},
+			labels: ['Recieved from Bureau', 'Dispatched'],
+			responsive: [
+				{
+					breakpoint: 480,
+					options: {
+						chart: {
+							width: 200,
+						},
+						legend: {
+							position: 'bottom',
+						},
+					},
+				},
+			],
+		};
+		const series = getSeries();
+		return { options, series };
 	};
 
 	return (
@@ -380,6 +527,8 @@ function BankDashboardPage() {
 									<MenuItem value="all">
 										<em>All</em>
 									</MenuItem>
+									<MenuItem value="today">Current Day</MenuItem>
+									<MenuItem value="yesterday">Yesterday</MenuItem>
 									<MenuItem value="week">This week</MenuItem>
 									<MenuItem value="currentMonth">This month</MenuItem>
 									<MenuItem value="lastMonth">Last month</MenuItem>
@@ -402,6 +551,29 @@ function BankDashboardPage() {
 							doubleAreaChartConfig={createBankWiseAreaChartConfig(statsData)}
 							stackedBarChartConfig={createStackBarChartConfig(statsData)}
 						/>
+						<section>
+							<Grid container spacing={3}>
+								<Grid item xs={12} sm={6}>
+									<SectionContainer background={null}>
+										<Chart {...getTotalCardsReceiveDispatchFiles(statsData)} type="pie" />
+									</SectionContainer>
+								</Grid>
+								<Grid item xs={12} sm={6}>
+									<Stack direction="column" spacing={3} height="100%">
+										<Card elevation={0} sx={{ height: '50%' }}>
+											<SectionContainer background={null}>
+												<Chart {...getBureauCardsReceiveDispatchFiles(statsData)} type="pie" />
+											</SectionContainer>
+										</Card>
+										<Card elevation={0} sx={{ height: '50%' }}>
+											<SectionContainer background={null}>
+												<Chart {...getCourierCardsReceiveDispatchFiles(statsData)} type="pie" />
+											</SectionContainer>
+										</Card>
+									</Stack>
+								</Grid>
+							</Grid>
+						</section>
 						<section>
 							<Grid container spacing={3}>
 								<Grid item xs={12} md={12} lg={6}>

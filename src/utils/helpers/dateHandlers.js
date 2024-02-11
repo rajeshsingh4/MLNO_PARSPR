@@ -1,9 +1,14 @@
 export const getDateRange = (type) => {
 	const currentDate = new Date();
-	let startDate = new Date();
+	// current day from 00:00 hrs
+	let startDate = new Date(new Date().setHours(0, 0, 0, 0, 0));
+	// current time
 	let endDate = new Date();
 	const timeSubtract = 24 * 60 * 60 * 1000;
-	if (type === 'currentWeek') {
+	if (type === 'yesterday') {
+		startDate = new Date(startDate.getTime() - 1 * timeSubtract);
+		endDate = new Date(endDate.setHours(23, 59, 59, 59));
+	} else if (type === 'currentWeek') {
 		startDate = new Date(currentDate.getTime() - 7 * timeSubtract);
 	} else if (type === 'lastWeek') {
 		startDate = new Date(currentDate.getTime() - 14 * timeSubtract);
@@ -18,3 +23,5 @@ export const getDateRange = (type) => {
 	}
 	return { startDate, endDate };
 };
+
+export const getCurrentTime = () => new Date();
