@@ -132,12 +132,12 @@ function CardTracks() {
 		setDrawer(open);
 	};
 
-	const getColumnMapping = (row) => {
+	const getColumnMapping = (records) => {
 		const fieldList = [];
-		if (!row || row.length === 0) {
+		if (!records || records.length === 0) {
 			return fieldList;
 		}
-		const listKey = Object.keys(row);
+		const listKey = Object.keys(records[0]);
 
 		const fieldToShow = [
 			'trackingId',
@@ -178,21 +178,17 @@ function CardTracks() {
 						filter: false,
 						sort: false,
 						viewColumns: false,
-						customBodyRender: (value, tableMeta, updateValue) => (
-							<>
-								<IconButton
-									aria-label="edit"
-									value={value}
-									data-custom={{ tableMeta, updateValue }}
-									row={row}
-									onClick={() => handleEdit(row, tableMeta)}
-								>
-									<EditIcon />
-								</IconButton>
-								{/* <IconButton aria-label="delete" value={value} data-custom={{tableMeta, updateValue}} row={row} onClick={() => console.log('delete handler')}>
-								<DeleteIcon />
-							</IconButton> */}
-							</>
+						// eslint-disable-next-line react/no-unstable-nested-components
+						customBodyRender: (value, tableMeta) => (
+							<IconButton
+								aria-label="edit"
+								value={value}
+								data-custom={tableMeta}
+								row={records[tableMeta.rowIndex]}
+								onClick={() => handleEdit(records[tableMeta.rowIndex], tableMeta)}
+							>
+								<EditIcon />
+							</IconButton>
 						),
 					},
 				};
@@ -214,17 +210,6 @@ function CardTracks() {
 		navigate(-1);
 	};
 
-	const options = {
-		filter: true,
-		fixedHeader: true,
-		filterType: 'dropdown',
-		responsive: 'standard',
-		print: false,
-		selectableRows: 'none',
-		rowsPerPage: 10,
-		rowsPerPageOptions: [10, 20, 50, 100],
-	};
-
 	return (
 		<div>
 			<Box>
@@ -237,8 +222,17 @@ function CardTracks() {
 					className="mui-data-table card-track"
 					title="Track Cards"
 					data={results}
-					columns={getColumnMapping(results[0])}
-					options={options}
+					columns={getColumnMapping(results)}
+					options={{
+						filter: true,
+						fixedHeader: true,
+						filterType: 'dropdown',
+						responsive: 'standard',
+						print: false,
+						selectableRows: 'none',
+						rowsPerPage: 10,
+						rowsPerPageOptions: [10, 20, 50, 100],
+					}}
 				/>
 			</Box>
 			<Drawer anchor="right" open={drawer} onClose={() => toggleDrawer(null, false)}>

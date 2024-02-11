@@ -1,6 +1,6 @@
 import React from 'react';
-import { DataGrid } from '@mui/x-data-grid';
-import IconButton from '@mui/material/IconButton';
+import MUIDataTable from 'mui-datatables';
+// import { DataGrid } from '@mui/x-data-grid';
 // import Menu from '@mui/material/Menu';
 // import MenuItem from '@mui/material/MenuItem';
 // import MoreVertIcon from '@mui/icons-material/MoreVert';
@@ -12,6 +12,8 @@ import Typography from '@mui/material/Typography';
 import PageHeader from '@/components/pageHeader';
 import Container from '@mui/material/Container';
 import Card from '@mui/material/Card';
+import Grid from '@mui/material/Grid';
+import IconButton from '@mui/material/IconButton';
 import ModeEditIcon from '@mui/icons-material/ModeEdit';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import { useNavigate } from 'react-router-dom';
@@ -73,11 +75,23 @@ function BankPullRequestList() {
 		setConfirmDialogOpen(null);
 	};
 
-	const getColumnMapping = (row) => {
-		if (!row || (row && row.length === 0)) {
-			return [];
+	const sorter = (a, b) => {
+		if (a.id > b.id) {
+			return 1;
 		}
+		if (a.id < b.id) {
+			return -1;
+		}
+		return 0;
+	};
+
+	const getColumnMapping = (records) => {
 		const columns = [];
+		if (!records || records.length === 0) {
+			return columns;
+		}
+		const listKey = Object.keys(records[0]);
+
 		const hiddenColumns = [
 			'updatedAt',
 			'fileMasterId',
@@ -86,110 +100,117 @@ function BankPullRequestList() {
 			'cardId',
 			'card',
 			'user',
+			'userId',
 			'fileMaster',
 		];
-		const rowFieldKeys = Object.keys(row);
-		rowFieldKeys.forEach((key) => {
-			const basicColumnFields = {
-				field: key,
-				headerName: key,
-				description: key, // shows as tooltip
-				hideable: true, // user can show hide the column
-				sortable: true,
-				width: 200,
-				editable: false,
+
+		const getLabel = (label) => {
+			let labelHeader = '';
+			switch (label) {
+				case 'id':
+					labelHeader = 'S. No.';
+					break;
+				case 'action':
+					labelHeader = 'Action Type';
+					break;
+				case 'changeCommunicatedTo':
+					labelHeader = 'Change Communicated To';
+					break;
+				case 'field':
+					labelHeader = 'Field';
+					break;
+				case 'originalValue':
+					labelHeader = 'Original Value';
+					break;
+				case 'newValue':
+					labelHeader = 'New Value';
+					break;
+				case 'mode':
+					labelHeader = 'Mode';
+					break;
+				case 'ipaddress':
+					labelHeader = 'IP Address';
+					break;
+				case 'serviceRequest':
+					labelHeader = 'Service Request';
+					break;
+				case 'createdAt':
+					labelHeader = 'Date & Time';
+					break;
+				case 'status':
+					labelHeader = 'Status';
+					break;
+				default:
+					break;
+			}
+			return labelHeader;
+		};
+
+		records.sort(sorter);
+		listKey.forEach((key, i) => {
+			let baseFieldObj = {
+				name: listKey[i],
+				label: getLabel(listKey[i]),
+				options: { filter: true, sort: true, viewColumns: true, display: !hiddenColumns.includes(listKey[i]) },
 			};
-			if (key === 'id') {
-				basicColumnFields.headerName = 'S. No.';
-				basicColumnFields.description = 'S. No.';
-				basicColumnFields.width = 80;
-				basicColumnFields.hideable = false;
-			}
-			if (key === 'action') {
-				basicColumnFields.headerName = 'Action Type';
-				basicColumnFields.description = 'Action Type';
-				basicColumnFields.valueGetter = (params) => actionListMap[params.row.action] || params.row.action;
-			}
-			if (key === 'changeCommunicatedTo') {
-				basicColumnFields.headerName = 'Change Communicated To';
-				basicColumnFields.description = 'Change Communicated To';
-			}
-			if (key === 'field') {
-				basicColumnFields.headerName = 'Field';
-				basicColumnFields.description = 'Field';
-				basicColumnFields.valueGetter = (params) => params.row.field || '-';
-			}
-			if (key === 'originalValue') {
-				basicColumnFields.headerName = 'Original Value';
-				basicColumnFields.description = 'Original Value';
-				basicColumnFields.valueGetter = (params) => params.row.originalValue || '-';
-			}
-			if (key === 'newValue') {
-				basicColumnFields.headerName = 'New Value';
-				basicColumnFields.description = 'New Value';
-				basicColumnFields.valueGetter = (params) => params.row.newValue || '-';
-			}
-			if (key === 'mode') {
-				basicColumnFields.headerName = 'Mode';
-				basicColumnFields.description = 'Mode';
-				basicColumnFields.valueGetter = (params) => modeLsitMap[params.row.mode] || params.row.mode;
-			}
-			if (key === 'ipaddress') {
-				basicColumnFields.headerName = 'IP Address';
-				basicColumnFields.description = 'IP Address';
-			}
-			if (key === 'serviceRequest') {
-				basicColumnFields.headerName = 'Service Request';
-				basicColumnFields.description = 'Service Request';
-			}
-			if (key === 'createdAt') {
-				basicColumnFields.headerName = 'Date & Time';
-				basicColumnFields.description = 'Date & Time';
-				basicColumnFields.valueGetter = (params) => new Date(params.row.createdAt).toLocaleString();
-			}
-			if (key === 'status') {
-				basicColumnFields.headerName = 'Status';
-				basicColumnFields.description = 'Status';
-				basicColumnFields.renderCell = (params) => (
+			// show custom data
+			if (listKey[i] === 'action') {
+				baseFieldObj.options.customBodyRender = (value, tableMeta) =>
+					actionListMap[records[tableMeta.rowIndex].action];
+			} else if (listKey[i] === 'mode') {
+				baseFieldObj.options.customBodyRender = (value, tableMeta) =>
+					modeLsitMap[records[tableMeta.rowIndex].mode];
+			} else if (listKey[i] === 'createdAt') {
+				baseFieldObj.options.customBodyRender = (value, tableMeta) =>
+					new Date(records[tableMeta.rowIndex].createdAt).toLocaleString();
+			} else if (listKey[i] === 'status') {
+				baseFieldObj.options.customBodyRender = (value, tableMeta) => (
 					<Chip
-						label={pullRequestStatusMap[params.row.status]}
+						label={pullRequestStatusMap[records[tableMeta.rowIndex].status]}
 						size="small"
-						color={pullRequestStatusColorMap[params.row.status]}
+						color={pullRequestStatusColorMap[records[tableMeta.rowIndex].status]}
 					/>
 				);
 			}
-			if (key === 'userId') {
-				basicColumnFields.headerName = 'Action';
-				basicColumnFields.description = 'Action';
-				basicColumnFields.sortable = false;
-				basicColumnFields.hideable = false;
-				basicColumnFields.renderCell = (params) => (
-					<>
-						<IconButton
-							aria-label="view"
-							id={`${params.row.id}-view`}
-							aria-controls={`${params.row.id}-view`}
-							aria-expanded="false"
-							aria-haspopup="false"
-							onClick={() => viewRequestDetails(params.row.id, params.row)}
-						>
-							<VisibilityIcon />
-						</IconButton>
-						<IconButton
-							aria-label="action"
-							id={`${params.row.id}-action`}
-							aria-controls={`${params.row.id}-action`}
-							aria-expanded="false"
-							aria-haspopup="false"
-							onClick={() => handleBankAction(params.row.id, params.row)}
-						>
-							<ModeEditIcon />
-						</IconButton>
-					</>
-				);
-			}
-			if (!hiddenColumns.includes(key)) {
-				columns.push(basicColumnFields);
+			columns.push(baseFieldObj);
+			if (i === listKey.length - 1) {
+				baseFieldObj = {
+					name: 'Actions',
+					label: 'Actions',
+					options: {
+						filter: false,
+						sort: false,
+						viewColumns: false,
+						// eslint-disable-next-line react/no-unstable-nested-components
+						customBodyRenderLite: (rowIndex) => (
+							<Grid container justifyContent="space-between">
+								<IconButton
+									aria-label="view"
+									value={records[rowIndex].id}
+									data-customview={records[rowIndex]}
+									id={`${records[rowIndex].id}-view`}
+									aria-controls={`${records[rowIndex].id}-view`}
+									aria-expanded="false"
+									aria-haspopup="false"
+									onClick={() => viewRequestDetails(records[rowIndex].id, records[rowIndex])}
+								>
+									<VisibilityIcon />
+								</IconButton>
+								<IconButton
+									aria-label="action"
+									id={`${records[rowIndex].id}-action`}
+									aria-controls={`${records[rowIndex].id}-action`}
+									aria-expanded="false"
+									aria-haspopup="false"
+									onClick={() => handleBankAction(records[rowIndex].id, records[rowIndex])}
+								>
+									<ModeEditIcon />
+								</IconButton>
+							</Grid>
+						),
+					},
+				};
+				columns.push(baseFieldObj);
 			}
 		});
 		return columns;
@@ -213,18 +234,21 @@ function BankPullRequestList() {
 			</PageHeader>
 			<Container>
 				<Card component="section" type="section">
-					<DataGrid
-						className="mui-data-grid file-master"
-						loading={pullRequestLoader}
-						rows={pullRequestList}
-						columns={getColumnMapping(pullRequestList[0])}
-						initialState={{
-							pagination: {
-								paginationModel: { page: 0, pageSize: 10 },
-							},
+					<MUIDataTable
+						className="mui-data-table bank-pull-request-list"
+						// title="Track Cards"
+						data={pullRequestList}
+						columns={getColumnMapping(pullRequestList)}
+						options={{
+							filter: true,
+							fixedHeader: true,
+							filterType: 'dropdown',
+							responsive: 'standard',
+							print: false,
+							selectableRows: 'none',
+							rowsPerPage: 10,
+							rowsPerPageOptions: [10, 20, 50, 100],
 						}}
-						pageSizeOptions={[10, 20, 50, 100]}
-						// checkboxSelection
 					/>
 				</Card>
 			</Container>

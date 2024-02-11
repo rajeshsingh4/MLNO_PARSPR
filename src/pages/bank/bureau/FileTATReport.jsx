@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { DataGrid } from '@mui/x-data-grid';
+import MUIDataTable from 'mui-datatables';
 import Button from '@mui/material/Button';
 import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
@@ -62,17 +62,31 @@ export default function FileTATReport() {
 		setTATCardDetails(null);
 	};
 
-	const getColumnMapping = (row) => {
-		if (!row || (row && row.length === 0)) {
-			return [];
+	const sorter = (a, b) => {
+		if (a.id > b.id) {
+			return 1;
 		}
+		if (a.id < b.id) {
+			return -1;
+		}
+		return 0;
+	};
+
+	const getColumnMapping = (records) => {
 		const columns = [];
+		if (!records || records.length === 0) {
+			return columns;
+		}
+		const listKey = Object.keys(records[0]);
+
 		const hiddenColumns = [
 			'id',
 			'BureauName',
 			'CutOffTime',
 			'FileUploadTime',
 			'cards',
+			'createdBy',
+			'modifiedBy',
 			'createdAt',
 			'updatedAt',
 			'userId',
@@ -85,140 +99,149 @@ export default function FileTATReport() {
 			'courieroutsidetat_listData',
 			'courierwithintat_listData',
 		];
-		const rowFieldKeys = Object.keys(row);
-		rowFieldKeys.forEach((key) => {
-			const basicColumnFields = {
-				field: key,
-				headerName: key,
-				description: key, // shows as tooltip
-				hideable: true, // user can show hide the column
-				sortable: true,
-				width: 200,
-				editable: false,
+
+		const getLabel = (label) => {
+			let labelHeader = '';
+			switch (label) {
+				case 'id':
+					labelHeader = 'S. No.';
+					break;
+				case 'fileName':
+					labelHeader = 'File Name';
+					break;
+				case 'DataProcessor':
+					labelHeader = 'Data Processor';
+					break;
+				case 'BureauName':
+					labelHeader = 'Bureau Name';
+					break;
+				case 'CutOffTime':
+					labelHeader = 'Actual Cut Off Time';
+					break;
+				case 'bureauwithintat':
+					labelHeader = 'Bureau Within TAT';
+					break;
+				case 'bureauoutsidetat':
+					labelHeader = 'Bureau Outside TAT';
+					break;
+				case 'bureauWIP':
+					labelHeader = 'Bureau WIP';
+					break;
+				case 'courierwithintat':
+					labelHeader = 'Courier Within TAT';
+					break;
+				case 'courieroutsidetat':
+					labelHeader = 'Courier Outside TAT';
+					break;
+				case 'totalCards':
+					labelHeader = 'Total Records';
+					break;
+				default:
+					break;
+			}
+			return labelHeader;
+		};
+
+		records.sort(sorter);
+		listKey.forEach((key, i) => {
+			const baseFieldObj = {
+				name: listKey[i],
+				label: getLabel(listKey[i]),
+				options: { filter: true, sort: true, viewColumns: true, display: !hiddenColumns.includes(listKey[i]) },
 			};
-			if (key === 'id') {
-				basicColumnFields.headerName = 'S. No.';
-				basicColumnFields.description = 'S. No.';
-				basicColumnFields.width = 80;
-				basicColumnFields.hideable = false;
-			}
-			if (key === 'fileName') {
-				basicColumnFields.headerName = 'File Name';
-				basicColumnFields.description = 'File Name';
-				basicColumnFields.hideable = false;
-			}
-			if (key === 'totalCards') {
-				basicColumnFields.headerName = 'Records';
-				basicColumnFields.description = 'Records';
-			}
-			if (key === 'bureauwithintat') {
-				basicColumnFields.headerName = 'Bureau within TAT';
-				basicColumnFields.description = 'Bureau within TAT';
-				basicColumnFields.renderCell = (params) => (
+			// show custom data
+			if (listKey[i] === 'CutOffTime') {
+				baseFieldObj.options.customBodyRender = (value, tableMeta) =>
+					new Date(records[tableMeta.rowIndex].CutOffTime).toLocaleString();
+			} else if (listKey[i] === 'FileUploadTime') {
+				baseFieldObj.options.customBodyRender = (value, tableMeta) =>
+					new Date(records[tableMeta.rowIndex].FileUploadTime).toLocaleString();
+			} else if (listKey[i] === 'bureauwithintat') {
+				baseFieldObj.options.customBodyRender = (value, tableMeta) => (
 					<Button
 						variant="contained"
 						color="warning"
 						onClick={() =>
-							showTATDetailsReport('bureauwithintat', params.row.id, params.row.bureauwithintat_listData)
+							showTATDetailsReport('bureauwithintat', records[tableMeta.rowIndex].id, records[tableMeta.rowIndex].bureauwithintat_listData)
 						}
 						disableElevation
 						size="small"
 						style={{ marginLeft: 16 }}
 					>
-						{params.row.bureauwithintat}
+						{records[tableMeta.rowIndex].bureauwithintat}
 					</Button>
 				);
-			}
-			if (key === 'bureauWIP') {
-				basicColumnFields.headerName = 'Bureau WIP';
-				basicColumnFields.description = 'Bureau WIP';
-				basicColumnFields.renderCell = (params) => (
+			} else if (listKey[i] === 'bureauWIP') {
+				baseFieldObj.options.customBodyRender = (value, tableMeta) => (
 					<Button
 						variant="contained"
 						color="success"
 						onClick={() =>
-							showTATDetailsReport('bureauWIP', params.row.id, params.row.bureauwithintat_listData)
+							showTATDetailsReport('bureauWIP', records[tableMeta.rowIndex].id, records[tableMeta.rowIndex].bureauwithintat_listData)
 						}
 						disableElevation
 						size="small"
 						style={{ marginLeft: 16 }}
 					>
-						{params.row.bureauWIP}
+						{records[tableMeta.rowIndex].bureauWIP}
 					</Button>
 				);
-			}
-			if (key === 'bureauoutsidetat') {
-				basicColumnFields.headerName = 'Bureau outside TAT';
-				basicColumnFields.description = 'Bureau outside TAT';
-				basicColumnFields.renderCell = (params) => (
+			} else if (listKey[i] === 'bureauoutsidetat') {
+				baseFieldObj.options.customBodyRender = (value, tableMeta) => (
 					<Button
 						variant="contained"
 						onClick={() =>
 							showTATDetailsReport(
 								'bureauoutsidetat',
-								params.row.id,
-								params.row.bureauoutsidetat_listData,
+								records[tableMeta.rowIndex].id,
+								records[tableMeta.rowIndex].bureauoutsidetat_listData,
 							)
 						}
 						disableElevation
 						size="small"
 						style={{ marginLeft: 16 }}
 					>
-						{params.row.bureauoutsidetat}
+						{records[tableMeta.rowIndex].bureauoutsidetat}
 					</Button>
 				);
-			}
-			if (key === 'courierwithintat') {
-				basicColumnFields.headerName = 'Courier within TAT';
-				basicColumnFields.description = 'Courier within TAT';
-				basicColumnFields.renderCell = (params) => (
+			} else if (listKey[i] === 'courierwithintat') {
+				baseFieldObj.options.customBodyRender = (value, tableMeta) => (
 					<Button
 						variant="contained"
 						onClick={() =>
 							showTATDetailsReport(
 								'courierwithintat',
-								params.row.id,
-								params.row.courierwithintat_listData,
+								records[tableMeta.rowIndex].id,
+								records[tableMeta.rowIndex].courierwithintat_listData,
 							)
 						}
 						disableElevation
 						size="small"
 						style={{ marginLeft: 16 }}
 					>
-						{params.row.courierwithintat}
+						{records[tableMeta.rowIndex].courierwithintat}
 					</Button>
 				);
-			}
-			if (key === 'courieroutsidetat') {
-				basicColumnFields.headerName = 'Courier outside TAT';
-				basicColumnFields.description = 'Courier outside TAT';
-				basicColumnFields.renderCell = (params) => (
+			} else if (listKey[i] === 'courieroutsidetat') {
+				baseFieldObj.options.customBodyRender = (value, tableMeta) => (
 					<Button
 						variant="contained"
 						onClick={() =>
 							showTATDetailsReport(
 								'courieroutsidetat',
-								params.row.id,
-								params.row.courieroutsidetat_listData,
+								records[tableMeta.rowIndex].id,
+								records[tableMeta.rowIndex].courieroutsidetat_listData,
 							)
 						}
 						disableElevation
 						size="small"
 						style={{ marginLeft: 16 }}
 					>
-						{params.row.courieroutsidetat}
+						{records[tableMeta.rowIndex].courieroutsidetat}
 					</Button>
 				);
 			}
-			// if (key === 'cards') {
-			//     basicColumnFields.headerName = 'Action';
-			//     basicColumnFields.description = 'Action';
-			//     basicColumnFields.sortable = false;
-			//     basicColumnFields.renderCell = (params) => <Button variant="contained" disableElevation onClick={() => viewFileDetails(params.row.id, params.row)}>View Details</Button>
-			// }
-			if (!hiddenColumns.includes(key)) {
-				columns.push(basicColumnFields);
-			}
+			columns.push(baseFieldObj);
 		});
 		return columns;
 	};
@@ -256,18 +279,21 @@ export default function FileTATReport() {
 			</PageHeader>
 			<Container>
 				<Card component="section" type="section">
-					<DataGrid
-						className="mui-data-grid file-tat-report"
-						loading={fileTatLoader}
-						rows={fileTatReport}
-						columns={getColumnMapping(fileTatReport[0])}
-						initialState={{
-							pagination: {
-								paginationModel: { page: 0, pageSize: 10 },
-							},
+					<MUIDataTable
+						className="mui-data-table file-tat-report"
+						// title="Track Cards"
+						data={fileTatReport}
+						columns={getColumnMapping(fileTatReport)}
+						options={{
+							filter: true,
+							fixedHeader: true,
+							filterType: 'dropdown',
+							responsive: 'standard',
+							print: false,
+							selectableRows: 'none',
+							rowsPerPage: 10,
+							rowsPerPageOptions: [10, 20, 50, 100],
 						}}
-						pageSizeOptions={[10, 20, 50, 100]}
-						// checkboxSelection
 					/>
 				</Card>
 			</Container>

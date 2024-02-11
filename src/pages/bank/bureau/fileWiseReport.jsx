@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { DataGrid } from '@mui/x-data-grid';
+import MUIDataTable from 'mui-datatables';
 import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
 import { useNavigate } from 'react-router-dom';
@@ -45,12 +45,28 @@ function FileWiseReport() {
 		navigate(`/bank/bureau/filewisereport/${fileId}`, { state: cardData });
 	};
 
-	const getColumnMapping = (row) => {
-		if (!row || (row && row.length === 0)) {
-			return [];
+	const sorter = (a, b) => {
+		if (a.id > b.id) {
+			return 1;
 		}
+		if (a.id < b.id) {
+			return -1;
+		}
+		return 0;
+	};
+
+	const getColumnMapping = (records) => {
 		const columns = [];
+		if (!records || records.length === 0) {
+			return columns;
+		}
+		const listKey = Object.keys(records[0]);
+
 		const hiddenColumns = [
+			'cards',
+			'userId',
+			'createdBy',
+			'modifiedBy',
 			'createdAt',
 			'updatedAt',
 			'FileAttribute',
@@ -62,55 +78,86 @@ function FileWiseReport() {
 			'bureauoutsidetat_listData',
 			'bureauwithintat_listData',
 		];
-		const rowFieldKeys = Object.keys(row);
-		rowFieldKeys.forEach((key) => {
-			const basicColumnFields = {
-				field: key,
-				headerName: key,
-				description: key, // shows as tooltip
-				hideable: true, // user can show hide the column
-				sortable: true,
-				width: 200,
-				editable: false,
+
+		const getLabel = (label) => {
+			let labelHeader = '';
+			switch (label) {
+				case 'id':
+					labelHeader = 'S. No.';
+					break;
+				case 'fileName':
+					labelHeader = 'File Name';
+					break;
+				case 'DataProcessor':
+					labelHeader = 'Data Processor';
+					break;
+				case 'BureauName':
+					labelHeader = 'Bureau Name';
+					break;
+				case 'CutOffTime':
+					labelHeader = 'Actual Cut Off Time';
+					break;
+				case 'bureauwithintat':
+					labelHeader = 'Bureau Within TAT';
+					break;
+				case 'bureauoutsidetat':
+					labelHeader = 'Bureau Outside TAT';
+					break;
+				case 'bureauWIP':
+					labelHeader = 'Bureau WIP';
+					break;
+				case 'courierwithintat':
+					labelHeader = 'Courier Within TAT';
+					break;
+				case 'courieroutsidetat':
+					labelHeader = 'Courier Outside TAT';
+					break;
+				case 'totalCards':
+					labelHeader = 'Total Cards';
+					break;
+				default:
+					break;
+			}
+			return labelHeader;
+		};
+
+		records.sort(sorter);
+		listKey.forEach((key, i) => {
+			let baseFieldObj = {
+				name: listKey[i],
+				label: getLabel(listKey[i]),
+				options: { filter: true, sort: true, viewColumns: true, display: !hiddenColumns.includes(listKey[i]) },
 			};
-			if (key === 'id') {
-				basicColumnFields.headerName = 'S. No.';
-				basicColumnFields.description = 'S. No.';
-				basicColumnFields.width = 80;
-				basicColumnFields.hideable = false;
+			// show custom data
+			if (listKey[i] === 'CutOffTime') {
+				baseFieldObj.options.customBodyRender = (value, tableMeta) =>
+					new Date(records[tableMeta.rowIndex].CutOffTime).toLocaleString();
+			} else if (listKey[i] === 'FileUploadTime') {
+				baseFieldObj.options.customBodyRender = (value, tableMeta) =>
+					new Date(records[tableMeta.rowIndex].FileUploadTime).toLocaleString();
 			}
-			if (key === 'fileName') {
-				basicColumnFields.headerName = 'File Name';
-				basicColumnFields.description = 'File Name';
-				basicColumnFields.hideable = false;
-			}
-			if (key === 'CuffOffTime') {
-				basicColumnFields.headerName = 'Cuff Off Time';
-				basicColumnFields.description = 'Cuff Off Time';
-				basicColumnFields.valueGetter = (params) => new Date(params.row.CuffOffTime).getTime();
-			}
-			if (key === 'FileUploadTime') {
-				basicColumnFields.headerName = 'Actual File Upload Time';
-				basicColumnFields.description = 'Actual File Upload Time';
-				basicColumnFields.valueGetter = (params) => new Date(params.row.FileUploadTime).getTime();
-			}
-			if (key === 'cards') {
-				basicColumnFields.headerName = 'Action';
-				basicColumnFields.description = 'Action';
-				basicColumnFields.sortable = false;
-				basicColumnFields.hideable = false;
-				basicColumnFields.renderCell = (params) => (
-					<Button
-						variant="contained"
-						disableElevation
-						onClick={() => viewFileDetails(params.row.id, params.row)}
-					>
-						View Details
-					</Button>
-				);
-			}
-			if (!hiddenColumns.includes(key)) {
-				columns.push(basicColumnFields);
+			columns.push(baseFieldObj);
+			if (i === listKey.length - 1) {
+				baseFieldObj = {
+					name: 'Action',
+					label: 'Action',
+					options: {
+						filter: false,
+						sort: false,
+						viewColumns: false,
+						// eslint-disable-next-line react/no-unstable-nested-components
+						customBodyRenderLite: (rowIndex) => (
+							<Button
+								variant="contained"
+								disableElevation
+								onClick={() => viewFileDetails(records[rowIndex].id, records[rowIndex])}
+							>
+								View Details
+							</Button>
+						),
+					},
+				};
+				columns.push(baseFieldObj);
 			}
 		});
 		return columns;
@@ -134,18 +181,21 @@ function FileWiseReport() {
 			</PageHeader>
 			<Container>
 				<Card component="section" type="section">
-					<DataGrid
-						className="mui-data-grid file-master"
-						loading={fileListLoader}
-						rows={fileList}
-						sx={{ typography: 'body2' }}
-						columns={getColumnMapping(fileList[0])}
-						initialState={{
-							pagination: {
-								paginationModel: { page: 0, pageSize: 10 },
-							},
+					<MUIDataTable
+						className="mui-data-table file-master-report"
+						// title="Track Cards"
+						data={fileList}
+						columns={getColumnMapping(fileList)}
+						options={{
+							filter: true,
+							fixedHeader: true,
+							filterType: 'dropdown',
+							responsive: 'standard',
+							print: false,
+							selectableRows: 'none',
+							rowsPerPage: 10,
+							rowsPerPageOptions: [10, 20, 50, 100],
 						}}
-						pageSizeOptions={[10, 20, 50, 100]}
 					/>
 				</Card>
 			</Container>
