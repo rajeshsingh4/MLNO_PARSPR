@@ -7,52 +7,52 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Typography from '@mui/material/Typography';
 import Stack from '@mui/material/Stack';
-import Button from '@mui/material/Button';
 import Link from '@mui/material/Link';
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import Chip from '@mui/material/Chip';
+// import Button from '@mui/material/Button';
+// import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import { pullRequestStatusMap, pullRequestStatusColorMap } from '@/utils/bureaumappings';
 
-function TransactionsSection({ recentPullRequests, navigatePullRequests }) {
+function PendingFilesListing({ recentFiles, navigateFiles }) {
 	return (
 		<Card type="none">
 			<Stack direction="column" alignItems="flex-start">
 				<Typography variant="h5" textTransform="uppercase" m={2}>
-					Recent Pull Requests
+					Pending Files
 				</Typography>
-				<TransactionsTable recentPullRequests={recentPullRequests} />
-				{recentPullRequests && recentPullRequests.length > 0 && (
+				<PendingFilesTable recentFiles={recentFiles} />
+				{/* {recentFiles && recentFiles.length > 0 && (
 					<Button
 						size="small"
 						startIcon={<KeyboardArrowDownIcon />}
 						sx={{
 							m: 1,
 						}}
-						onClick={() => navigatePullRequests()}
+						onClick={() => navigateFiles()}
 					>
 						View All
 					</Button>
-				)}
+				)} */}
 			</Stack>
 		</Card>
 	);
 }
 
-function TransactionsTable({ recentPullRequests }) {
+function PendingFilesTable({ recentFiles }) {
 	return (
 		<TableContainer>
-			<Table aria-label="recent pull requests table" size="medium">
+			<Table aria-label="pending files table" size="medium">
 				<TableHead>
 					<TableRow>
 						<TableCell>Id</TableCell>
-						<TableCell align="left">Latest comment</TableCell>
-						<TableCell align="left">Status</TableCell>
+						<TableCell align="left">File Name</TableCell>
+						<TableCell align="left">Bureau Name</TableCell>
 						<TableCell align="left">Updated By</TableCell>
 						<TableCell align="left">Updated At</TableCell>
 					</TableRow>
 				</TableHead>
 				<TableBody>
-					{recentPullRequests.length === 0 && (
+					{recentFiles.length === 0 && (
 						<TableRow hover>
 							<TableCell colSpan={5}>
 								<Typography
@@ -65,13 +65,13 @@ function TransactionsTable({ recentPullRequests }) {
 										alignItems: 'center',
 									}}
 								>
-									No recent pull reuqests were created
+									No pending files
 								</Typography>
 							</TableCell>
 						</TableRow>
 					)}
-					{recentPullRequests.map((pull) => (
-						<TransactionRow key={pull.id} pull={pull} />
+					{recentFiles.map((pull) => (
+						<PendingFilesRow key={pull.id} pull={pull} />
 					))}
 				</TableBody>
 			</Table>
@@ -79,8 +79,8 @@ function TransactionsTable({ recentPullRequests }) {
 	);
 }
 
-function TransactionRow({ pull }) {
-	const { id, comment, status, updatedBy, updatedAt } = pull;
+function PendingFilesRow({ pull }) {
+	const { id, name, bureauName, updatedBy, updatedAt } = pull;
 	return (
 		<TableRow hover>
 			<TableCell>{id}</TableCell>
@@ -97,14 +97,14 @@ function TransactionRow({ pull }) {
 						},
 					}}
 				>
-					{comment}
+					{name}
 				</Link>
 			</TableCell>
 			<TableCell align="left" size="small">
-				{/* <Typography variant="body1" color="text.tertiary">
-					{bureauStatus === 1 ? (courierStatus === 1 ? '' : 'With courier') : 'With Bureau'}
-				</Typography> */}
-				<Chip label={pullRequestStatusMap[status]} size="small" color={pullRequestStatusColorMap[status]} />
+				<Typography variant="body1" color="text.tertiary">
+					{bureauName}
+				</Typography>
+				{/* <Chip label={pullRequestStatusMap[status]} size="small" color={pullRequestStatusColorMap[status]} /> */}
 			</TableCell>
 			<TableCell align="left" size="small">
 				<Typography variant="body1" color="text.tertiary">
@@ -120,4 +120,4 @@ function TransactionRow({ pull }) {
 	);
 }
 
-export default TransactionsSection;
+export default PendingFilesListing;

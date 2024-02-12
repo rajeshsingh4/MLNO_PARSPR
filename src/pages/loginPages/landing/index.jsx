@@ -66,8 +66,7 @@ function LandingPage() {
 										variant="outlined"
 										fullWidth
 										color="primary"
-										to="/login/bureau"
-										component={RouterLink}
+										onClick={() => window.location.replace('/login/bureau')}
 									>
 										Login
 									</Button>

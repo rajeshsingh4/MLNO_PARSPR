@@ -85,7 +85,7 @@ function CardsTable(props) {
 							<TableCell colSpan={5}>
 								<Typography
 									variant="body3"
-									component="tr"
+									component="span"
 									sx={{
 										height: '50px',
 										display: 'flex',

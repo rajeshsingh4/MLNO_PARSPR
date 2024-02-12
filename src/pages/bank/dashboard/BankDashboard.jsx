@@ -17,13 +17,14 @@ import Chart from 'react-apexcharts';
 import PageHeader from '@/components/pageHeader';
 import StatsSection from '@/pages/dashboardsPages/bankDashboard/statsSection';
 import GraphsSection, { SectionContainer } from '@/pages/dashboardsPages/bankDashboard/graphsSection';
-import BitcoinSection from '@/pages/dashboardsPages/bankDashboard/bitcoinSection';
+// import BitcoinSection from '@/pages/dashboardsPages/bankDashboard/bitcoinSection';
 import ProductsSection from '@/pages/dashboardsPages/bankDashboard/productsSection';
 import TransactionsSection from '@/pages/dashboardsPages/bankDashboard/transactionsSection';
 import getDefaultChartsColors from '@helpers/getDefaultChartsColors';
 import DashboradService from '@/utils/services/dashboards.service';
 import { getDateRange } from '@/utils/helpers/dateHandlers';
 import Loader from '@/components/loader';
+import PendingFilesListing from './PendingFileListing';
 
 function BankDashboardPage() {
 	const [statsData, setStatsData] = useState(null);
@@ -283,12 +284,12 @@ function BankDashboardPage() {
 		return recentCardsList;
 	};
 
-	const createRecentFiles = (stats) => {
-		if (!stats || !stats.recentFiles) {
+	const getPendingFiles = (stats) => {
+		if (!stats || !stats.pendingFiles) {
 			return [];
 		}
 		const recentFileList = [];
-		stats.recentFiles.forEach((file) => {
+		stats.pendingFiles.forEach((file) => {
 			const item = {
 				id: file.id,
 				name: file.fileName,
@@ -590,7 +591,17 @@ function BankDashboardPage() {
 								</Grid>
 							</Grid>
 						</section>
-						<BitcoinSection />
+						<section>
+							<Grid container spacing={3}>
+								<Grid item xs={12}>
+									<PendingFilesListing
+										recentFiles={getPendingFiles(statsData)}
+										navigateFiles={() => navigate('/bank/bureau/filetatreport')}
+									/>
+								</Grid>
+							</Grid>
+						</section>
+						{/* <BitcoinSection /> */}
 					</>
 				)}
 			</Stack>
