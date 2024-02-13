@@ -1,19 +1,15 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import Chart from 'react-apexcharts';
 import Stack from '@mui/material/Stack';
 import Grid from '@mui/material/Grid';
 import Breadcrumbs from '@mui/material/Breadcrumbs';
 import Link from '@mui/material/Link';
+import Card from '@mui/material/Card';
 import QueryStatsOutlinedIcon from '@mui/icons-material/QueryStatsOutlined';
 import DonutSmallOutlinedIcon from '@mui/icons-material/DonutSmallOutlined';
 import MonetizationOnOutlinedIcon from '@mui/icons-material/MonetizationOnOutlined';
 import AssessmentOutlinedIcon from '@mui/icons-material/AssessmentOutlined';
-import Card from '@mui/material/Card';
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import Select from '@mui/material/Select';
-import Chart from 'react-apexcharts';
 import PageHeader from '@/components/pageHeader';
 import StatsSection from '@/pages/dashboardsPages/bankDashboard/statsSection';
 import GraphsSection, { SectionContainer } from '@/pages/dashboardsPages/bankDashboard/graphsSection';
@@ -22,9 +18,10 @@ import ProductsSection from '@/pages/dashboardsPages/bankDashboard/productsSecti
 import TransactionsSection from '@/pages/dashboardsPages/bankDashboard/transactionsSection';
 import getDefaultChartsColors from '@helpers/getDefaultChartsColors';
 import DashboradService from '@/utils/services/dashboards.service';
-import { getDateRange } from '@/utils/helpers/dateHandlers';
 import Loader from '@/components/loader';
 import PendingFilesListing from './PendingFileListing';
+import { getDateRange } from '@/utils/helpers/dateHandlers';
+import DateRangeFilter from '@/components/datefilter/DateFilter';
 
 function BankDashboardPage() {
 	const [statsData, setStatsData] = useState(null);
@@ -294,13 +291,13 @@ function BankDashboardPage() {
 				id: file.id,
 				name: file.fileName,
 				bureauName: file.BureauName,
-				cutOffTime: new Date(file.CutOffTime).toLocaleString(),
+				pendingCardsCount: file.cards.length,
 				updatedBy: file.modifiedBy,
+				createdAt: new Date(file.createdAt).toLocaleString(),
 				updatedAt: new Date(file.updatedAt).toLocaleString(),
 			};
 			recentFileList.push(item);
 		});
-		console.log(recentFileList);
 		return recentFileList;
 	};
 
@@ -322,40 +319,7 @@ function BankDashboardPage() {
 		return recentPullRequestList;
 	};
 
-	const handleDateChange = async (e) => {
-		const { value } = e.target;
-		const sortType = value;
-		let dateRange = getDateRange('all');
-		switch (value) {
-			case 'all':
-				console.log('show all data');
-				break;
-			case 'today':
-				dateRange = getDateRange('currentDay');
-				break;
-			case 'yesterday':
-				dateRange = getDateRange('yesterday');
-				break;
-			case 'week':
-				dateRange = getDateRange('currentWeek');
-				break;
-			case 'lastWeek':
-				dateRange = getDateRange('lastWeek');
-				break;
-			case 'currentMonth':
-				dateRange = getDateRange('currentMonth');
-				break;
-			case 'lastMonth':
-				dateRange = getDateRange('lastMonth');
-				break;
-			case 'threeMonths':
-				dateRange = getDateRange('threeMonths');
-				break;
-			default:
-				console.log('default show all data');
-				break;
-		}
-		setSelectedDateRange(sortType);
+	const handleDateChange = async (sortType, dateRange) => {
 		const queryParams =
 			sortType === 'all'
 				? `?sortType=${sortType}`
@@ -371,11 +335,10 @@ function BankDashboardPage() {
 			let received = 0;
 			let dispatched = 0;
 			stats.cards.forEach((item) => {
-				if (item.Bureau_Status === 0) {
-					received += item.total_bank_records;
-				}
-				if (item.Bureau_Status && item.Courier_Status === 1) {
+				if (item.Bureau_Status === 1 && item.Courier_Status === 1) {
 					dispatched += item.total_bank_records;
+				} else if (item.Bureau_Status === 0) {
+					received += item.total_bank_records;
 				}
 			});
 			return [received, dispatched];
@@ -387,9 +350,9 @@ function BankDashboardPage() {
 				type: 'pie',
 			},
 			title: {
-				text: 'Total Cards Received/Dispatched',
+				text: 'Total Cards Received/Delivered',
 			},
-			labels: ['Recieved', 'Dispatched'],
+			labels: ['Recieved', 'Delivered'],
 			responsive: [
 				{
 					breakpoint: 480,
@@ -432,7 +395,7 @@ function BankDashboardPage() {
 				type: 'pie',
 			},
 			title: {
-				text: 'Cards Received/Sent to Courier By Bureau',
+				text: 'Bureau - Total Data shared/Total Cards dispatched',
 			},
 			labels: ['Recieved', 'Sent to Courier'],
 			responsive: [
@@ -477,7 +440,7 @@ function BankDashboardPage() {
 				type: 'pie',
 			},
 			title: {
-				text: 'Cards Received from bureau/Dispatched by Courier',
+				text: 'Courier - Total In-transit/Delivered',
 			},
 			labels: ['Recieved from Bureau', 'Dispatched'],
 			responsive: [
@@ -516,26 +479,7 @@ function BankDashboardPage() {
 				<Grid container spacing={1}>
 					<Grid item xs={12}>
 						<Card elevation={0}>
-							<FormControl sx={{ m: 1, minWidth: 240 }}>
-								<InputLabel id="dashboard-date-range-label">Select Date Range</InputLabel>
-								<Select
-									labelId="dashboard-date-range-label"
-									id="dashboard-date-range"
-									value={selectedDateRange}
-									label="Select Date Range"
-									onChange={handleDateChange}
-								>
-									<MenuItem value="all">
-										<em>All</em>
-									</MenuItem>
-									<MenuItem value="today">Current Day</MenuItem>
-									<MenuItem value="yesterday">Yesterday</MenuItem>
-									<MenuItem value="week">This week</MenuItem>
-									<MenuItem value="currentMonth">This month</MenuItem>
-									<MenuItem value="lastMonth">Last month</MenuItem>
-									<MenuItem value="threeMonths">Past 3 months</MenuItem>
-								</Select>
-							</FormControl>
+							<DateRangeFilter handleDateRange={handleDateChange} />
 						</Card>
 					</Grid>
 				</Grid>
@@ -576,7 +520,7 @@ function BankDashboardPage() {
 							</Grid>
 						</section>
 						<section>
-							<Grid container spacing={3}>
+							<Grid container spacing={3} display="none">
 								<Grid item xs={12} md={12} lg={6}>
 									<ProductsSection
 										recentCards={createRecentCardsDetails(statsData)}

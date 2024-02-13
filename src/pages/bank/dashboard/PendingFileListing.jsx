@@ -47,8 +47,9 @@ function PendingFilesTable({ recentFiles }) {
 						<TableCell>Id</TableCell>
 						<TableCell align="left">File Name</TableCell>
 						<TableCell align="left">Bureau Name</TableCell>
+						<TableCell align="center">Pending Cards</TableCell>
 						<TableCell align="left">Updated By</TableCell>
-						<TableCell align="left">Updated At</TableCell>
+						<TableCell align="left">Date & Time</TableCell>
 					</TableRow>
 				</TableHead>
 				<TableBody>
@@ -80,7 +81,7 @@ function PendingFilesTable({ recentFiles }) {
 }
 
 function PendingFilesRow({ pull }) {
-	const { id, name, bureauName, updatedBy, updatedAt } = pull;
+	const { id, name, bureauName, pendingCardsCount, updatedBy, createdAt } = pull;
 	return (
 		<TableRow hover>
 			<TableCell>{id}</TableCell>
@@ -106,6 +107,11 @@ function PendingFilesRow({ pull }) {
 				</Typography>
 				{/* <Chip label={pullRequestStatusMap[status]} size="small" color={pullRequestStatusColorMap[status]} /> */}
 			</TableCell>
+			<TableCell align="center" size="small">
+				<Typography variant="body1" color="text.tertiary">
+					{pendingCardsCount}
+				</Typography>
+			</TableCell>
 			<TableCell align="left" size="small">
 				<Typography variant="body1" color="text.tertiary">
 					{updatedBy}
@@ -113,7 +119,7 @@ function PendingFilesRow({ pull }) {
 			</TableCell>
 			<TableCell align="left" size="small">
 				<Typography variant="body1" color="text.tertiary">
-					{updatedAt}
+					{createdAt}
 				</Typography>
 			</TableCell>
 		</TableRow>

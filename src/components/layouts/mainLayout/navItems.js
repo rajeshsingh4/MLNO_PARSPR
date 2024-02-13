@@ -1,13 +1,8 @@
 import { v4 as uuid } from 'uuid';
-// Icons
 import GridViewOutlinedIcon from '@mui/icons-material/GridViewOutlined';
 import BarChartOutlinedIcon from '@mui/icons-material/BarChartOutlined';
 import InventoryOutlinedIcon from '@mui/icons-material/InventoryOutlined';
-// import PaletteOutlinedIcon from '@mui/icons-material/PaletteOutlined';
-// import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
 import AutoStoriesOutlinedIcon from '@mui/icons-material/AutoStoriesOutlined';
-// import WidgetsOutlinedIcon from '@mui/icons-material/WidgetsOutlined';
-// import WebOutlinedIcon from '@mui/icons-material/WebOutlined';
 
 /**
  * @example
@@ -36,7 +31,7 @@ export const BANK_NAV_LINKS_CONFIG = [
 		Icon: GridViewOutlinedIcon,
 		menuChildren: [
 			{
-				title: 'Pending Report',
+				title: 'File Wise Report',
 				href: '/bank/bureau/filewisereport',
 			},
 			{
@@ -47,14 +42,17 @@ export const BANK_NAV_LINKS_CONFIG = [
 	},
 	{
 		id: uuid(),
+		type: 'item',
+		title: 'MIS',
+		Icon: InventoryOutlinedIcon,
+		href: '/bank/mis',
+	},
+	{
+		id: uuid(),
 		type: 'group',
 		title: 'Bank Pull Request',
 		Icon: InventoryOutlinedIcon,
 		menuChildren: [
-			{
-				title: 'Dashboard',
-				href: '/bank/pull/dashboard',
-			},
 			{
 				title: 'Create',
 				href: '/bank/pull/create',
@@ -81,26 +79,6 @@ export const BANK_NAV_LINKS_CONFIG = [
 			},
 		],
 	},
-	// {
-	// 	id: uuid(),
-	// 	type: 'group',
-	// 	title: 'Bureau Pull Request',
-	// 	Icon: AutoStoriesOutlinedIcon,
-	// 	menuChildren: [
-	// 		{
-	// 			title: 'Dashboard',
-	// 			href: '/bank/bureau/pull/dashboard',
-	// 		},
-	// 		{
-	// 			title: 'Create',
-	// 			href: '/bank/bureau/pull/create',
-	// 		},
-	// 		{
-	// 			title: 'Manage',
-	// 			href: '/bank/bureau/pull/list',
-	// 		},
-	// 	],
-	// },
 ];
 
 export const BUREAU_NAV_LINKS_CONFIG = [
@@ -111,26 +89,6 @@ export const BUREAU_NAV_LINKS_CONFIG = [
 		Icon: BarChartOutlinedIcon,
 		href: '/bureau/dashboard',
 	},
-	// {
-	// 	id: uuid(),
-	// 	type: 'group',
-	// 	title: 'Bank Pull Request',
-	// 	Icon: InventoryOutlinedIcon,
-	// 	menuChildren: [
-	// 		{
-	// 			title: 'Dashboard',
-	// 			href: '/bank/pull/dashboard',
-	// 		},
-	// 		{
-	// 			title: 'Create',
-	// 			href: '/bank/pull/create',
-	// 		},
-	// 		{
-	// 			title: 'Manage',
-	// 			href: '/bank/pull/list',
-	// 		},
-	// 	],
-	// },
 	{
 		id: uuid(),
 		type: 'group',
@@ -153,10 +111,6 @@ export const BUREAU_NAV_LINKS_CONFIG = [
 		title: 'Bureau Pull Request',
 		Icon: AutoStoriesOutlinedIcon,
 		menuChildren: [
-			{
-				title: 'Dashboard',
-				href: '/bureau/pull/dashboard',
-			},
 			{
 				title: 'Cards List',
 				href: '/bureau/pull/cards',

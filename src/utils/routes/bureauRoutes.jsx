@@ -12,9 +12,9 @@ const BureauViewPullRequestDetails = withLazyLoadably(
 	lazy(() => import('@/pages/bureau/pull/BureauViewPullRequestDetails')),
 );
 const FileTATReportPage = withLazyLoadably(lazy(() => import('@/pages/bank/bureau/FileTATReport')));
-const BureauPullRequestDashboard = withLazyLoadably(
-	lazy(() => import('@/pages/bank/dashboard/BureauPullRequestDashboard')),
-);
+// const BureauPullRequestDashboard = withLazyLoadably(
+// 	lazy(() => import('@/pages/bank/dashboard/BureauPullRequestDashboard')),
+// );
 
 function BureauRoutes() {
 	return (
@@ -24,7 +24,7 @@ function BureauRoutes() {
 				<Route index element={<BureauDashboardPage />} />
 				<Route path="dashboard" element={<BureauDashboardPage />} />
 				<Route path="pull">
-					<Route index path="dashboard" element={<BureauPullRequestDashboard />} />
+					{/* <Route index path="dashboard" element={<BureauPullRequestDashboard />} /> */}
 					{/* <Route path="create" element={<h1>Create Pull Requests for bureau</h1>} /> */}
 					<Route path="cards" element={<BureauCardList />} />
 					<Route path="list" element={<BureauPullRequestList />} />
@@ -33,8 +33,6 @@ function BureauRoutes() {
 				<Route path="file">
 					<Route path="filetatreport" element={<FileTATReportPage />} />
 					<Route path="pending-report" element={<PendingReportDashboard />} />
-					{/* <Route path="filewisereport" element={<FileWiseReportPage />} /> */}
-					{/* <Route path="comparision" element={<BureauComparisionPage />} /> */}
 				</Route>
 			</Route>
 		</>

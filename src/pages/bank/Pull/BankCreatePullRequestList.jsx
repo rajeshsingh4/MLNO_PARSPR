@@ -1,4 +1,4 @@
-import React from 'react';
+import { useState, useEffect } from 'react';
 import MUIDataTable from 'mui-datatables';
 import IconButton from '@mui/material/IconButton';
 import EditIcon from '@mui/icons-material/Edit';
@@ -11,12 +11,13 @@ import Loader from '@/components/loader';
 import PageHeader from '@/components/pageHeader';
 import CardTrackingService from '@/utils/services/card.service';
 import CreatePullRequestForm from './CreatePullRequestForm';
+import ModuleLoadError from '@/components/error/ModuleLoadError';
 
 function BankCreatePullRequestList() {
-	const [cardList, setCardList] = React.useState([]);
-	const [cardListLoader, setCardListLoader] = React.useState(false);
-	const [cardListError, setCardListError] = React.useState(false);
-	const [pullRequestModal, setPullRequestModal] = React.useState({
+	const [cardList, setCardList] = useState([]);
+	const [cardListLoader, setCardListLoader] = useState(false);
+	const [cardListError, setCardListError] = useState(false);
+	const [pullRequestModal, setPullRequestModal] = useState({
 		open: false,
 		rowData: null,
 		tableMeta: null,
@@ -36,7 +37,7 @@ function BankCreatePullRequestList() {
 		}
 	};
 
-	React.useEffect(() => {
+	useEffect(() => {
 		getCardListForPullRequest();
 	}, []);
 
@@ -53,11 +54,11 @@ function BankCreatePullRequestList() {
 		const listKey = Object.keys(row);
 
 		const fieldToShow = [
-			'trackingId',
+			'id',
 			'Bank',
+			'fileMaster',
 			'AWB_No',
 			'Product',
-			'Logo',
 			'PA_Flag',
 			'NRWC_Flag',
 			'Bureau_Total_TAT_Days',
@@ -65,7 +66,6 @@ function BankCreatePullRequestList() {
 			'Bureau_Status',
 			'Courier_Status',
 			'Courier_TAT_Extra_Days_Passed',
-			'fileMaster',
 		];
 
 		listKey.forEach((key, i) => {
@@ -79,6 +79,10 @@ function BankCreatePullRequestList() {
 					display: fieldToShow.includes(listKey[i]) ? true : 'excluded',
 				},
 			};
+			if (listKey[i] === 'Bank') {
+				baseFieldObj.name = 'fileMaster.BureauName';
+				baseFieldObj.label = 'Bureau Name';
+			}
 			if (listKey[i] === 'fileMaster') {
 				baseFieldObj.name = 'fileMaster.fileName';
 				baseFieldObj.label = 'File Name';
@@ -93,6 +97,7 @@ function BankCreatePullRequestList() {
 						sort: false,
 						print: false,
 						viewColumns: false,
+						// eslint-disable-next-line react/no-unstable-nested-components
 						customBodyRender: (value, tableMeta, updateValue) => (
 							<IconButton
 								aria-label="edit"
@@ -122,7 +127,7 @@ function BankCreatePullRequestList() {
 	}
 
 	if (cardListError) {
-		return <>Error fetching card deatils for pull request....!!</>;
+		return <ModuleLoadError errorMessage="Error fetching card details for pull request....!!" />;
 	}
 
 	return (
@@ -148,7 +153,7 @@ function BankCreatePullRequestList() {
 					sx={{ '& > .create-pull-request-list': { boxShadow: 'none' } }}
 				>
 					<MUIDataTable
-						// title="Name of Table"
+						title="Pending Card"
 						className="mui-data-table create-pull-request-list"
 						data={cardList}
 						columns={getColumnMapping(cardList[0] || [])}
