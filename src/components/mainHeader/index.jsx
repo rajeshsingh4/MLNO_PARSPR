@@ -30,6 +30,9 @@ function MainHeader() {
 							xs: 100,
 							sm: 150,
 						}}
+						height={{
+							sm: '3.6rem',
+						}}
 						src={logo}
 						alt="logo"
 					/>

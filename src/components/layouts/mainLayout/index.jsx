@@ -11,7 +11,7 @@ import Fab from '@mui/material/Fab';
 // Icons
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 
-import { BANK_NAV_LINKS_CONFIG, BUREAU_NAV_LINKS_CONFIG } from './navItems';
+import { BANK_NAV_LINKS_CONFIG, BUREAU_NAV_LINKS_CONFIG, SUPERADMIN_NAV_LINKS_CONFIG } from './navItems';
 
 // Components
 import Footer from '@/components/footer';
@@ -71,8 +71,8 @@ function Header({ loginType }) {
 		navItems = BUREAU_NAV_LINKS_CONFIG;
 	} else if (loginType === 'courier') {
 		navItems = BANK_NAV_LINKS_CONFIG;
-	} else if (loginType === 'bank') {
-		navItems = BANK_NAV_LINKS_CONFIG;
+	} else if (loginType === 'superadmin') {
+		navItems = SUPERADMIN_NAV_LINKS_CONFIG;
 	}
 
 	return (

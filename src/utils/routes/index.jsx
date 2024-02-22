@@ -144,26 +144,6 @@ function Router() {
 						)}
 					</Route>
 					<Route path="*" element={<Page404 />} />
-					{/* <Route path="pages/">
-						<Route path="settings" element={<EditProfilePage />} />
-						<Route path="notifications" element={<NotificationsPage />} />
-						<Route path="pricing/">
-							<Route path="pricing1" element={<Pricing1Page />} />
-							<Route path="pricing2" element={<Pricing2Page />} />
-						</Route>
-						<Route path="error/">
-							<Route path="404" element={<Page404 />} />
-							<Route path="403" element={<Page403 />} />
-							<Route path="500" element={<Page500 />} />
-							<Route path="503" element={<Page503 />} />
-							<Route path="505" element={<Page505 />} />
-						</Route>
-					</Route>
-					<Route path="/" element={<MainLayout container={false} pb={false} />}>
-						<Route path="pages/">
-							<Route path="wip" element={<WIPPage />} />
-						</Route>
-					</Route> */}
 				</Routes>
 			</ScrollToTopOnRouteChange>
 		</BrowserRouter>

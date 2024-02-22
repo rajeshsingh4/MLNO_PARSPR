@@ -122,3 +122,20 @@ export const BUREAU_NAV_LINKS_CONFIG = [
 		],
 	},
 ];
+
+export const SUPERADMIN_NAV_LINKS_CONFIG = [
+	{
+		id: uuid(),
+		type: 'item',
+		title: 'User List',
+		Icon: BarChartOutlinedIcon,
+		href: '/superadmin/dashboard',
+	},
+	{
+		id: uuid(),
+		type: 'item',
+		title: 'File Upload',
+		Icon: InventoryOutlinedIcon,
+		href: '/superadmin/fileupload',
+	},
+];
