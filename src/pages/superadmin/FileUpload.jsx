@@ -8,6 +8,7 @@ import Button from '@mui/material/Button';
 import AddIcon from '@mui/icons-material/InventoryOutlined';
 import CardContent from '@mui/material/CardContent';
 import CardActions from '@mui/material/CardActions';
+import Grid from '@mui/material/Grid';
 import xlsxParser from 'xls-parser';
 import PageHeader from '@/components/pageHeader';
 import FlieMasterListService from '@/utils/services/files.services';
@@ -26,7 +27,13 @@ export default function FileUpload() {
 			.onFileSelection(file)
 			.then((data) => {
 				setFileData({
-					file,
+					file: {
+						name: file.name,
+						details: JSON.stringify(file),
+						dataProcessor: 'xml-parser',
+						bureauName: 'Bureau 1',
+						cutOffTime: new Date(),
+					},
 					cards: data.Sheet1,
 				});
 			})
@@ -40,16 +47,22 @@ export default function FileUpload() {
 		setSelectedFile(file);
 	};
 
+	const resetFile = () => {
+		setSelectedFile(null);
+		setFileData({
+			file: null,
+			cards: [],
+		});
+	};
+
 	const handleFileUpload = async () => {
-		if (!selectedFile) {
+		if (!selectedFile || !fileData || !fileData.file) {
 			return false;
 		}
 		let isError = false;
 		let message = '';
 		try {
-			const formData = new FormData();
-			formData.append('file', selectedFile);
-			const fileUploadResponse = await FlieMasterListService.uploadMasterFiles(formData);
+			const fileUploadResponse = await FlieMasterListService.uploadMasterFiles(fileData);
 			console.log(fileUploadResponse);
 			if (fileUploadResponse) {
 				message = 'Successfully uploaded file';
@@ -145,7 +158,18 @@ export default function FileUpload() {
 							pageSizeOptions={[10, 20, 50, 100, 300, 500, 1000]}
 						/>
 					)}
-					<CardActions>{selectedFile && <Button onClick={handleFileUpload}>Upload File</Button>}</CardActions>
+					<CardActions>
+						{selectedFile && (
+							<Grid container spacing={3} justifyContent="space-between">
+								<Grid item>
+									<Button onClick={resetFile}>Reset</Button>
+								</Grid>
+								<Grid item>
+									<Button onClick={handleFileUpload}>Upload File</Button>
+								</Grid>
+							</Grid>
+						)}
+					</CardActions>
 				</Card>
 			</Container>
 		</>
