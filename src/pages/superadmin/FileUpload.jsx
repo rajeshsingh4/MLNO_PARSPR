@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { DataGrid } from '@mui/x-data-grid';
 import Container from '@mui/material/Container';
 import Breadcrumbs from '@mui/material/Breadcrumbs';
 import Link from '@mui/material/Link';
@@ -6,28 +7,37 @@ import Card from '@mui/material/Card';
 import Button from '@mui/material/Button';
 import AddIcon from '@mui/icons-material/InventoryOutlined';
 import CardContent from '@mui/material/CardContent';
+import CardActions from '@mui/material/CardActions';
+import xlsxParser from 'xls-parser';
 import PageHeader from '@/components/pageHeader';
 import FlieMasterListService from '@/utils/services/files.services';
-import CardActions from '@mui/material/CardActions';
 
 export default function FileUpload() {
 	const [selectedFile, setSelectedFile] = useState(null);
-	const [fileUploadDetails, setFileUploadDetails] = useState({
-		progress: 0,
-		message: '',
-		isError: false,
+	const [fileData, setFileData] = useState({
+		file: null,
+		cards: [],
 	});
 
 	const handleFileSelect = (e) => {
 		const { files } = e.target;
-		setSelectedFile(files[0]);
-	};
-
-	const onUploadProgress = (event) => {
-		setFileUploadDetails({
-			...fileUploadDetails,
-			progress: Math.round((100 * event.loaded) / event.total),
-		});
+		const file = files[0];
+		xlsxParser
+			.onFileSelection(file)
+			.then((data) => {
+				setFileData({
+					file,
+					cards: data.Sheet1,
+				});
+			})
+			.catch((err) => {
+				console.log(err);
+				setFileData({
+					file: null,
+					cards: [],
+				});
+			});
+		setSelectedFile(file);
 	};
 
 	const handleFileUpload = async () => {
@@ -39,7 +49,7 @@ export default function FileUpload() {
 		try {
 			const formData = new FormData();
 			formData.append('file', selectedFile);
-			const fileUploadResponse = await FlieMasterListService.uploadMasterFiles(formData, onUploadProgress);
+			const fileUploadResponse = await FlieMasterListService.uploadMasterFiles(formData);
 			console.log(fileUploadResponse);
 			if (fileUploadResponse) {
 				message = 'Successfully uploaded file';
@@ -51,14 +61,33 @@ export default function FileUpload() {
 			isError = true;
 			message = 'Could not upload the file!';
 			console.error('Error uploading file', err);
-		} finally {
-			setFileUploadDetails({
-				...fileUploadDetails,
-				message,
-				isError,
-			});
 		}
 		return true;
+	};
+
+	const getColumnMapping = (row) => {
+		const fieldList = [];
+		const listKey = Object.keys(row);
+
+		listKey.forEach((key) => {
+			const basicColumnFields = {
+				field: key,
+				headerName: key.split('_').join(' '),
+				description: key.split('_').join(' '), // shows as tooltip
+				hideable: true, // user can show hide the column
+				sortable: true,
+				width: 200,
+				editable: false,
+			};
+			if (key === 'id') {
+				basicColumnFields.headerName = 'S. No.';
+				basicColumnFields.description = 'S. No.';
+				basicColumnFields.width = 80;
+				basicColumnFields.hideable = false;
+			}
+			fieldList.push(basicColumnFields);
+		});
+		return fieldList;
 	};
 
 	return (
@@ -77,29 +106,45 @@ export default function FileUpload() {
 			</PageHeader>
 			<Container>
 				<Card component="section" type="section">
-					<CardContent
-						sx={{
-							display: 'flex',
-							justifyContent: 'center',
-							alignItems: 'center',
-							border: '1px dashed black',
-							height: '20rem',
-						}}
-					>
-						<label htmlFor="file-upload-by-bank">
-							<Button variant="raised" component="span">
-								<AddIcon />
-							</Button>
-							<input
-								accept=".csv,.xml"
-								style={{ display: 'none' }}
-								id="file-upload-by-bank"
-								multiple
-								type="file"
-								onChange={(e) => handleFileSelect(e)}
-							/>
-						</label>
-					</CardContent>
+					{!selectedFile && (
+						<CardContent
+							sx={{
+								display: 'flex',
+								justifyContent: 'center',
+								alignItems: 'center',
+								border: '1px dashed black',
+								height: '20rem',
+							}}
+						>
+							{!selectedFile && (
+								<label htmlFor="file-upload-by-bank">
+									<Button variant="raised" component="span">
+										<AddIcon />
+									</Button>
+									<input
+										accept=".csv,.xml"
+										style={{ display: 'none' }}
+										id="file-upload-by-bank"
+										type="file"
+										onChange={(e) => handleFileSelect(e)}
+									/>
+								</label>
+							)}
+						</CardContent>
+					)}
+					{selectedFile && fileData && fileData.cards.length > 0 && (
+						<DataGrid
+							className="mui-data-grid file-master"
+							rows={fileData.cards}
+							columns={getColumnMapping(fileData.cards[0])}
+							initialState={{
+								pagination: {
+									paginationModel: { page: 0, pageSize: 10 },
+								},
+							}}
+							pageSizeOptions={[10, 20, 50, 100, 300, 500, 1000]}
+						/>
+					)}
 					<CardActions>{selectedFile && <Button onClick={handleFileUpload}>Upload File</Button>}</CardActions>
 				</Card>
 			</Container>

@@ -1,6 +1,4 @@
-// import { useState, useRef } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
-
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
@@ -8,13 +6,6 @@ import Stack from '@mui/material/Stack';
 import Card from '@mui/material/Card';
 import Container from '@mui/material/Container';
 import Button from '@mui/material/Button';
-// import Link from '@mui/material/Link';
-// import TextField from '@mui/material/TextField';
-// import CircularProgress from '@mui/material/CircularProgress';
-// import LoginIcon from '@mui/icons-material/Login';
-// import logo from '@/assets/images/logo/png/mlnologo.png';
-// import AuthService from '@/utils/services/auth.service';
-// import Alert from '@mui/material/Alert';
 
 function LandingPage() {
 	return (

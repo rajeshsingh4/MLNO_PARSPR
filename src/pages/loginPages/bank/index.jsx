@@ -12,9 +12,9 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import CircularProgress from '@mui/material/CircularProgress';
 import LoginIcon from '@mui/icons-material/Login';
+import Alert from '@mui/material/Alert';
 import logo from '@/assets/images/logo/png/mlnologo.png';
 import AuthService from '@/utils/services/auth.service';
-import Alert from '@mui/material/Alert';
 
 function LoginBank() {
 	return (
@@ -91,7 +91,6 @@ function LoginBank() {
 }
 
 function LoginForm() {
-	const [isLoading, setIsLoading] = useState(false);
 	const [username, setUsername] = useState('');
 	const [password, setPassword] = useState('');
 	const [loading, setLoading] = useState(false);
@@ -182,9 +181,9 @@ function LoginForm() {
 				}}
 				type="submit"
 				variant="contained"
-				disabled={isLoading}
+				disabled={loading}
 				endIcon={
-					isLoading ? (
+					loading ? (
 						<CircularProgress
 							color="secondary"
 							size={25}

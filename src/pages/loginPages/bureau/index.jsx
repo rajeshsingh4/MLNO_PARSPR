@@ -90,7 +90,6 @@ function LoginBureau() {
 }
 
 function LoginForm() {
-	const [isLoading, setIsLoading] = useState(false);
 	const [username, setUsername] = useState('');
 	const [password, setPassword] = useState('');
 	const [loading, setLoading] = useState(false);
@@ -181,9 +180,9 @@ function LoginForm() {
 				}}
 				type="submit"
 				variant="contained"
-				disabled={isLoading}
+				disabled={loading}
 				endIcon={
-					isLoading ? (
+					loading ? (
 						<CircularProgress
 							color="secondary"
 							size={25}

@@ -2,10 +2,9 @@ import AxiosInstance from '@/utils/axiosconfig/axiosconfig';
 import authHeader from './auth-header';
 import { FILE_URL, BUREAUDETAIL_URL, BUREAU_URL } from '@/utils/url';
 
-const uploadMasterFiles = (formData, onUploadProgress) =>
-	AxiosInstance.post(`${FILE_URL}upload`, formData, {
-		headers: { ...authHeader(), 'Content-Type': 'multipart/form-data' },
-		onUploadProgress,
+const uploadMasterFiles = (fileData) =>
+	AxiosInstance.post(`${FILE_URL}upload`, fileData, {
+		headers: authHeader(),
 	});
 
 const getFileMasterList = () => AxiosInstance.get(`${FILE_URL}all`, { headers: authHeader() });
