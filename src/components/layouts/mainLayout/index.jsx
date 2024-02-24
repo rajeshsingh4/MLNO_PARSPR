@@ -73,6 +73,8 @@ function Header({ loginType }) {
 		navItems = BANK_NAV_LINKS_CONFIG;
 	} else if (loginType === 'superadmin') {
 		navItems = SUPERADMIN_NAV_LINKS_CONFIG;
+	} else if (loginType === 'bank') {
+		navItems = BANK_NAV_LINKS_CONFIG;
 	}
 
 	return (
