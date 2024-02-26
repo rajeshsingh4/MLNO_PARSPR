@@ -152,7 +152,7 @@ function FileWiseReport() {
 								disableElevation
 								onClick={() => viewFileDetails(records[rowIndex].id, records[rowIndex])}
 							>
-								View Details
+								View WIP
 							</Button>
 						),
 					},

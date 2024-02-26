@@ -62,10 +62,19 @@ export default function FileUpload() {
 		let isError = false;
 		let message = '';
 		try {
+			fileData.cards = fileData.cards.map((item) => {
+				const tempItem = item;
+				delete tempItem.id;
+				return tempItem;
+			});
 			const fileUploadResponse = await FlieMasterListService.uploadMasterFiles(fileData);
 			console.log(fileUploadResponse);
 			if (fileUploadResponse) {
 				message = 'Successfully uploaded file';
+				setFileData({
+					file: null,
+					cards: [],
+				});
 			} else {
 				isError = true;
 				message = 'Could not upload the file!';
