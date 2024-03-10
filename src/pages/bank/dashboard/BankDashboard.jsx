@@ -6,10 +6,10 @@ import Grid from '@mui/material/Grid';
 import Breadcrumbs from '@mui/material/Breadcrumbs';
 import Link from '@mui/material/Link';
 import Card from '@mui/material/Card';
-import QueryStatsOutlinedIcon from '@mui/icons-material/QueryStatsOutlined';
-import DonutSmallOutlinedIcon from '@mui/icons-material/DonutSmallOutlined';
-import MonetizationOnOutlinedIcon from '@mui/icons-material/MonetizationOnOutlined';
-import AssessmentOutlinedIcon from '@mui/icons-material/AssessmentOutlined';
+import BusinessIcon from '@mui/icons-material/Business';
+import CreditCardIcon from '@mui/icons-material/CreditCard';
+import DoneAllIcon from '@mui/icons-material/DoneAll';
+import LocalShippingIcon from '@mui/icons-material/LocalShipping';
 import PageHeader from '@/components/pageHeader';
 import StatsSection from '@/pages/dashboardsPages/bankDashboard/statsSection';
 import GraphsSection, { SectionContainer } from '@/pages/dashboardsPages/bankDashboard/graphsSection';
@@ -60,28 +60,28 @@ function BankDashboardPage() {
 				name: 'Total Cards',
 				color: 'secondary.main',
 				total: stats.totalCards,
-				Icon: DonutSmallOutlinedIcon,
+				Icon: CreditCardIcon,
 			},
 			1: {
 				id: 1,
 				name: 'WITH BUREAU',
 				color: 'cuaternary.main',
 				total: 0,
-				Icon: QueryStatsOutlinedIcon,
+				Icon: BusinessIcon,
 			},
 			2: {
 				id: 2,
 				name: 'IN TRANSIT',
 				color: 'tertiary.400',
 				total: 0,
-				Icon: AssessmentOutlinedIcon,
+				Icon: LocalShippingIcon,
 			},
 			3: {
 				id: 3,
 				name: 'DELIVERED',
 				color: 'success.main',
 				total: 0,
-				Icon: MonetizationOnOutlinedIcon,
+				Icon: DoneAllIcon,
 			},
 		};
 

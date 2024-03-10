@@ -4,10 +4,10 @@ import Stack from '@mui/material/Stack';
 import Grid from '@mui/material/Grid';
 import Breadcrumbs from '@mui/material/Breadcrumbs';
 import Link from '@mui/material/Link';
-import QueryStatsOutlinedIcon from '@mui/icons-material/QueryStatsOutlined';
-import DonutSmallOutlinedIcon from '@mui/icons-material/DonutSmallOutlined';
-import MonetizationOnOutlinedIcon from '@mui/icons-material/MonetizationOnOutlined';
-import AssessmentOutlinedIcon from '@mui/icons-material/AssessmentOutlined';
+import BusinessIcon from '@mui/icons-material/Business';
+import CreditCardIcon from '@mui/icons-material/CreditCard';
+import DoneAllIcon from '@mui/icons-material/DoneAll';
+import LocalShippingIcon from '@mui/icons-material/LocalShipping';
 import Card from '@mui/material/Card';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
@@ -61,28 +61,28 @@ function BureauDashboardPage() {
 				name: 'Total Cards',
 				color: 'secondary.main',
 				total: stats.totalCards,
-				Icon: DonutSmallOutlinedIcon,
+				Icon: CreditCardIcon,
 			},
 			1: {
 				id: 1,
 				name: 'WITH BUREAU',
 				color: 'cuaternary.main',
 				total: 0,
-				Icon: QueryStatsOutlinedIcon,
+				Icon: BusinessIcon,
 			},
 			2: {
 				id: 2,
-				name: 'WITH COURIER',
+				name: 'IN TRANSIT',
 				color: 'tertiary.400',
 				total: 0,
-				Icon: AssessmentOutlinedIcon,
+				Icon: LocalShippingIcon,
 			},
 			3: {
 				id: 3,
-				name: 'COMPLETED',
+				name: 'DELIVERED',
 				color: 'success.main',
 				total: 0,
-				Icon: MonetizationOnOutlinedIcon,
+				Icon: DoneAllIcon,
 			},
 		};
 
