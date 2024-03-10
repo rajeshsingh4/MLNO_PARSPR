@@ -172,24 +172,26 @@ function BureauDashboardPage() {
 			const series = [];
 			stats.cards.forEach((item) => {
 				const sItem = {
+					bank: item.Bank,
 					name: '',
-					data: [item.total_bank_records],
+					data: [],
 				};
-				if (item.Bureau_Status !== 1 && (item.Courier_Status === null || item.Courier_Status === undefined)) {
-					sItem.name = 'Bureau In-Progress';
+				if (item.Bureau_Status === 1 && item.Courier_Status === 1) {
+					sItem.name = 'Delivered';
 				} else if (item.Courier_Status !== 1 && item.Bureau_Status === 1) {
-					sItem.name = 'Courier In-Progress';
-				} else if (item.Bureau_Status === 1 && item.Courier_Status === 1) {
-					sItem.name = 'Completed';
+					sItem.name = 'In transit';
 				} else {
-					console.log(
-						'invalid bureau statuss: ',
-						item.Bureau_Status,
-						' invalid courier status: ',
-						item.Courier_Status,
-					);
+					sItem.name = 'Bureau In-Progress';
 				}
-				series.push(sItem);
+				const foundPreviousItem = series.find((i) => i.Bank === sItem.Bank && i.name === sItem.name);
+				if (foundPreviousItem) {
+					foundPreviousItem.data =
+						sItem.data.length > 0 ? [sItem.data[0] + item.total_bank_records] : [item.total_bank_records];
+				} else {
+					sItem.data =
+						sItem.data.length > 0 ? [sItem.data[0] + item.total_bank_records] : [item.total_bank_records];
+					series.push(sItem);
+				}
 			});
 			return series;
 		};
