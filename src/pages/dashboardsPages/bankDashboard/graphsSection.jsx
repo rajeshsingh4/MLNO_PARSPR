@@ -8,9 +8,9 @@ import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import Stack from '@mui/material/Stack';
-import Button from '@mui/material/Button';
+// import Button from '@mui/material/Button';
 
-import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+// import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 
 function GraphsSection(props) {
 	const { stackedBarChartConfig, doubleAreaChartConfig } = props;
@@ -82,104 +82,104 @@ function DoubleAreaChartSection(props) {
 	);
 }
 
-const barGraphconfig = {
-	options: {
-		colors: getDefaultChartsColors(2),
-		plotOptions: {
-			bar: {
-				columnWidth: '95%',
-			},
-		},
-		chart: {
-			toolbar: {
-				show: false,
-			},
-			sparkline: {
-				enabled: true,
-			},
-			parentHeightOffset: 0,
-		},
-		grid: {
-			show: false,
-		},
-		xaxis: {
-			show: false,
+// const barGraphconfig = {
+// 	options: {
+// 		colors: getDefaultChartsColors(2),
+// 		plotOptions: {
+// 			bar: {
+// 				columnWidth: '95%',
+// 			},
+// 		},
+// 		chart: {
+// 			toolbar: {
+// 				show: false,
+// 			},
+// 			sparkline: {
+// 				enabled: true,
+// 			},
+// 			parentHeightOffset: 0,
+// 		},
+// 		grid: {
+// 			show: false,
+// 		},
+// 		xaxis: {
+// 			show: false,
 
-			categories: [1],
-		},
-		tooltip: {
-			enabled: true,
-		},
-		yaxis: {
-			show: false,
-		},
-	},
-	series: [
-		{
-			name: 'HDFC',
-			data: [5],
-		},
-		{
-			name: 'IDFC',
-			data: [5],
-		},
-		{
-			name: 'SBI',
-			data: [100],
-		},
-	],
-};
+// 			categories: [1],
+// 		},
+// 		tooltip: {
+// 			enabled: true,
+// 		},
+// 		yaxis: {
+// 			show: false,
+// 		},
+// 	},
+// 	series: [
+// 		{
+// 			name: 'HDFC',
+// 			data: [5],
+// 		},
+// 		{
+// 			name: 'IDFC',
+// 			data: [5],
+// 		},
+// 		{
+// 			name: 'SBI',
+// 			data: [100],
+// 		},
+// 	],
+// };
 
-function BarChartSection() {
-	const counter = useAutoCounter({
-		limiter: 0.0873,
-		increment: 0.001,
-		interval: 10,
-	});
-	return (
-		<SectionContainer
-			background={
-				<Chart
-					options={barGraphconfig.options}
-					series={barGraphconfig.series}
-					type="bar"
-					style={{
-						position: 'absolute',
-						bottom: '0',
-						left: '0',
-						right: '0',
-					}}
-					width="100%"
-					height="90%"
-				/>
-			}
-		>
-			<Stack ml="auto" width="50%" spacing={0}>
-				<Typography variant="subtitle1" fontSize={35}>
-					{Math.round(counter * 10000) / 10000}{' '}
-					<Typography variant="subtitle1" component="span">
-						ETH
-					</Typography>
-				</Typography>
-				<Typography variant="subtitle1">ETHEREUM WALLET</Typography>
-				<Typography variant="subtitle2">
-					Curabitur ullamcorper ultricies nisi. Nam eget dui. Etiam rhoncus...
-				</Typography>
-				<Button
-					variant="text"
-					size="small"
-					endIcon={<ChevronRightIcon />}
-					sx={{
-						width: 'fit-content',
-						textTransform: 'uppercase',
-					}}
-				>
-					View Report
-				</Button>
-			</Stack>
-		</SectionContainer>
-	);
-}
+// function BarChartSection() {
+// 	const counter = useAutoCounter({
+// 		limiter: 0.0873,
+// 		increment: 0.001,
+// 		interval: 10,
+// 	});
+// 	return (
+// 		<SectionContainer
+// 			background={
+// 				<Chart
+// 					options={barGraphconfig.options}
+// 					series={barGraphconfig.series}
+// 					type="bar"
+// 					style={{
+// 						position: 'absolute',
+// 						bottom: '0',
+// 						left: '0',
+// 						right: '0',
+// 					}}
+// 					width="100%"
+// 					height="90%"
+// 				/>
+// 			}
+// 		>
+// 			<Stack ml="auto" width="50%" spacing={0}>
+// 				<Typography variant="subtitle1" fontSize={35}>
+// 					{Math.round(counter * 10000) / 10000}{' '}
+// 					<Typography variant="subtitle1" component="span">
+// 						ETH
+// 					</Typography>
+// 				</Typography>
+// 				<Typography variant="subtitle1">ETHEREUM WALLET</Typography>
+// 				<Typography variant="subtitle2">
+// 					Curabitur ullamcorper ultricies nisi. Nam eget dui. Etiam rhoncus...
+// 				</Typography>
+// 				<Button
+// 					variant="text"
+// 					size="small"
+// 					endIcon={<ChevronRightIcon />}
+// 					sx={{
+// 						width: 'fit-content',
+// 						textTransform: 'uppercase',
+// 					}}
+// 				>
+// 					View Report
+// 				</Button>
+// 			</Stack>
+// 		</SectionContainer>
+// 	);
+// }
 
 export function StackedBarChartSection(props) {
 	const { stackedBarChartConfig } = props;

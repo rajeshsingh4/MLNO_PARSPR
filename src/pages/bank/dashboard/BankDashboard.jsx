@@ -486,11 +486,13 @@ function BankDashboardPage() {
 					</Grid>
 				</Grid>
 				{statsDataLoader ? (
-					<Loader
-						addSx={{
-							mt: 5,
-						}}
-					/>
+					<Grid container item spacing={3} display="flex" justifyContent="center">
+						<Loader
+							addSx={{
+								mt: 5,
+							}}
+						/>
+					</Grid>
 				) : (
 					<>
 						<StatsSection STATS_DATA={transformStatsData(statsData)} />
